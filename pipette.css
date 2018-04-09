@@ -1,0 +1,99 @@
+/* Global variables */
+:root {
+	--font-main: Arial, Helvetica, sans-serif;
+}
+
+html {
+	display: flex;
+	min-height: 100vh;
+}
+
+body {
+	background-color: white;
+	margin: 0px;
+}
+
+header {
+	float: left;
+}
+
+header:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+li {
+    display: block;
+    font-family: var(--font-main);
+    font-size: 18pt;
+    padding: 15px 20px;
+    text-align: center;
+    text-decoration: none;
+}
+
+/*##########################################################################*/
+/*								  Classes     						        */
+/*##########################################################################*/
+
+.grid.calendar {
+	background-color: lightyellow;
+	grid-area: calendar;
+	padding: 20px;
+}
+
+.grid.heading {
+	grid-area: heading;
+	height: min-content;
+}
+
+.grid.protocols {
+	background-color: lavender;
+	display: flex;
+	flex-direction: column;
+	grid-area: protocols;
+	padding: 20px;
+}
+
+.grid-container {
+	display: grid;
+	float: left;
+	grid-template-areas: 'heading heading'
+						 'protocols calendar';
+	grid-template-rows: min-content 500px;
+	width: 1000px; /*help*/
+}
+
+.heading-items {
+	list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: purple;
+}
+
+.heading-items li {
+    color: white;
+    float: left;
+}
+
+.heading-items li:hover {
+	background-color: plum;
+}
+
+.heading-items .sign-in {
+    float: right;
+}
+
+.protocol {
+	background-color: white;
+	margin: 10px;
+	padding: 10px;
+	text-align: left;
+	width: 90%;
+}
+
+.protocol-list {
+	padding: 0px;
+}
+
