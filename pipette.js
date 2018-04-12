@@ -36,6 +36,7 @@ Util.events(document, {
 	    		protocol.style.position = "relative";
 	    		protocol.style.left = "";
 	    		protocol.style.top = "";
+	    		protocol.style.zIndex = 1; 
 	    	}
 
 	    	var dragFunc = function(event){
@@ -43,6 +44,7 @@ Util.events(document, {
 	    		// Account for offset between mouse and img corner
 	    		protocol.style.left = (event.clientX-offsetX) + "px";
 	    		protocol.style.top = (event.clientY-offsetY) + "px";
+	    		protocol.style.zIndex = 4;
 	    	};
 
 	    	// Actual mousedown event 
