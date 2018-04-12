@@ -8,6 +8,10 @@ html {
 	min-height: 100vh;
 }
 
+i {
+	float: right;
+}
+
 body {
 	background-color: white;
 	margin: 0px;
@@ -87,10 +91,16 @@ li {
 
 .protocol {
 	background-color: white;
+	border-radius: 5px;
+	cursor: move;
 	margin: 10px;
 	padding: 10px;
 	text-align: left;
-	width: 90%;
+	width: 350px;
+}
+
+.protocol:hover {
+	box-shadow: 0px 0px 10px purple;
 }
 
 .protocol-list {
