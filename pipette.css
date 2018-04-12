@@ -15,17 +15,19 @@ html {
 
 h1 {
 	font-family: var(--font-main);
+	margin-left: 10px;
 }
 
 i {
 	border-radius: 5px;
 	cursor: pointer;
 	float: right;
-	padding: 3px;
+	margin: -4px;
+	padding: 6px;
 }
 
 i:hover {
-	box-shadow: 0px 0px 5px blue;
+	background-color: lightgray;
 }
 
 body {
@@ -39,6 +41,7 @@ button {
 	border-radius: 5px;
     color: white;
     display: inline-block;
+    font-size: 14pt;
     font-weight: bold;
     margin: 5px;
     padding: 10px 30px;
@@ -72,6 +75,10 @@ li {
 /*##########################################################################*/
 /*								  Classes     						        */
 /*##########################################################################*/
+
+.actions-row {
+	margin-left: 5px;
+}
 
 .grid.calendar {
 	background-color: var(--pale-blue);
@@ -114,16 +121,17 @@ li {
     float: left;
 }
 
-.heading-items li:hover {
-	background-color: var(--medium-blue);
-}
-
 .heading-items .sign-in {
     float: right;
 }
 
+.heading-items .sign-in:hover {
+	background-color: var(--medium-blue);
+}
+
 .protocol {
 	background-color: white;
+	border: 1px solid var(--dark-blue);
 	border-radius: 5px;
 	cursor: move;
 	margin: 10px;
