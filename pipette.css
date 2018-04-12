@@ -1,6 +1,11 @@
 /* Global variables */
 :root {
 	--font-main: Arial, Helvetica, sans-serif;
+	--dark-blue: #064273;
+	--medium-blue: #76b6c4;
+	--light-blue: #7fcdff;
+	--sky-blue: #1da2d8;
+	--pale-blue: #def3f6;
 }
 
 html {
@@ -8,13 +13,41 @@ html {
 	min-height: 100vh;
 }
 
+h1 {
+	font-family: var(--font-main);
+}
+
 i {
+	border-radius: 5px;
+	cursor: pointer;
 	float: right;
+	padding: 3px;
+}
+
+i:hover {
+	box-shadow: 0px 0px 5px blue;
 }
 
 body {
 	background-color: white;
 	margin: 0px;
+}
+
+button {
+	background-color: var(--medium-blue);
+	border: none;
+	border-radius: 5px;
+    color: white;
+    display: inline-block;
+    font-weight: bold;
+    margin: 5px;
+    padding: 10px 30px;
+    text-align: center;
+    text-decoration: none;
+}
+
+button:hover {
+	background-color: var(--dark-blue);
 }
 
 header {
@@ -41,7 +74,7 @@ li {
 /*##########################################################################*/
 
 .grid.calendar {
-	background-color: lightyellow;
+	background-color: var(--pale-blue);
 	grid-area: calendar;
 	padding: 20px;
 }
@@ -52,7 +85,7 @@ li {
 }
 
 .grid.protocols {
-	background-color: lavender;
+	background-color: var(--pale-blue);
 	display: flex;
 	flex-direction: column;
 	grid-area: protocols;
@@ -73,7 +106,7 @@ li {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: purple;
+    background-color: var(--dark-blue);
 }
 
 .heading-items li {
@@ -82,7 +115,7 @@ li {
 }
 
 .heading-items li:hover {
-	background-color: plum;
+	background-color: var(--medium-blue);
 }
 
 .heading-items .sign-in {
@@ -100,7 +133,7 @@ li {
 }
 
 .protocol:hover {
-	box-shadow: 0px 0px 10px purple;
+	box-shadow: 0px 0px 10px var(--dark-blue);
 }
 
 .protocol-list {
