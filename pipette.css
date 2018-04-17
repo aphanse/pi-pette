@@ -148,3 +148,7 @@ li {
 	padding: 0px;
 }
 
+#shareItemModal {
+	height: 50vh;
+	width: 50vw;
+}

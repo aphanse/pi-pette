@@ -13,8 +13,6 @@ Util.events(document, {
 	// Final initalization entry point: the Javascript code inside this block
 	// runs at the end of start-up when the DOM is ready
 	"DOMContentLoaded": function() {
-
-
 	},
 
 	// Keyboard events arrive here
@@ -55,3 +53,21 @@ Util.events(document, {
 	},
 });
 
+function shareItem() {
+	var shareModal = Util.one("#shareItemModal");
+	var cancelButton = Util.one("#cancel");
+	var shareButton = Util.one("#shareItemButton");
+
+	shareModal.showModal();
+
+	// Form cancel button closes the dialog box
+	cancelButton.addEventListener('click', function() {
+		shareModal.close();
+	});
+
+};
+
+function sendMessageToContacts() {
+	alert("Message Sent!");
+	document.getElementById('messageBox').value = "";
+};
