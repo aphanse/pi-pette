@@ -54,8 +54,19 @@
 			<div class="actions-row">
 				<button id="add-protocol">Add</button>
 				<button id="delete-protocol">Delete</button>
-				<button id="email">Email</button>
+				<button id="email" onclick="shareItem()">Email</button>
 			</div>
+
+			<!-- Simple pop-up dialog box, containing a form -->
+			<dialog id="shareItemModal">
+				<form method="dialog">
+					Type your message below:<br>
+					<input id="messageBox" value="Here is a protocol I want to share with you!"></input><br>
+					<button id="cancel" type="reset">Cancel</button>
+					<button id="shareItemButton" onclick="sendMessageToContacts()">Share</button>
+				</form>
+			</dialog>
+
 			<ul class="protocol-list">
 			  	<li class="protocol">
 			  		qPCR
