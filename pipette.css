@@ -148,7 +148,6 @@ li {
 	padding: 0px;
 }
 
-<<<<<<< HEAD
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
@@ -185,8 +184,25 @@ li {
     color: #000;
     text-decoration: none;
     cursor: pointer;
+}
 
 #shareItemModal {
 	height: 50vh;
 	width: 50vw;
+}
+
+#stepsEdit {
+	display: grid;
+  	grid-template-columns: auto auto auto;
+  	align-items: center;
+  	grid-row-gap: 10px;
+  	grid-column-gap: 5px;
+}
+
+#stepsAdd {
+	display: grid;
+  	grid-template-columns: auto auto auto;
+  	align-items: center;
+  	grid-row-gap: 10px;
+  	grid-column-gap: 5px;
 }

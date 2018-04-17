@@ -22,7 +22,6 @@
 
   <!-- Modal content -->
   <div class="modal-content">
-    <span class="close" onClick=closeModal()>&times;</span>
     <form>
     	<input type="text"></input>
     	<input type="text"></input>
@@ -52,7 +51,7 @@
 		<div class="grid protocols">
 			<h1>Protocols</h1>
 			<div class="actions-row">
-				<button id="add-protocol">Add</button>
+				<button id="add-protocol" onClick="newProtocol()">Add</button>
 				<button id="delete-protocol">Delete</button>
 				<button id="email" onclick="shareItem()">Email</button>
 			</div>
@@ -67,14 +66,40 @@
 				</form>
 			</dialog>
 
+			<dialog id="editProtocolModal">
+				<span class="close" onClick=closeModalEditProtocol()>&times;</span>
+				<form method="dialog" id="protocolText">
+					<input id="title"></input> </br>
+				</form>
+				<div id="stepsEdit">
+					<div> Steps </div>
+					<div> Time Allotted (min) </div>
+					<div> Wait Time (min) </div>
+				</div>
+				<button id="addStepButton" onclick="addStepEditProtocol()">Add Step</button>
+			</dialog>
+
+			<dialog id="addProtocolModal">
+				<span class="close" onClick=closeModalNewProtocol()>&times;</span>
+				<form method="dialog" id="protocolText">
+					<input id="titleNew"></input> </br>
+				</form>
+				<div id="stepsAdd">
+					<div> Steps </div>
+					<div> Time Allotted (min) </div>
+					<div> Wait Time (min) </div>
+				</div>
+				<button id="addStepButton" onclick="addStepNewProtocol()">Add Step</button>
+			</dialog>
+
 			<ul class="protocol-list">
 			  	<li class="protocol">
 			  		qPCR
-			  		<i class="edit material-icons" onClick=editPopUp()>mode_edit</i>
+			  		<i class="edit material-icons" onClick=editPopUp("qPCR")>mode_edit</i>
 			  	</li>
 			  	<li class="protocol">
 			  		Cloning
-			  		<i class="edit material-icons" onClick=editPopUp()>mode_edit</i>
+			  		<i class="edit material-icons" onClick=editPopUp("Cloning")>mode_edit</i>
 			  	</li>
 			</ul>
 		</div>
