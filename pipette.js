@@ -55,3 +55,16 @@ Util.events(document, {
 	},
 });
 
+function editPopUp() {
+	console.log("working")
+	var modal = document.getElementById('myModal');
+	console.log("modal")
+	modal.style.display = "block";
+	var text = modal.getElementsByTagName('form')[0];
+	console.log(text)
+}
+
+function closeModal() {
+	var modal = document.getElementById('myModal');
+	modal.style.display = "none";
+}

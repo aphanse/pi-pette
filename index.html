@@ -17,6 +17,26 @@
 
 <body>
 
+<!-- The Modal from https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_modal-->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" onClick=closeModal()>&times;</span>
+    <form>
+    	<input type="text"></input>
+    	<input type="text"></input>
+    	<input type="text"></input>
+    	<input type="text"></input>
+    	<input type="text"></input>
+    	<input type="text"></input>
+    	<input type="text"></input>
+    	<input type="text"></input>
+    </form>
+  </div>
+
+</div>
+
 <main>
 	<div class="grid-container">
 
@@ -39,11 +59,11 @@
 			<ul class="protocol-list">
 			  	<li class="protocol">
 			  		qPCR
-			  		<i class="edit material-icons">mode_edit</i>
+			  		<i class="edit material-icons" onClick=editPopUp()>mode_edit</i>
 			  	</li>
 			  	<li class="protocol">
 			  		Cloning
-			  		<i class="edit material-icons">mode_edit</i>
+			  		<i class="edit material-icons" onClick=editPopUp()>mode_edit</i>
 			  	</li>
 			</ul>
 		</div>
