@@ -43,8 +43,18 @@
 		<div class="grid heading">
 			<ul class="heading-items">
 			  	<li class="title">&pi;-pette</li>
-			  	<li class="sign-in">Sign In</li>
+			  	<li class="sign-in" onclick="signIn()">Sign In</li>
 			</ul>
+			<!-- Sign in box -->
+			<dialog id="signInModal">
+				<span class="close" onClick=closeModalSignIn()>&times;</span>
+				<form method="dialog">
+					<input placeholder="Username"></input><br>
+					<input placeholder="Password"></input><br>
+					<button id="confirm-signin" onClick=closeModalSignIn()>Sign In</button>
+					<br><a href="">Create New Account</a>
+				</form>
+			</dialog>
 		</div>
 
 		<!--Protocols-->
@@ -66,6 +76,7 @@
 				</form>
 			</dialog>
 
+			<!-- Edit popup -->
 			<dialog id="editProtocolModal">
 				<span class="close" onClick=closeModalEditProtocol()>&times;</span>
 				<form method="dialog" id="protocolText">
@@ -80,6 +91,7 @@
 				<button id="addStepButton" onclick=closeModalEditProtocol()>Done</button>
 			</dialog>
 
+			<!-- Add protocol popup -->
 			<dialog id="addProtocolModal">
 				<span class="close" onClick=closeModalNewProtocol()>&times;</span>
 				<form method="dialog" id="protocolText">

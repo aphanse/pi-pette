@@ -200,6 +200,16 @@ function shareItem() {
 
 };
 
+function signIn() {
+	var signIn = document.getElementById('signInModal');
+	signIn.showModal();
+}
+
+function closeModalSignIn() {
+	var signIn = document.getElementById('signInModal');
+	signIn.close();
+}
+
 function sendMessageToContacts() {
 	alert("Message Sent!");
 	document.getElementById('messageBox').value = "";

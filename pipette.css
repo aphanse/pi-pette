@@ -186,6 +186,10 @@ li {
     cursor: pointer;
 }
 
+/*##########################################################################*/
+/*								  	IDs     						        */
+/*##########################################################################*/
+
 #shareItemModal {
 	height: 50vh;
 	width: 50vw;
@@ -206,3 +210,12 @@ li {
   	grid-row-gap: 10px;
   	grid-column-gap: 5px;
 }
+
+#signInModal form{
+	text-align: center;
+}
+
+#signInModal input{
+	margin: 5px;
+}
+
