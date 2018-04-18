@@ -40,6 +40,7 @@ button {
 	border: none;
 	border-radius: 5px;
     color: white;
+    cursor: pointer;
     display: inline-block;
     font-size: 14pt;
     font-weight: bold;
@@ -146,6 +147,10 @@ li {
 
 .protocol-list {
 	padding: 0px;
+}
+
+.sign-in {
+	cursor: pointer;
 }
 
 .modal {
