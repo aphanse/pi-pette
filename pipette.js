@@ -56,16 +56,12 @@ Util.events(document, {
 });
 
 function editPopUp(title) {
-	console.log("working")
 	var modal = document.getElementById('editProtocolModal');
-	console.log("modal")
-	console.log(title)
 	var form = document.getElementById("protocolText");
 	var titleBox = document.getElementById("title");
 	titleBox.value = title;
 	var stepsArea = document.getElementById("stepsEdit");
 	var steps = protocols[title];
-	console.log(stepsArea.children.length)
 	if (stepsArea.children.length < (steps.length + 1)*3) {
 		for (var i = 0; i < steps.length; i++) {
 			for (var j = 0; j < 3; j++) { 
@@ -103,7 +99,6 @@ function addStepNewProtocol() {
 function closeModalEditProtocol() {
 	var modal = document.getElementById('editProtocolModal');
 	modal.style.display = "none";
-	console.log("HI")
 	var stepsArea = document.getElementById("stepsEdit");
 	var removeCells = []
 	var title = document.getElementById("title").value
@@ -113,67 +108,80 @@ function closeModalEditProtocol() {
 			var input = stepsArea.children[j].children[0]
 			if (!input.value) {
 				removeCells.push(stepsArea.children[j])
-				//remove from dictionary as well
-			}
-			else {
-				console.log(protocol.length)
-				if (Math.floor(j/3)-1 >= protocol.length) {
-					console.log("here")
-					protocol.push([0,0,0])
+				if (Math.floor(j/3)-1 < protocol.length) {
+					protocol.pop(Math.floor(j/3)-1)
 				}
-				protocol[Math.floor(j/3)-1][j%3] = input.value
 			}
 		}
 	}
 	for (var j = 0; j < removeCells.length; j++) {
 		stepsArea.removeChild(removeCells[j]);
 	}
-	console.log(protocol)
+	for (var j = 0; j < stepsArea.children.length; j++) {
+		if (j > 2) {
+			var input = stepsArea.children[j].children[0]
+			if (input.value) {
+				if (Math.floor(j/3)-1 >= protocol.length) {
+					protocol.push([0,0,0])
+				}
+				protocol[Math.floor(j/3)-1][j%3] = input.value
+			}
+		}
+	}
 }
 
 function closeModalNewProtocol() {
 	var modal = document.getElementById('addProtocolModal');
 	modal.style.display = "none";
-	console.log("HI")
 	var stepsArea = document.getElementById("stepsAdd");
 	var removeCells = []
-	var title = document.getElementById("title").value
-	var protocol = protocols[title];
-	for (var j = 0; j < stepsArea.children.length; j++) {
-		if (j > 2) {
-			var input = stepsArea.children[j].children[0]
-			if (!input.value) {
-				removeCells.push(stepsArea.children[j])
-				//remove from dictionary as well
-			}
-			else {
-				console.log(protocol.length)
-				if (Math.floor(j/3)-1 >= protocol.length) {
-					console.log("here")
-					protocol.push([0,0,0])
+	var title = document.getElementById("titleNew").value;
+	var protocol = [];
+	if (title) {
+		for (var j = 0; j < stepsArea.children.length; j++) {
+			if (j > 2) {
+				var input = stepsArea.children[j].children[0]
+				if (!input.value) {
+					removeCells.push(stepsArea.children[j])
 				}
-				protocol[Math.floor(j/3)-1][j%3] = input.value
+				else {
+					if (Math.floor(j/3)-1 >= protocol.length) {
+						protocol.push([0,0,0])
+					}
+					protocol[Math.floor(j/3)-1][j%3] = input.value
+				}
 			}
 		}
+		for (var j = 0; j < removeCells.length; j++) {
+			stepsArea.removeChild(removeCells[j]);
+		}
+		protocols[title] = protocol;
+		var listItem = document.createElement("li");
+		listItem.setAttribute("class", "protocol");
+		listItem.innerHTML = title;
+		var editIcon = document.createElement("i");
+		editIcon.setAttribute("class", "edit material-icons");
+		editIcon.setAttribute("onClick", "editPopUp('"+ title +"')");
+		editIcon.innerHTML = "mode_edit";
+		listItem.appendChild(editIcon);
+		var protocolList = document.getElementsByClassName("protocol-list")[0];
+		protocolList.appendChild(listItem);
 	}
-	for (var j = 0; j < removeCells.length; j++) {
-		stepsArea.removeChild(removeCells[j]);
-	}
-	console.log(protocol)
 }
 
 function newProtocol() {
 	var modal = document.getElementById('addProtocolModal');
-	console.log("modal")
 	var form = document.getElementById("protocolText");
 	var titleBox = document.getElementById("titleNew");
-	titleBox.value = "Procedure Name";
+	titleBox.placeholder = "Procedure Name";
 	var stepsArea = document.getElementById("stepsAdd");
-	for (var j = 0; j < 3; j++) { 
-		var div = document.createElement("div");
-		var cell = document.createElement("input");
-		div.appendChild(cell);
-		stepsArea.appendChild(div);
+	if (stepsArea.children.length !== 6) {
+		for (var j = 0; j < 3; j++) { 
+			var div = document.createElement("div");
+			var cell = document.createElement("input");
+			div.appendChild(cell);
+			stepsArea.appendChild(div);
+		}
 	}
 	modal.style.display = "block";
 }
