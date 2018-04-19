@@ -7,34 +7,43 @@
 
 <!-- Use mobile-aware viewport -->
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script> -->
+<script type="text/javascript">
 
+</script>	
+<script async defer src="https://apis.google.com/js/api.js"
+  onreadystatechange="if (this.readyState === 'complete') this.onload()">
+</script>
+
+
+
+<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- Load style sheets -->
 <link rel="stylesheet" href="pipette.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 
 </head>
+<form>
+  Select a Day:
+  <input type="date" id = "date" name="usr_day">
+</form>
 
+<form>
+  Select a time:
+  <input type="time" id = "time" value="13:00" name="usr_time">
+</form>
+
+<select id="select" name="protocol" style="width: 115px;">
+<option value="qPCR" title="qPCR">qPCR</option>
+<option value="cloning" title="clloning">Cloning</option>
+</select>
+<br>
+<br>
+<input type = "button" value = "Done" onclick= "addProtocol()" />
 <body>
 
-<!-- The Modal from https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_modal-->
-<div id="myModal" class="modal">
 
-  <!-- Modal content -->
-  <div class="modal-content">
-    <form>
-    	<input type="text"></input>
-    	<input type="text"></input>
-    	<input type="text"></input>
-    	<input type="text"></input>
-    	<input type="text"></input>
-    	<input type="text"></input>
-    	<input type="text"></input>
-    	<input type="text"></input>
-    </form>
-  </div>
-
-</div>
 
 <main>
 	<div class="grid-container">
@@ -59,6 +68,9 @@
 
 		<!--Protocols-->
 		<div class="grid protocols">
+		<input type = "button" value = "Add To Calendar" onclick= "openpopup()" />
+		
+
 			<h1>Protocols</h1>
 			<div class="actions-row">
 				<button id="add-protocol" onClick="newProtocol()">Add</button>
@@ -118,15 +130,25 @@
 			</ul>
 		</div>
 
-		<!--Calendar-->
-		<div class="grid calendar">CALENDAR API GOES HERE SOMEHOW</div>
+		<!--Game Board-->
+		<div class="grid calendar">
+			<iframe src="https://calendar.google.com/calendar/embed?showTitle=0&amp;showCalendars=0&amp;mode=WEEK&amp;height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=13rt5s11dte8459l5n7jdp35ck%40group.calendar.google.com&amp;color=%232F6309&amp;ctz=America%2FNew_York" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+
+		</div>
 
 	</div>
 </main>
 
 </body>
+
+
 <script src="util.js"></script>
 <script src="pipette.js"></script>
+<script src="calendar.js"></script>
+<script src="addToCalendar.html"></script>
+
+
+
 
 <!-- Load any supplemental Javascript libraries here -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.2/seedrandom.js"></script>

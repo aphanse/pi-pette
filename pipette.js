@@ -18,15 +18,22 @@ Util.events(document, {
 	// Final initalization entry point: the Javascript code inside this block
 	// runs at the end of start-up when the DOM is ready
 	"DOMContentLoaded": function() {
+
 	},
 
+
+
 	// Keyboard events arrive here
-	"keydown": function(evt) {},
+	"keydown": function(evt) {
+	},
 
 	// Click events arrive here
-	"click": function(evt) {},
+	"click": function(evt) {
+
+	},
 
 	"mousedown": function(event) {
+
 		if (event.target.className == "protocol") {
 			var protocol = event.target;
 			var offsetX = event.clientX - protocol.offsetLeft;
@@ -58,6 +65,7 @@ Util.events(document, {
 		
 	},
 });
+
 
 function editPopUp(title) {
 	var modal = document.getElementById('editProtocolModal');
