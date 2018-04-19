@@ -31,7 +31,7 @@ i:hover {
 }
 
 body {
-	background-color: white;
+	background-color: var(--pale-blue);
 	margin: 0px;
 }
 
