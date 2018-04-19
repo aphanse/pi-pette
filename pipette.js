@@ -7,6 +7,7 @@ var protocols = {"qPCR":[["Take cells", 5, 15], ["Freeze cells", 30, 60]],
 				 "Cloning":[["Grow cells", 10, 10], ["Add culture to cells", 30, 60], ["Party with cells", 50, 0]],
 				 "DNA Sequencing":[["Take cells", 5, 15], ["Freeze cells", 30, 60]],
 				 "Gel Electrophoresis":[["Take cells", 5, 15], ["Freeze cells", 30, 60]],};
+const DEFAULT_MSG = "Here is a protocol I would like to share.";
 //////////////////////////////////////////////////////////////////////////////////////
 // 			                 														//
 // 			                  		Event Listeners									//
@@ -19,8 +20,8 @@ Util.events(document, {
 	// runs at the end of start-up when the DOM is ready
 
 	
-
 	"DOMContentLoaded": function() {
+		document.getElementById('messageBox').value = DEFAULT_MSG;
 		drawProtocols();
 	},
 
@@ -89,6 +90,7 @@ function editPopUp(title) {
 	titleBox.value = title;
 	var stepsArea = document.getElementById("stepsEdit");
 	var steps = protocols[title];
+	removeFormFields(stepsArea);
 	if (stepsArea.children.length < (steps.length + 1)*3) {
 		for (var i = 0; i < steps.length; i++) {
 			for (var j = 0; j < 3; j++) { 
@@ -215,8 +217,14 @@ function shareItem() {
 	// Form cancel button closes the dialog box
 	cancelButton.addEventListener('click', function() {
 		shareModal.close();
+		document.getElementById('messageBox').value = DEFAULT_MSG;
 	});
 
+};
+
+function sendMessageToContacts() {
+	alert("Message Sent!");
+	document.getElementById('messageBox').value = DEFAULT_MSG;
 };
 
 function signIn() {
@@ -228,8 +236,3 @@ function closeModalSignIn() {
 	var signIn = document.getElementById('signInModal');
 	signIn.close();
 }
-
-function sendMessageToContacts() {
-	alert("Message Sent!");
-	document.getElementById('messageBox').value = "";
-};
