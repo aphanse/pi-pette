@@ -30,7 +30,7 @@ Util.events(document, {
 
 	// Click events arrive here
 	"click": function(evt) {
-
+		console.log("clicked")
 	},
 
 	"mousedown": function(event) {
