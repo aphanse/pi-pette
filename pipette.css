@@ -191,6 +191,16 @@ li {
     cursor: pointer;
 }
 
+.sharing-columns {
+	display: flex;
+	flex-direction: row;
+}
+
+.shareColumns {
+	width: 50%;
+	height: 100%;
+}
+
 /*##########################################################################*/
 /*								  	IDs     						        */
 /*##########################################################################*/
@@ -202,9 +212,9 @@ li {
 
 #messageBox {
 	height: 100%;
-	width: 50%;
-	max-height: 135px;
-	max-width: 50%;
+	width: 90%;
+	max-height: 75%;
+	max-width: 90%;
 }
 
 #stepsEdit {
