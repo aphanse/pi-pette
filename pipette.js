@@ -194,8 +194,14 @@ function shareItem() {
 	// Form cancel button closes the dialog box
 	cancelButton.addEventListener('click', function() {
 		shareModal.close();
+		document.getElementById('messageBox').value = DEFAULT_MSG;
 	});
 
+};
+
+function sendMessageToContacts() {
+	alert("Message Sent!");
+	document.getElementById('messageBox').value = DEFAULT_MSG;
 };
 
 function signIn() {
@@ -207,8 +213,3 @@ function closeModalSignIn() {
 	var signIn = document.getElementById('signInModal');
 	signIn.close();
 }
-
-function sendMessageToContacts() {
-	alert("Message Sent!");
-	document.getElementById('messageBox').value = DEFAULT_MSG;
-};

@@ -200,6 +200,13 @@ li {
 	width: 50vw;
 }
 
+#messageBox {
+	height: 100%;
+	width: 50%;
+	max-height: 135px;
+	max-width: 50%;
+}
+
 #stepsEdit {
 	display: grid;
   	grid-template-columns: auto auto auto;
