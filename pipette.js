@@ -3,7 +3,10 @@
 var dom = {};
 
 // Holds steps associated with each protocol
-var protocols = {"qPCR":[["Take cells", 5, 15], ["Freeze cells", 30, 60]]};
+var protocols = {"qPCR":[["Take cells", 5, 15], ["Freeze cells", 30, 60]],
+				 "Cloning":[["Take cells", 5, 15], ["Freeze cells", 30, 60]],
+				 "DNA Sequencing":[["Take cells", 5, 15], ["Freeze cells", 30, 60]],
+				 "Gel Electrophoresis":[["Take cells", 5, 15], ["Freeze cells", 30, 60]],};
 //////////////////////////////////////////////////////////////////////////////////////
 // 			                 														//
 // 			                  		Event Listeners									//
@@ -14,7 +17,12 @@ var protocols = {"qPCR":[["Take cells", 5, 15], ["Freeze cells", 30, 60]]};
 Util.events(document, {
 	// Final initalization entry point: the Javascript code inside this block
 	// runs at the end of start-up when the DOM is ready
+
+	
+
 	"DOMContentLoaded": function() {
+		drawProtocols();
+
 	},
 
 	// Keyboard events arrive here
@@ -55,7 +63,20 @@ Util.events(document, {
 	},
 });
 
+function drawProtocols() {
+	var protocols = ["qPCR", "Cloning", "DNA Sequencing", "Gel Electrophoresis"];
+	var html = "<ul class=\"protocol-list\">";
+	for (var i = 0; i < protocols.length; i++) {
+		html += "<li class=\"protocol\">" +
+					protocols[i] +
+					"<i class=\"edit material-icons\" onClick=editPopUp(\"" + protocols[i] + "\")>mode_edit</i>" +
+				"</li>";
+	}
+	document.getElementById("protocol-container").innerHTML = html;
+}
+
 function editPopUp(title) {
+	console.log("edit");
 	var modal = document.getElementById('editProtocolModal');
 	var form = document.getElementById("protocolText");
 	var titleBox = document.getElementById("title");
