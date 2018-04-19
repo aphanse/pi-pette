@@ -209,6 +209,7 @@ function shareItem() {
 function sendMessageToContacts() {
 	alert("Message Sent!");
 	document.getElementById('messageBox').value = DEFAULT_MSG;
+	Util.one("#shareItemModal").close();
 };
 
 function signIn() {
