@@ -22,13 +22,19 @@ Util.events(document, {
 		document.getElementById('messageBox').value = DEFAULT_MSG;
 	},
 
+
+
 	// Keyboard events arrive here
-	"keydown": function(evt) {},
+	"keydown": function(evt) {
+	},
 
 	// Click events arrive here
-	"click": function(evt) {},
+	"click": function(evt) {
+
+	},
 
 	"mousedown": function(event) {
+
 		if (event.target.className == "protocol") {
 			var protocol = event.target;
 			var offsetX = event.clientX - protocol.offsetLeft;
@@ -60,6 +66,7 @@ Util.events(document, {
 		
 	},
 });
+
 
 function editPopUp(title) {
 	var modal = document.getElementById('editProtocolModal');
