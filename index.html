@@ -69,7 +69,6 @@
 
 		<!--Protocols-->
 		<div class="grid protocols">		
-
 			<h1>Protocols</h1>
 			<div class="actions-row">
 				<button id="add-protocol" onClick="newProtocol()">Add</button>
@@ -77,11 +76,12 @@
 				<button id="email" onclick="shareItem()">Email</button>
 			</div>
 
-			<!-- Simple pop-up dialog box, containing a form -->
+			<!-- Sharing popup -->
 			<dialog id="shareItemModal">
-				<form method="dialog">
+				<form id="shareItemDialog" method="dialog">
+					Contacts:<br>
 					Type your message below:<br>
-					<input id="messageBox" value="Here is a protocol I want to share with you!"></input><br>
+					<textarea id="messageBox" value="Here is a protocol I would like to share."></textarea><br>
 					<button id="cancel" type="reset">Cancel</button>
 					<button id="shareItemButton" onclick="sendMessageToContacts()">Share</button>
 				</form>
@@ -131,7 +131,7 @@
 
 		<!-- Actual Google Calendar !-->
 		<div class="grid calendar">
-			<iframe src="https://calendar.google.com/calendar/embed?showTitle=0&amp;showCalendars=0&amp;mode=WEEK&amp;height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=13rt5s11dte8459l5n7jdp35ck%40group.calendar.google.com&amp;color=%232F6309&amp;ctz=America%2FNew_York" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+			<iframe src="https://calendar.google.com/calendar/embed?showTitle=0&amp;showCalendars=0&amp;mode=WEEK&amp;height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=13rt5s11dte8459l5n7jdp35ck%40group.calendar.google.com&amp;color=%232F6309&amp;ctz=America%2FNew_York" style="border-width:0" width="800" height="480" frameborder="0" scrolling="no"></iframe>
 
 		</div>
 
@@ -144,7 +144,6 @@
 <script src="util.js"></script>
 <script src="pipette.js"></script>
 <script src="calendar.js"></script>
-<script src="addToCalendar.html"></script>
 
 
 
