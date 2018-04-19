@@ -44,15 +44,26 @@
 <body>
 
 
+
 <main>
 	<div class="grid-container">
 
 		<!--Heading-->
 		<div class="grid heading">
 			<ul class="heading-items">
-			  	<li class="home">Home</li>
-			  	<li class="sign-in">Sign In</li>
+			  	<li class="title">&pi;-pette</li>
+			  	<li class="sign-in" onclick="signIn()">Sign In</li>
 			</ul>
+			<!-- Sign in box -->
+			<dialog id="signInModal">
+				<span class="close" onClick=closeModalSignIn()>&times;</span>
+				<form method="dialog">
+					<input placeholder="Username"></input><br>
+					<input placeholder="Password"></input><br>
+					<button id="confirm-signin" onClick=closeModalSignIn()>Sign In</button>
+					<br><a href="">Create New Account</a>
+				</form>
+			</dialog>
 		</div>
 
 		<!--Protocols-->
@@ -60,15 +71,61 @@
 		<input type = "button" value = "Add To Calendar" onclick= "openpopup()" />
 		
 
-			PROTOCOLS
+			<h1>Protocols</h1>
+			<div class="actions-row">
+				<button id="add-protocol" onClick="newProtocol()">Add</button>
+				<button id="delete-protocol">Delete</button>
+				<button id="email" onclick="shareItem()">Email</button>
+			</div>
+
+			<!-- Simple pop-up dialog box, containing a form -->
+			<dialog id="shareItemModal">
+				<form method="dialog">
+					Type your message below:<br>
+					<input id="messageBox" value="Here is a protocol I want to share with you!"></input><br>
+					<button id="cancel" type="reset">Cancel</button>
+					<button id="shareItemButton" onclick="sendMessageToContacts()">Share</button>
+				</form>
+			</dialog>
+
+			<!-- Edit popup -->
+			<dialog id="editProtocolModal">
+				<span class="close" onClick=closeModalEditProtocol()>&times;</span>
+				<form method="dialog" id="protocolText">
+					<input id="title"></input> </br>
+				</form>
+				<div id="stepsEdit">
+					<div> Steps </div>
+					<div> Time Allotted (min) </div>
+					<div> Wait Time (min) </div>
+				</div>
+				<button id="addStepButton" onclick=addStep("stepsEdit")>Add Step</button>
+				<button id="addStepButton" onclick=closeModalEditProtocol()>Done</button>
+			</dialog>
+
+			<!-- Add protocol popup -->
+			<dialog id="addProtocolModal">
+				<span class="close" onClick=closeModalNewProtocol()>&times;</span>
+				<form method="dialog" id="protocolText">
+					<input id="titleNew"></input> </br>
+				</form>
+				<div id="stepsAdd">
+					<div> Steps </div>
+					<div> Time Allotted (min) </div>
+					<div> Wait Time (min) </div>
+				</div>
+				<button id="addStepButton" onclick=addStep("stepsAdd")>Add Step</button>
+				<button id="newProtDone" onclick=closeModalNewProtocol()>Done</button>
+			</dialog>
+
 			<ul class="protocol-list">
 			  	<li class="protocol">
 			  		qPCR
-			  		<i class="material-icons">mode_edit</i>
+			  		<i class="edit material-icons" onClick=editPopUp("qPCR")>mode_edit</i>
 			  	</li>
 			  	<li class="protocol">
 			  		Cloning
-			  		<i class="material-icons">mode_edit</i>
+			  		<i class="edit material-icons" onClick=editPopUp("Cloning")>mode_edit</i>
 			  	</li>
 			</ul>
 		</div>

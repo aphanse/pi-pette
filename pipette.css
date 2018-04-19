@@ -1,6 +1,11 @@
 /* Global variables */
 :root {
 	--font-main: Arial, Helvetica, sans-serif;
+	--dark-blue: #064273;
+	--medium-blue: #76b6c4;
+	--light-blue: #7fcdff;
+	--sky-blue: #1da2d8;
+	--pale-blue: #def3f6;
 }
 
 html {
@@ -8,13 +13,45 @@ html {
 	min-height: 100vh;
 }
 
+h1 {
+	font-family: var(--font-main);
+	margin-left: 10px;
+}
+
 i {
+	border-radius: 5px;
+	cursor: pointer;
 	float: right;
+	margin: -4px;
+	padding: 6px;
+}
+
+i:hover {
+	background-color: lightgray;
 }
 
 body {
 	background-color: white;
 	margin: 0px;
+}
+
+button {
+	background-color: var(--medium-blue);
+	border: none;
+	border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14pt;
+    font-weight: bold;
+    margin: 5px;
+    padding: 10px 30px;
+    text-align: center;
+    text-decoration: none;
+}
+
+button:hover {
+	background-color: var(--dark-blue);
 }
 
 header {
@@ -40,8 +77,12 @@ li {
 /*								  Classes     						        */
 /*##########################################################################*/
 
+.actions-row {
+	margin-left: 5px;
+}
+
 .grid.calendar {
-	background-color: lightyellow;
+	background-color: var(--pale-blue);
 	grid-area: calendar;
 	padding: 20px;
 }
@@ -52,7 +93,7 @@ li {
 }
 
 .grid.protocols {
-	background-color: lavender;
+	background-color: var(--pale-blue);
 	display: flex;
 	flex-direction: column;
 	grid-area: protocols;
@@ -73,7 +114,7 @@ li {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: purple;
+    background-color: var(--dark-blue);
 }
 
 .heading-items li {
@@ -81,16 +122,17 @@ li {
     float: left;
 }
 
-.heading-items li:hover {
-	background-color: plum;
-}
-
 .heading-items .sign-in {
     float: right;
 }
 
+.heading-items .sign-in:hover {
+	background-color: var(--medium-blue);
+}
+
 .protocol {
 	background-color: white;
+	border: 1px solid var(--dark-blue);
 	border-radius: 5px;
 	cursor: move;
 	margin: 10px;
@@ -100,69 +142,86 @@ li {
 }
 
 .protocol:hover {
-	box-shadow: 0px 0px 10px purple;
+	box-shadow: 0px 0px 10px var(--dark-blue);
 }
 
 .protocol-list {
 	padding: 0px;
 }
 
-/******************************************************************************************************************************/
-
-
-#schedule
-{
-	background-color: #1f497d;
+.sign-in {
+	cursor: pointer;
 }
 
-#schedule td, #schedule > div > div
-{
-	color: #ffffff;
-	width: 90px;
-	height: 26px;
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/*##########################################################################*/
+/*								  	IDs     						        */
+/*##########################################################################*/
+
+#shareItemModal {
+	height: 50vh;
+	width: 50vw;
+}
+
+#stepsEdit {
+	display: grid;
+  	grid-template-columns: auto auto auto;
+  	align-items: center;
+  	grid-row-gap: 10px;
+  	grid-column-gap: 5px;
+}
+
+#stepsAdd {
+	display: grid;
+  	grid-template-columns: auto auto auto;
+  	align-items: center;
+  	grid-row-gap: 10px;
+  	grid-column-gap: 5px;
+}
+
+#signInModal form{
 	text-align: center;
-	font-weight: bold;
 }
 
-#schedule th, #schedule > div:first-child > div
-{
-	font-size: 14px;
-	color: #ffffff;
-	background-color: #17375e;
+#signInModal input{
+	margin: 5px;
 }
-
-#schedule tr:nth-child(4n){background: #e9ecf2}
-#schedule tr:nth-child(4n+1){background: #e9ecf2}
-#schedule tr:nth-child(4n+2){background: #d0d8e8}
-#schedule tr:nth-child(4n+3){background: #d0d8e8}
-#schedule tr td:first-child {background: #558ed5}
-
-#schedule > div:nth-child(4n){background: #e9ecf2}
-#schedule > div:nth-child(4n+1){background: #e9ecf2}
-#schedule > div:nth-child(4n+2){background: #d0d8e8}
-#schedule > div:nth-child(4n+3){background: #d0d8e8}
-#schedule > div > div:first-child {background: #558ed5}
-
-#coursesGoHere {position:relative}
-.timeslot {
-    margin-left: 1px;
-    margin-top: 2px;
-    position: absolute;
-}
-
-#schedule{
-  display:table;         
-  width:100%;   
-  border-spacing:1px;
-}
-#schedule > div{
-  display:table-row;
-  width:auto;
-  clear:both;
-}
-#schedule > div > div{     
-  display: table-cell;
-}
-
-
+>>>>>>> 91978a2da4e7a36dcfb5d9740a3fb1674afad786
 
