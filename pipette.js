@@ -233,6 +233,13 @@ function signIn() {
 	signIn.showModal();
 }
 
+function showAccount() {
+	// Currently a canned response
+	var account = document.getElementById("account");
+	account.innerHTML = "Welcome, Kate";
+	closeModalSignIn();
+}
+
 function closeModalSignIn() {
 	var signIn = document.getElementById('signInModal');
 	signIn.close();
