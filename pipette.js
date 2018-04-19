@@ -3,7 +3,9 @@
 var dom = {};
 
 // Holds steps associated with each protocol
-var protocols = {"qPCR":[["Take cells", 5, 15], ["Freeze cells", 30, 60]]};
+var protocols = {"qPCR":[["Take cells", 5, 15], ["Freeze cells", 30, 60]], 
+				"Cloning":[["Grow cells", 10, 10], ["Add culture to cells", 30, 60], ["Party with cells", 50, 0]]
+			};
 //////////////////////////////////////////////////////////////////////////////////////
 // 			                 														//
 // 			                  		Event Listeners									//
@@ -50,6 +52,7 @@ Util.events(document, {
 	    	// Actual mousedown event 
 	    	document.addEventListener("mousemove", dragFunc);
 	    	protocol.onmouseup = dropFunc;
+	    	protocol.style.zIndex = 0;
 		}
 		
 	},
@@ -103,30 +106,34 @@ function closeModalEditProtocol() {
 	var removeCells = []
 	var title = document.getElementById("title").value
 	var protocol = protocols[title];
-	for (var j = 0; j < stepsArea.children.length; j++) {
-		if (j > 2) {
-			var input = stepsArea.children[j].children[0]
-			if (!input.value) {
-				removeCells.push(stepsArea.children[j])
-				if (Math.floor(j/3)-1 < protocol.length) {
+	var stepNumber = -1;
+	for (var j = 3; j < stepsArea.children.length; j++) {
+		var input = stepsArea.children[j].children[0];
+		removeCells.push(stepsArea.children[j])
+		console.log(input.value, Math.floor(j/3)-1, j%3)
+		// if the step name is empty -> delete entry
+		// if either field after is empty, set to 0
+		if (j%3 === 0) {
+			if (!input.value) { //steps field is blank
+				j = j + 2; // skip all of the fields in that row
+				if (Math.floor(j/3)-1 < protocol.length)  {
 					protocol.pop(Math.floor(j/3)-1)
 				}
 			}
-		}
-	}
-	for (var j = 0; j < removeCells.length; j++) {
-		stepsArea.removeChild(removeCells[j]);
-	}
-	for (var j = 0; j < stepsArea.children.length; j++) {
-		if (j > 2) {
-			var input = stepsArea.children[j].children[0]
-			if (input.value) {
+			else {
 				if (Math.floor(j/3)-1 >= protocol.length) {
-					protocol.push([0,0,0])
+					console.log("pushed", protocol.length)
+					protocol.push([input.value,0,0])
 				}
-				protocol[Math.floor(j/3)-1][j%3] = input.value
+				stepNumber += 1;
 			}
 		}
+		else {
+			protocol[stepNumber][j%3] = input.value ? input.value : "0"
+		}
+	}
+	while (stepsArea.children.length > 3) {
+		stepsArea.removeChild(stepsArea.children[stepsArea.children.length-1]);
 	}
 }
 
@@ -138,23 +145,34 @@ function closeModalNewProtocol() {
 	var title = document.getElementById("titleNew").value;
 	var protocol = [];
 	if (title) {
-		for (var j = 0; j < stepsArea.children.length; j++) {
-			if (j > 2) {
-				var input = stepsArea.children[j].children[0]
-				if (!input.value) {
-					removeCells.push(stepsArea.children[j])
+		var stepNumber = -1;
+		for (var j = 3; j < stepsArea.children.length; j++) {
+			var input = stepsArea.children[j].children[0];
+			removeCells.push(stepsArea.children[j])
+			console.log(input.value, Math.floor(j/3)-1, j%3)
+			// if the step name is empty -> delete entry
+			// if either field after is empty, set to 0
+			if (j%3 === 0) {
+				if (!input.value) { //steps field is blank
+					j = j + 2; // skip all of the fields in that row
+					if (Math.floor(j/3)-1 < protocol.length)  {
+						protocol.pop(Math.floor(j/3)-1)
+					}
 				}
 				else {
 					if (Math.floor(j/3)-1 >= protocol.length) {
-						protocol.push([0,0,0])
+						console.log("pushed", protocol.length)
+						protocol.push([input.value,0,0])
 					}
-					protocol[Math.floor(j/3)-1][j%3] = input.value
+					stepNumber += 1;
 				}
 			}
+			else {
+				protocol[stepNumber][j%3] = input.value ? input.value : "0"
+			}
 		}
-		for (var j = 0; j < removeCells.length; j++) {
-			stepsArea.removeChild(removeCells[j]);
-		}
+		var titleBox = document.getElementById("titleNew");
+		titleBox.value = ""
 		protocols[title] = protocol;
 		var listItem = document.createElement("li");
 		listItem.setAttribute("class", "protocol");
@@ -166,6 +184,9 @@ function closeModalNewProtocol() {
 		listItem.appendChild(editIcon);
 		var protocolList = document.getElementsByClassName("protocol-list")[0];
 		protocolList.appendChild(listItem);
+	}
+	while (stepsArea.children.length > 3) {
+		stepsArea.removeChild(stepsArea.children[stepsArea.children.length-1]);
 	}
 }
 
