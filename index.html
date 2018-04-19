@@ -24,6 +24,7 @@
 
 
 </head>
+<!--
 <form>
   Select a Day:
   <input type="date" id = "date" name="usr_day">
@@ -42,7 +43,7 @@
 <br>
 <input type = "button" value = "Done" onclick= "addProtocol()" />
 <body>
-
+!-->
 
 
 <main>
@@ -67,10 +68,7 @@
 		</div>
 
 		<!--Protocols-->
-		<div class="grid protocols">
-		<!-- <input type = "button" value = "Add To Calendar" onclick= "openpopup()" /> -->
-		
-
+		<div class="grid protocols">		
 			<h1>Protocols</h1>
 			<div class="actions-row">
 				<button id="add-protocol" onClick="newProtocol()">Add</button>
@@ -118,20 +116,10 @@
 				<button id="addStepButton" onclick=addStep("stepsAdd")>Add Step</button>
 				<button id="newProtDone" onclick=closeModalNewProtocol()>Done</button>
 			</dialog>
-
-			<ul class="protocol-list">
-			  	<li class="protocol">
-			  		qPCR
-			  		<i class="edit material-icons" onClick=editPopUp("qPCR")>mode_edit</i>
-			  	</li>
-			  	<li class="protocol">
-			  		Cloning
-			  		<i class="edit material-icons" onClick=editPopUp("Cloning")>mode_edit</i>
-			  	</li>
-			</ul>
+			<div id="protocol-container"></div>
 		</div>
 
-		<!--Game Board-->
+		<!-- Actual Google Calendar !-->
 		<div class="grid calendar">
 			<iframe src="https://calendar.google.com/calendar/embed?showTitle=0&amp;showCalendars=0&amp;mode=WEEK&amp;height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=13rt5s11dte8459l5n7jdp35ck%40group.calendar.google.com&amp;color=%232F6309&amp;ctz=America%2FNew_York" style="border-width:0" width="800" height="480" frameborder="0" scrolling="no"></iframe>
 
