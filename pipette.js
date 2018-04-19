@@ -14,16 +14,21 @@ Util.events(document, {
 	// runs at the end of start-up when the DOM is ready
 	"DOMContentLoaded": function() {
 
+	},
+
+
+
+	// Keyboard events arrive here
+	"keydown": function(evt) {
+	},
+
+	// Click events arrive here
+	"click": function(evt) {
 
 	},
 
-	// Keyboard events arrive here
-	"keydown": function(evt) {},
-
-	// Click events arrive here
-	"click": function(evt) {},
-
 	"mousedown": function(event) {
+
 		if (event.target.className == "protocol") {
 			var protocol = event.target;
 			var offsetX = event.clientX - protocol.offsetLeft;
@@ -52,4 +57,5 @@ Util.events(document, {
 		
 	},
 });
+
 
