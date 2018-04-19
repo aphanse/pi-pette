@@ -107,3 +107,62 @@ li {
 	padding: 0px;
 }
 
+/******************************************************************************************************************************/
+
+
+#schedule
+{
+	background-color: #1f497d;
+}
+
+#schedule td, #schedule > div > div
+{
+	color: #ffffff;
+	width: 90px;
+	height: 26px;
+	text-align: center;
+	font-weight: bold;
+}
+
+#schedule th, #schedule > div:first-child > div
+{
+	font-size: 14px;
+	color: #ffffff;
+	background-color: #17375e;
+}
+
+#schedule tr:nth-child(4n){background: #e9ecf2}
+#schedule tr:nth-child(4n+1){background: #e9ecf2}
+#schedule tr:nth-child(4n+2){background: #d0d8e8}
+#schedule tr:nth-child(4n+3){background: #d0d8e8}
+#schedule tr td:first-child {background: #558ed5}
+
+#schedule > div:nth-child(4n){background: #e9ecf2}
+#schedule > div:nth-child(4n+1){background: #e9ecf2}
+#schedule > div:nth-child(4n+2){background: #d0d8e8}
+#schedule > div:nth-child(4n+3){background: #d0d8e8}
+#schedule > div > div:first-child {background: #558ed5}
+
+#coursesGoHere {position:relative}
+.timeslot {
+    margin-left: 1px;
+    margin-top: 2px;
+    position: absolute;
+}
+
+#schedule{
+  display:table;         
+  width:100%;   
+  border-spacing:1px;
+}
+#schedule > div{
+  display:table-row;
+  width:auto;
+  clear:both;
+}
+#schedule > div > div{     
+  display: table-cell;
+}
+
+
+
