@@ -75,6 +75,7 @@ function editPopUp(title) {
 	titleBox.value = title;
 	var stepsArea = document.getElementById("stepsEdit");
 	var steps = protocols[title];
+	removeFormFields(stepsArea);
 	if (stepsArea.children.length < (steps.length + 1)*3) {
 		for (var i = 0; i < steps.length; i++) {
 			for (var j = 0; j < 3; j++) { 
