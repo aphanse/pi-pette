@@ -3,10 +3,10 @@
 var dom = {};
 
 // Holds steps associated with each protocol
-var protocols = {"qPCR":[["Take cells", 5, 15], ["Freeze cells", 30, 60]], 
-				"Cloning":[["Grow cells", 10, 10], ["Add culture to cells", 30, 60], ["Party with cells", 50, 0]]
-			};
-
+var protocols = {"qPCR":[["Take cells", 5, 15], ["Freeze cells", 30, 60]],
+				 "Cloning":[["Grow cells", 10, 10], ["Add culture to cells", 30, 60], ["Party with cells", 50, 0]],
+				 "DNA Sequencing":[["Take cells", 5, 15], ["Freeze cells", 30, 60]],
+				 "Gel Electrophoresis":[["Take cells", 5, 15], ["Freeze cells", 30, 60]],};
 const DEFAULT_MSG = "Here is a protocol I would like to share.";
 //////////////////////////////////////////////////////////////////////////////////////
 // 			                 														//
@@ -18,8 +18,11 @@ const DEFAULT_MSG = "Here is a protocol I would like to share.";
 Util.events(document, {
 	// Final initalization entry point: the Javascript code inside this block
 	// runs at the end of start-up when the DOM is ready
+
+	
 	"DOMContentLoaded": function() {
 		document.getElementById('messageBox').value = DEFAULT_MSG;
+		drawProtocols();
 	},
 
 
@@ -30,7 +33,7 @@ Util.events(document, {
 
 	// Click events arrive here
 	"click": function(evt) {
-
+		console.log("clicked")
 	},
 
 	"mousedown": function(event) {
@@ -67,8 +70,20 @@ Util.events(document, {
 	},
 });
 
+function drawProtocols() {
+	var protocols = ["qPCR", "Cloning", "DNA Sequencing", "Gel Electrophoresis"];
+	var html = "<ul class=\"protocol-list\">";
+	for (var i = 0; i < protocols.length; i++) {
+		html += "<li class=\"protocol\">" +
+					protocols[i] +
+					"<i class=\"edit material-icons\" onClick=editPopUp(\"" + protocols[i] + "\")>mode_edit</i>" +
+				"</li>";
+	}
+	document.getElementById("protocol-container").innerHTML = html;
+}
 
 function editPopUp(title) {
+	console.log("edit");
 	var modal = document.getElementById('editProtocolModal');
 	var form = document.getElementById("protocolText");
 	var titleBox = document.getElementById("title");

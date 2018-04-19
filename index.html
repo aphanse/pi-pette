@@ -128,17 +128,7 @@
 				<button id="addStepButton" onclick=addStep("stepsAdd")>Add Step</button>
 				<button id="newProtDone" onclick=closeModalNewProtocol()>Done</button>
 			</dialog>
-
-			<ul class="protocol-list">
-			  	<li class="protocol">
-			  		qPCR
-			  		<i class="edit material-icons" onClick=editPopUp("qPCR")>mode_edit</i>
-			  	</li>
-			  	<li class="protocol">
-			  		Cloning
-			  		<i class="edit material-icons" onClick=editPopUp("Cloning")>mode_edit</i>
-			  	</li>
-			</ul>
+			<div id="protocol-container"></div>
 		</div>
 
 		<!-- Actual Google Calendar !-->
