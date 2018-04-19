@@ -6,6 +6,8 @@ var dom = {};
 var protocols = {"qPCR":[["Take cells", 5, 15], ["Freeze cells", 30, 60]], 
 				"Cloning":[["Grow cells", 10, 10], ["Add culture to cells", 30, 60], ["Party with cells", 50, 0]]
 			};
+
+const DEFAULT_MSG = "Here is a protocol I would like to share.";
 //////////////////////////////////////////////////////////////////////////////////////
 // 			                 														//
 // 			                  		Event Listeners									//
@@ -17,6 +19,7 @@ Util.events(document, {
 	// Final initalization entry point: the Javascript code inside this block
 	// runs at the end of start-up when the DOM is ready
 	"DOMContentLoaded": function() {
+		document.getElementById('messageBox').value = DEFAULT_MSG;
 	},
 
 	// Keyboard events arrive here
@@ -207,5 +210,5 @@ function closeModalSignIn() {
 
 function sendMessageToContacts() {
 	alert("Message Sent!");
-	document.getElementById('messageBox').value = "";
+	document.getElementById('messageBox').value = DEFAULT_MSG;
 };

@@ -39,15 +39,15 @@ button {
 	background-color: var(--medium-blue);
 	border: none;
 	border-radius: 5px;
-    color: white;
-    cursor: pointer;
-    display: inline-block;
-    font-size: 14pt;
-    font-weight: bold;
-    margin: 5px;
-    padding: 10px 30px;
-    text-align: center;
-    text-decoration: none;
+	color: white;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 14pt;
+	font-weight: bold;
+	margin: 5px;
+	padding: 10px 30px;
+	text-align: center;
+	text-decoration: none;
 }
 
 button:hover {
@@ -106,7 +106,7 @@ li {
 	grid-template-areas: 'heading heading'
 						 'protocols calendar';
 	grid-template-rows: min-content 500px;
-	width: 1000px; /*help*/
+	width: 100vw; /*help*/
 }
 
 .heading-items {
