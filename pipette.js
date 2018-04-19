@@ -6,6 +6,7 @@ var dom = {};
 var protocols = {"qPCR":[["Take cells", 5, 15], ["Freeze cells", 30, 60]], 
 				"Cloning":[["Grow cells", 10, 10], ["Add culture to cells", 30, 60], ["Party with cells", 50, 0]]
 			};
+
 //////////////////////////////////////////////////////////////////////////////////////
 // 			                 														//
 // 			                  		Event Listeners									//
