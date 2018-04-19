@@ -81,8 +81,16 @@
 				<form id="shareItemDialog" method="dialog">
 					<div class="sharing-columns">
 						<div class="shareColumns">
+							Protocol Select: 
+							<select id="protocolSelector">
+								<option value="protocol1">qPCR</option>
+								<option value="protocol2">Cloning</option>
+								<option value="protocol3">DNA Sequencing</option>
+								<option value="protocol4">Gel Electrophoresis</option>
+							</select>
+							<br><br>
 							Contacts:<br>
-							<select multiple size="4">
+							<select id="contactSelector" multiple>
 								<option value="alice">alice@mit.edu</option>
 								<option value="ben">benbitdiddle@mit.edu</option>
 								<option value="bob">bob@mit.edu</option>
