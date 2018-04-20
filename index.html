@@ -53,7 +53,7 @@
 		<div class="grid heading">
 			<ul class="heading-items">
 			  	<li class="title">&pi;-pette</li>
-			  	<li class="sign-in" onclick="signIn()">Sign In</li>
+			  	<li class="sign-in" id="account" onclick="signIn()">Sign In</li>
 			</ul>
 			<!-- Sign in box -->
 			<dialog id="signInModal">
@@ -61,7 +61,7 @@
 				<form method="dialog">
 					<input placeholder="Username"></input><br>
 					<input placeholder="Password"></input><br>
-					<button id="confirm-signin" onClick=closeModalSignIn()>Sign In</button>
+					<button id="confirm-signin" onClick="showAccount()">Sign In</button>
 					<br><a href="">Create New Account</a>
 				</form>
 			</dialog>
@@ -79,9 +79,29 @@
 			<!-- Sharing popup -->
 			<dialog id="shareItemModal">
 				<form id="shareItemDialog" method="dialog">
-					Contacts:<br>
-					Type your message below:<br>
-					<textarea id="messageBox" value="Here is a protocol I would like to share."></textarea><br>
+					<div class="sharing-columns">
+						<div class="shareColumns">
+							Protocol Select: 
+							<select id="protocolSelector">
+								<option value="protocol1">qPCR</option>
+								<option value="protocol2">Cloning</option>
+								<option value="protocol3">DNA Sequencing</option>
+								<option value="protocol4">Gel Electrophoresis</option>
+							</select>
+							<br><br>
+							Contacts:<br>
+							<select id="contactSelector" multiple>
+								<option value="alice">alice@mit.edu</option>
+								<option value="ben">benbitdiddle@mit.edu</option>
+								<option value="bob">bob@mit.edu</option>
+								<option value="eve">eve.inc@mit.edu</option>
+							</select>
+						</div>
+						<div class="shareColumns">
+							Message:<br>
+							<textarea id="messageBox" value="Here is a protocol I would like to share."></textarea>
+						</div>
+					</div>
 					<button id="cancel" type="reset">Cancel</button>
 					<button id="shareItemButton" onclick="sendMessageToContacts()">Share</button>
 				</form>

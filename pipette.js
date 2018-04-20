@@ -247,11 +247,19 @@ function shareItem() {
 function sendMessageToContacts() {
 	alert("Message Sent!");
 	document.getElementById('messageBox').value = DEFAULT_MSG;
+	Util.one("#shareItemModal").close();
 };
 
 function signIn() {
 	var signIn = document.getElementById('signInModal');
 	signIn.showModal();
+}
+
+function showAccount() {
+	// Currently a canned response
+	var account = document.getElementById("account");
+	account.innerHTML = "Welcome, Kate";
+	closeModalSignIn();
 }
 
 function closeModalSignIn() {
