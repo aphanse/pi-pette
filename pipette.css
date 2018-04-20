@@ -213,7 +213,14 @@ li {
 #messageBox {
 	height: 100%;
 	width: 90%;
-	max-height: 75%;
+	max-height: 40vh;
+	max-width: 90%;
+}
+
+#contactSelector {
+	height: 100%;
+	width: 90%;
+	max-height: 40vh;
 	max-width: 90%;
 }
 
@@ -241,3 +248,9 @@ li {
 	margin: 5px;
 }
 
+#myCalendar {
+	border-width:0
+	width: 800px;
+	height: 480px;
+
+}

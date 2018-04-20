@@ -81,8 +81,16 @@
 				<form id="shareItemDialog" method="dialog">
 					<div class="sharing-columns">
 						<div class="shareColumns">
+							Protocol Select: 
+							<select id="protocolSelector">
+								<option value="protocol1">qPCR</option>
+								<option value="protocol2">Cloning</option>
+								<option value="protocol3">DNA Sequencing</option>
+								<option value="protocol4">Gel Electrophoresis</option>
+							</select>
+							<br><br>
 							Contacts:<br>
-							<select multiple size="4">
+							<select id="contactSelector" multiple>
 								<option value="alice">alice@mit.edu</option>
 								<option value="ben">benbitdiddle@mit.edu</option>
 								<option value="bob">bob@mit.edu</option>
@@ -133,7 +141,7 @@
 
 		<!-- Actual Google Calendar !-->
 		<div class="grid calendar">
-			<iframe src="https://calendar.google.com/calendar/embed?showTitle=0&amp;showCalendars=0&amp;mode=WEEK&amp;height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=13rt5s11dte8459l5n7jdp35ck%40group.calendar.google.com&amp;color=%232F6309&amp;ctz=America%2FNew_York" style="border-width:0" width="800" height="480" frameborder="0" scrolling="no"></iframe>
+			<iframe id = 'myCalendar' src="https://calendar.google.com/calendar/embed?showTitle=0&amp;showCalendars=0&amp;showTz=0&amp;mode=WEEK&amp;height=480&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=nhb3ul253iih305evek6dukth8%40group.calendar.google.com&amp;color=%232F6309&amp;ctz=America%2FNew_York" style="border-width:0" width="800" height="480" frameborder="0" scrolling="no"></iframe>
 
 		</div>
 
@@ -145,7 +153,6 @@
 
 <script src="util.js"></script>
 <script src="pipette.js"></script>
-<script src="calendar.js"></script>
 
 
 
