@@ -8,6 +8,16 @@ var protocols = {"qPCR":[["Take cells", 5, 15], ["Freeze cells", 30, 60]],
 				 "DNA Sequencing":[["Take cells", 5, 15], ["Freeze cells", 30, 60]],
 				 "Gel Electrophoresis":[["Take cells", 5, 15], ["Freeze cells", 30, 60]],};
 const DEFAULT_MSG = "Here is a protocol I would like to share.";
+
+
+var qPCR = "https://calendar.google.com/calendar/embed?mode=WEEK&amp&src=nhb3ul253iih305evek6dukth8%40group.calendar.google.com&color=%232F6309&src=13rt5s11dte8459l5n7jdp35ck%40group.calendar.google.com&color=%230F4B38&ctz=America%2FNew_York";
+var cloning = "https://calendar.google.com/calendar/embed?mode=WEEK&amp&src=nhb3ul253iih305evek6dukth8%40group.calendar.google.com&color=%232F6309&src=ep5ndnb68jt4vihfdv0p4prk48%40group.calendar.google.com&color=%23182C57&src=13rt5s11dte8459l5n7jdp35ck%40group.calendar.google.com&color=%230F4B38&ctz=America%2FNew_York";
+var DNA_Seq = "https://calendar.google.com/calendar/embed?mode=WEEK&amp&src=nhb3ul253iih305evek6dukth8%40group.calendar.google.com&color=%232F6309&src=ep5ndnb68jt4vihfdv0p4prk48%40group.calendar.google.com&color=%23182C57&src=13rt5s11dte8459l5n7jdp35ck%40group.calendar.google.com&color=%230F4B38&src=n5oddugkag5qp8jdm7vcdtuo28%40group.calendar.google.com&color=%235229A3&ctz=America%2FNew_York";
+var Gel_Electro = "https://calendar.google.com/calendar/embed?mode=WEEK&amp&src=nhb3ul253iih305evek6dukth8%40group.calendar.google.com&color=%232F6309&src=ep5ndnb68jt4vihfdv0p4prk48%40group.calendar.google.com&color=%23182C57&src=13rt5s11dte8459l5n7jdp35ck%40group.calendar.google.com&color=%230F4B38&src=mi0e8rqpipopcqbcfr3bfsv6gc%40group.calendar.google.com&color=%238C500B&src=n5oddugkag5qp8jdm7vcdtuo28%40group.calendar.google.com&color=%235229A3&ctz=America%2FNew_York";
+var allProtocols = [['qPCRmode_edit', qPCR], ['Cloningmode_edit', cloning], ['DNA Sequencingmode_edit', DNA_Seq], ['Gel Electrophoresismode_edit', Gel_Electro]]
+var prot = null;
+var x = null;
+var y = null;
 //////////////////////////////////////////////////////////////////////////////////////
 // 			                 														//
 // 			                  		Event Listeners									//
@@ -18,7 +28,7 @@ const DEFAULT_MSG = "Here is a protocol I would like to share.";
 Util.events(document, {
 	// Final initalization entry point: the Javascript code inside this block
 	// runs at the end of start-up when the DOM is ready
-
+	
 	
 	"DOMContentLoaded": function() {
 		document.getElementById('messageBox').value = DEFAULT_MSG;
@@ -33,9 +43,8 @@ Util.events(document, {
 
 	// Click events arrive here
 	"click": function(evt) {
-		console.log("clicked")
 	},
-
+	
 	"mousedown": function(event) {
 
 		if (event.target.className == "protocol") {
@@ -44,21 +53,34 @@ Util.events(document, {
 		    var offsetY = event.clientY - protocol.offsetTop;
 
 
+
 	    	// Mouse up event listener
 	    	var dropFunc = function(event) {
 	    		document.removeEventListener("mousemove", dragFunc);
 	    		protocol.style.position = "relative";
 	    		protocol.style.left = "";
 	    		protocol.style.top = "";
-	    		protocol.style.zIndex = 1; 
-	    	}
+	    		protocol.style.zIndex = 1;
+	    		prot = protocol.textContent;
+	    		console.log(x,y)
+	    		if (x>510 & y>157 & x<984 & y<519){
+	    			for (i=0; i<allProtocols.length; i++){
+						if(allProtocols[i][0]==prot){
+							document.getElementById('myCalendar').src =allProtocols[i][1]
+						}
+					}
+	    		}
+    		};
 
 	    	var dragFunc = function(event){
 	    		protocol.style.position = "absolute";
 	    		// Account for offset between mouse and img corner
 	    		protocol.style.left = (event.clientX-offsetX) + "px";
 	    		protocol.style.top = (event.clientY-offsetY) + "px";
-	    		protocol.style.zIndex = 4;
+	    		protocol.style.zIndex = 4;	    		
+	    		x = event.clientX
+	    		y = event.clientY
+
 	    	};
 
 	    	// Actual mousedown event 

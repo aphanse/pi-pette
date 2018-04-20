@@ -231,3 +231,9 @@ li {
 	margin: 5px;
 }
 
+#myCalendar {
+	border-width:0
+	width: 800px;
+	height: 480px;
+
+}
