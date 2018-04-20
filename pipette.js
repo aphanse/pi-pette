@@ -62,8 +62,7 @@ Util.events(document, {
 	    		protocol.style.top = "";
 	    		protocol.style.zIndex = 1;
 	    		prot = protocol.textContent;
-	    		console.log(x,y)
-	    		if (x>510 & y>157 & x<984 & y<519){
+	    		if (x>510 & y>157 & x<1223 & y<519){
 	    			for (i=0; i<allProtocols.length; i++){
 						if(allProtocols[i][0]==prot){
 							document.getElementById('myCalendar').src =allProtocols[i][1]
