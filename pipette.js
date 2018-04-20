@@ -5,8 +5,8 @@ var dom = {};
 // Holds steps associated with each protocol
 var protocols = {"qPCR":[["Take cells", 5, 15], ["Freeze cells", 30, 60]],
 				 "Cloning":[["Grow cells", 10, 10], ["Add culture to cells", 30, 60], ["Party with cells", 50, 0]],
-				 "DNA Sequencing":[["Take cells", 5, 15], ["Freeze cells", 30, 60]],
-				 "Gel Electrophoresis":[["Take cells", 5, 15], ["Freeze cells", 30, 60]],};
+				 "DNA Sequencing":[["Step 1", 5, 15]],
+				 "Gel Electrophoresis":[["Step 1", 5, 15]],};
 const DEFAULT_MSG = "Here is a protocol I would like to share.";
 //////////////////////////////////////////////////////////////////////////////////////
 // 			                 														//
@@ -33,7 +33,6 @@ Util.events(document, {
 
 	// Click events arrive here
 	"click": function(evt) {
-		console.log("clicked")
 	},
 
 	"mousedown": function(event) {
@@ -50,7 +49,7 @@ Util.events(document, {
 	    		protocol.style.position = "relative";
 	    		protocol.style.left = "";
 	    		protocol.style.top = "";
-	    		protocol.style.zIndex = 1; 
+	    		protocol.style.zIndex = 0; 
 	    	}
 
 	    	var dragFunc = function(event){
@@ -58,7 +57,7 @@ Util.events(document, {
 	    		// Account for offset between mouse and img corner
 	    		protocol.style.left = (event.clientX-offsetX) + "px";
 	    		protocol.style.top = (event.clientY-offsetY) + "px";
-	    		protocol.style.zIndex = 4;
+	    		protocol.style.zIndex = 1;
 	    	};
 
 	    	// Actual mousedown event 
@@ -71,19 +70,18 @@ Util.events(document, {
 });
 
 function drawProtocols() {
-	var protocols = ["qPCR", "Cloning", "DNA Sequencing", "Gel Electrophoresis"];
+	var names = Object.keys(protocols);
 	var html = "<ul class=\"protocol-list\">";
-	for (var i = 0; i < protocols.length; i++) {
+	for (var i = 0; i < names.length; i++) {
 		html += "<li class=\"protocol\">" +
-					protocols[i] +
-					"<i class=\"edit material-icons\" onClick=editPopUp(\"" + protocols[i] + "\")>mode_edit</i>" +
+					names[i] +
+					"<i class=\"edit material-icons\" onClick=editPopUp(\"" + names[i] + "\")>mode_edit</i>" +
 				"</li>";
 	}
 	document.getElementById("protocol-container").innerHTML = html;
 }
 
 function editPopUp(title) {
-	console.log("edit");
 	var modal = document.getElementById('editProtocolModal');
 	var form = document.getElementById("protocolText");
 	var titleBox = document.getElementById("title");
@@ -234,10 +232,16 @@ function signIn() {
 }
 
 function showAccount() {
-	// Currently a canned response
-	var account = document.getElementById("account");
-	account.innerHTML = "Welcome, Kate";
-	closeModalSignIn();
+	var username = document.getElementById("username").value;
+	if (username.length > 0) {
+		// Currently a canned response
+		var account = document.getElementById("account");
+		account.innerHTML = "Welcome, " + username;
+		closeModalSignIn();
+	} else {
+		console.log("username invalid");
+		// show error
+	}
 }
 
 function closeModalSignIn() {
