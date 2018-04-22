@@ -60,8 +60,11 @@ Util.events(document, {
 	    		prot = protocol.textContent;
 	    		if (x>510 & y>157 & x<1223 & y<519){
 	    			for (i=0; i<allProtocols.length; i++){
-						if(allProtocols[i][0]==prot){
-							document.getElementById('myCalendar').src =allProtocols[i][1]
+						if (allProtocols[i][0]==prot){
+							// don't update if clicking edit
+							if (event.path[0].className != "edit material-icons") {
+								document.getElementById('myCalendar').src =allProtocols[i][1]
+							}	
 						}
 					}
 	    		}
