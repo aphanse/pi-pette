@@ -35,8 +35,6 @@ Util.events(document, {
 		drawProtocols();
 	},
 
-
-
 	// Keyboard events arrive here
 	"keydown": function(evt) {
 	},
@@ -51,8 +49,6 @@ Util.events(document, {
 			var protocol = event.target;
 			var offsetX = event.clientX - protocol.offsetLeft;
 		    var offsetY = event.clientY - protocol.offsetTop;
-
-
 
 	    	// Mouse up event listener
 	    	var dropFunc = function(event) {
@@ -86,7 +82,6 @@ Util.events(document, {
 	    	protocol.onmouseup = dropFunc;
 	    	protocol.style.zIndex = 0;
 		}
-		
 	},
 });
 
@@ -249,6 +244,7 @@ function sendMessageToContacts() {
 
 function signIn() {
 	var signIn = document.getElementById('signInModal');
+	document.getElementById("error-msg").innerHTML = "&nbsp;";
 	signIn.showModal();
 }
 
@@ -261,7 +257,8 @@ function showAccount() {
 		closeModalSignIn();
 	} else {
 		console.log("username invalid");
-		// show error
+		document.getElementById("error-msg").innerHTML = "Please enter valid username.";
+		document.getElementById("error-msg").style.color = "red";
 	}
 }
 

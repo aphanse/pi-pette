@@ -61,9 +61,10 @@
 				<form method="dialog">
 					<input placeholder="Username" id="username"></input><br>
 					<input placeholder="Password" type="password"></input><br>
-					<button id="confirm-signin" onClick="showAccount()">Sign In</button>
-					<br><a href="">Create New Account</a>
 				</form>
+				<button id="confirm-signin" onClick="showAccount()">Sign In</button><br>
+				<div id="error-msg"></div>
+				<a href="">Create New Account</a>
 			</dialog>
 		</div>
 
@@ -136,6 +137,8 @@
 				<button id="addStepButton" onclick=addStep("stepsAdd")>Add Step</button>
 				<button id="newProtDone" onclick=closeModalNewProtocol()>Done</button>
 			</dialog>
+
+			<!-- Generate list of protocols -->
 			<div id="protocol-container"></div>
 		</div>
 
