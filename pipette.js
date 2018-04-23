@@ -5,9 +5,19 @@ var dom = {};
 // Holds steps associated with each protocol
 var protocols = {"qPCR":[["Take cells", 5, 15], ["Freeze cells", 30, 60]],
 				 "Cloning":[["Grow cells", 10, 10], ["Add culture to cells", 30, 60], ["Party with cells", 50, 0]],
-				 "DNA Sequencing":[["Take cells", 5, 15], ["Freeze cells", 30, 60]],
-				 "Gel Electrophoresis":[["Take cells", 5, 15], ["Freeze cells", 30, 60]]};
+				 "DNA Sequencing":[["Step 1", 5, 15]],
+				 "Gel Electrophoresis":[["Step 1", 5, 15]],};
 const DEFAULT_MSG = "Here is a protocol I would like to share.";
+
+
+var qPCR = "https://calendar.google.com/calendar/embed?mode=WEEK&amp&src=nhb3ul253iih305evek6dukth8%40group.calendar.google.com&color=%232F6309&src=13rt5s11dte8459l5n7jdp35ck%40group.calendar.google.com&color=%230F4B38&ctz=America%2FNew_York";
+var cloning = "https://calendar.google.com/calendar/embed?mode=WEEK&amp&src=nhb3ul253iih305evek6dukth8%40group.calendar.google.com&color=%232F6309&src=ep5ndnb68jt4vihfdv0p4prk48%40group.calendar.google.com&color=%23182C57&src=13rt5s11dte8459l5n7jdp35ck%40group.calendar.google.com&color=%230F4B38&ctz=America%2FNew_York";
+var DNA_Seq = "https://calendar.google.com/calendar/embed?mode=WEEK&amp&src=nhb3ul253iih305evek6dukth8%40group.calendar.google.com&color=%232F6309&src=ep5ndnb68jt4vihfdv0p4prk48%40group.calendar.google.com&color=%23182C57&src=13rt5s11dte8459l5n7jdp35ck%40group.calendar.google.com&color=%230F4B38&src=n5oddugkag5qp8jdm7vcdtuo28%40group.calendar.google.com&color=%235229A3&ctz=America%2FNew_York";
+var Gel_Electro = "https://calendar.google.com/calendar/embed?mode=WEEK&amp&src=nhb3ul253iih305evek6dukth8%40group.calendar.google.com&color=%232F6309&src=ep5ndnb68jt4vihfdv0p4prk48%40group.calendar.google.com&color=%23182C57&src=13rt5s11dte8459l5n7jdp35ck%40group.calendar.google.com&color=%230F4B38&src=mi0e8rqpipopcqbcfr3bfsv6gc%40group.calendar.google.com&color=%238C500B&src=n5oddugkag5qp8jdm7vcdtuo28%40group.calendar.google.com&color=%235229A3&ctz=America%2FNew_York";
+var allProtocols = [['qPCRmode_edit', qPCR], ['Cloningmode_edit', cloning], ['DNA Sequencingmode_edit', DNA_Seq], ['Gel Electrophoresismode_edit', Gel_Electro]]
+var prot = null;
+var x = null;
+var y = null;
 //////////////////////////////////////////////////////////////////////////////////////
 // 			                 														//
 // 			                  		Event Listeners									//
@@ -18,14 +28,12 @@ const DEFAULT_MSG = "Here is a protocol I would like to share.";
 Util.events(document, {
 	// Final initalization entry point: the Javascript code inside this block
 	// runs at the end of start-up when the DOM is ready
-
+	
 	
 	"DOMContentLoaded": function() {
 		document.getElementById('messageBox').value = DEFAULT_MSG;
 		drawProtocols();
 	},
-
-
 
 	// Keyboard events arrive here
 	"keydown": function(evt) {
@@ -33,9 +41,8 @@ Util.events(document, {
 
 	// Click events arrive here
 	"click": function(evt) {
-		console.log("clicked")
 	},
-
+	
 	"mousedown": function(event) {
 
 		if (event.target.className == "protocol") {
@@ -43,22 +50,34 @@ Util.events(document, {
 			var offsetX = event.clientX - protocol.offsetLeft;
 		    var offsetY = event.clientY - protocol.offsetTop;
 
-
 	    	// Mouse up event listener
 	    	var dropFunc = function(event) {
 	    		document.removeEventListener("mousemove", dragFunc);
 	    		protocol.style.position = "relative";
 	    		protocol.style.left = "";
 	    		protocol.style.top = "";
-	    		protocol.style.zIndex = 1; 
-	    	}
+	    		protocol.style.zIndex = 1;
+	    		prot = protocol.textContent;
+	    		if (x>510 & y>157 & x<1223 & y<519){
+	    			for (i=0; i<allProtocols.length; i++){
+						if (allProtocols[i][0]==prot){
+							// don't update if clicking edit
+							if (event.path[0].className != "edit material-icons") {
+								document.getElementById('myCalendar').src =allProtocols[i][1]
+							}	
+						}
+					}
+	    		}
+    		};
 
 	    	var dragFunc = function(event){
 	    		protocol.style.position = "absolute";
 	    		// Account for offset between mouse and img corner
 	    		protocol.style.left = (event.clientX-offsetX) + "px";
 	    		protocol.style.top = (event.clientY-offsetY) + "px";
-	    		protocol.style.zIndex = 4;
+	    		protocol.style.zIndex = 1;
+	    		x = event.clientX
+	    		y = event.clientY
 	    	};
 
 	    	// Actual mousedown event 
@@ -66,24 +85,22 @@ Util.events(document, {
 	    	protocol.onmouseup = dropFunc;
 	    	protocol.style.zIndex = 0;
 		}
-		
 	},
 });
 
 function drawProtocols() {
-	var protocols = ["qPCR", "Cloning", "DNA Sequencing", "Gel Electrophoresis"];
+	var names = Object.keys(protocols);
 	var html = "<ul class=\"protocol-list\">";
-	for (var i = 0; i < protocols.length; i++) {
+	for (var i = 0; i < names.length; i++) {
 		html += "<li class=\"protocol\">" +
-					protocols[i] +
-					"<i class=\"edit material-icons\" onClick=editPopUp(\"" + protocols[i] + "\")>mode_edit</i>" +
+					names[i] +
+					"<i class=\"edit material-icons\" onClick=editPopUp(\"" + names[i] + "\")>mode_edit</i>" +
 				"</li>";
 	}
 	document.getElementById("protocol-container").innerHTML = html;
 }
 
 function editPopUp(title) {
-	console.log("edit");
 	var modal = document.getElementById('editProtocolModal');
 	var form = document.getElementById("protocolText");
 	var titleBox = document.getElementById("title");
@@ -230,7 +247,22 @@ function sendMessageToContacts() {
 
 function signIn() {
 	var signIn = document.getElementById('signInModal');
+	document.getElementById("error-msg").innerHTML = "&nbsp;";
 	signIn.showModal();
+}
+
+function showAccount() {
+	var username = document.getElementById("username").value;
+	if (username.length > 0) {
+		// Currently a canned response
+		var account = document.getElementById("account");
+		account.innerHTML = "Welcome, " + username;
+		closeModalSignIn();
+	} else {
+		console.log("username invalid");
+		document.getElementById("error-msg").innerHTML = "Please enter valid username.";
+		document.getElementById("error-msg").style.color = "red";
+	}
 }
 
 function closeModalSignIn() {
