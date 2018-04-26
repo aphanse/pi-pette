@@ -114,13 +114,15 @@ function drawCalendar() {
 	var hours = ['12', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];
 	for (var row = 0; row < 25; row += 1) {
 		var tr = document.createElement("tr");
+		var ending = row < 13 ? "am" : "pm";
 		for (var col = 0; col < 8; col += 1) {
 			var cell = document.createElement("td");
 			if (row===0 && col > 0) {
 				cell.innerHTML = week[col-1];
 			}
 			if (col === 0 && row > 0) {
-				cell.innerHTML = hours[(row-1)%12];
+
+				cell.innerHTML = hours[(row-1)%12] + ending;
 			}
 			tr.appendChild(cell);
 		}
@@ -154,11 +156,17 @@ function selectProtocol() {
 	selectProtocol.style.display = "block";
 }
 
-function closeModal() {
+function addModal() {
 	var selectProtocol = document.getElementById("selectProtocol");
 	console.log("pie")
 	selectProtocol.style.display = "none";
 	addProtocolToCal();
+}
+
+function closeModal() {
+	var selectProtocol = document.getElementById("selectProtocol");
+	console.log("WOO")
+	selectProtocol.style.display = "none";
 }
 
 function editPopUp(title) {
@@ -320,9 +328,47 @@ function signIn() {
 	signIn.showModal();
 }
 
-function showAccount() {
-	var username = document.getElementById("username").value;
-	if (username.length > 0) {
+
+function createAccount(){
+	closeModalSignIn()
+	var createAccount = document.getElementById('newAccountModal');
+	createAccount.showModal();
+}
+
+function showAccountNew() {
+	var username = document.getElementById("newUsername").value;
+	var email = document.getElementById("email").value;
+	var password = document.getElementById("password").value;
+	var confirmedPass = document.getElementById("confirmedPass").value;
+	//&& password.length>0 && email.indexOf('@') > -1 && password==confirmedPass
+	if (username.length > 0 ) {
+		// Currently a canned response
+		var account = document.getElementById("account");
+		account.innerHTML = "Welcome, " + username;
+		closeModalCreateAccount();
+	} if(username.length==0){
+		console.log("username invalid");
+		document.getElementById("error-msg1").innerHTML = "Please enter valid username.";
+		document.getElementById("error-msg1").style.color = "red";
+	} if(password.length==0){
+		console.log("password invalid");
+		document.getElementById("error-msg2").innerHTML = "Please enter valid password.";
+		document.getElementById("error-msg2").style.color = "red";
+	}  if(confirmedPass != password){
+		console.log("password confirmation invalid");
+		document.getElementById("error-msg3").innerHTML = "Confirm Password Does not Match.";
+		document.getElementById("error-msg3").style.color = "red";	
+	} if(email.indexOf('@')==-1){
+		console.log("Email invalid");
+		document.getElementById("error-msg4").innerHTML = "Please enter valid Email Address.";
+		document.getElementById("error-msg4").style.color = "red";		
+	}
+
+}
+
+function showAccount(){
+		var username = document.getElementById("username").value;
+		if (username.length > 0) {
 		// Currently a canned response
 		var account = document.getElementById("account");
 		account.innerHTML = "Welcome, " + username;
@@ -337,4 +383,9 @@ function showAccount() {
 function closeModalSignIn() {
 	var signIn = document.getElementById('signInModal');
 	signIn.close();
+}
+
+function closeModalCreateAccount() {
+	var account = document.getElementById('newAccountModal');
+	account.close();
 }
