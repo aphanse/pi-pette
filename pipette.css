@@ -228,6 +228,13 @@ li {
 	max-width: 90%;
 }
 
+#addcontact {
+	height: 16pt;
+	width: 120px;
+	font-size: 12pt;
+	padding: 3px;
+}
+
 #stepsEdit {
 	display: grid;
   	grid-template-columns: auto auto auto;
