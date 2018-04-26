@@ -276,3 +276,24 @@ li {
 	height: 480px;
 
 }
+
+#calTable {
+	border: solid black 1px;
+	border-collapse: collapse;
+	width: 800px;
+	height: 480px;
+}
+
+td {
+	border: solid black 1px;
+	height: 20px;
+	overflow: visible;
+	width: 100px;
+	text-align: center;
+}
+
+.calendar-step {
+	position: absolute;
+	width: 97px;
+	border-radius: 5px;
+}
