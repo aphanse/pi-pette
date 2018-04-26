@@ -257,9 +257,14 @@ li {
 #signInModal input{
 	margin: 5px;
 }
-#accountForm{
-	text-align: center;}
+label {
+	text-align: left;
+	display: inline-grid;}
 
+input {
+	border-color: Gray
+	width: 1px;
+}
 #newAccountModal{
 	text-align: center;
 	margin: 5px;

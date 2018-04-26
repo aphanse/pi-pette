@@ -346,23 +346,25 @@ function showAccountNew() {
 		var account = document.getElementById("account");
 		account.innerHTML = "Welcome, " + username;
 		closeModalCreateAccount();
-	} if(username.length==0){
-		console.log("username invalid");
-		document.getElementById("error-msg1").innerHTML = "Please enter valid username.";
-		document.getElementById("error-msg1").style.color = "red";
-	} if(password.length==0){
-		console.log("password invalid");
-		document.getElementById("error-msg2").innerHTML = "Please enter valid password.";
-		document.getElementById("error-msg2").style.color = "red";
-	}  if(confirmedPass != password){
-		console.log("password confirmation invalid");
-		document.getElementById("error-msg3").innerHTML = "Confirm Password Does not Match.";
-		document.getElementById("error-msg3").style.color = "red";	
-	} if(email.indexOf('@')==-1){
-		console.log("Email invalid");
-		document.getElementById("error-msg4").innerHTML = "Please enter valid Email Address.";
-		document.getElementById("error-msg4").style.color = "red";		
-	}
+	} 
+
+	// if(username.length==0){
+	// 	console.log("username invalid");
+	// 	document.getElementById("error-msg1").innerHTML = "Please enter valid username.";
+	// 	document.getElementById("error-msg1").style.color = "red";
+	// } if(password.length==0){
+	// 	console.log("password invalid");
+	// 	document.getElementById("error-msg2").innerHTML = "Please enter valid password.";
+	// 	document.getElementById("error-msg2").style.color = "red";
+	// }  if(confirmedPass != password){
+	// 	console.log("password confirmation invalid");
+	// 	document.getElementById("error-msg3").innerHTML = "Confirm Password Does not Match.";
+	// 	document.getElementById("error-msg3").style.color = "red";	
+	// } if(email.indexOf('@')==-1){
+	// 	console.log("Email invalid");
+	// 	document.getElementById("error-msg4").innerHTML = "Please enter valid Email Address.";
+	// 	document.getElementById("error-msg4").style.color = "red";		
+	// }
 
 }
 
