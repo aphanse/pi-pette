@@ -3,7 +3,7 @@
 var dom = {};
 
 // Holds steps associated with each protocol
-var protocols = {"qPCR":[["Take cells", 5, 15], ["Freeze cells", 30, 60]],
+var protocols = {"qPCR":[["Take cells", "0:05", "0:15"], ["Freeze cells", "0:30", "1:00"]],
 				 "Cloning":[["Grow cells", 10, 10], ["Add culture to cells", 30, 60], ["Party with cells", 50, 0]],
 				 "DNA Sequencing":[["Step 1", 5, 15]],
 				 "Gel Electrophoresis":[["Step 1", 5, 15]],};
@@ -114,13 +114,15 @@ function drawCalendar() {
 	var hours = ['12', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];
 	for (var row = 0; row < 25; row += 1) {
 		var tr = document.createElement("tr");
+		var ending = row < 13 ? "am" : "pm";
 		for (var col = 0; col < 8; col += 1) {
 			var cell = document.createElement("td");
 			if (row===0 && col > 0) {
 				cell.innerHTML = week[col-1];
 			}
 			if (col === 0 && row > 0) {
-				cell.innerHTML = hours[(row-1)%12];
+
+				cell.innerHTML = hours[(row-1)%12] + ending;
 			}
 			tr.appendChild(cell);
 		}
@@ -154,11 +156,17 @@ function selectProtocol() {
 	selectProtocol.style.display = "block";
 }
 
-function closeModal() {
+function addModal() {
 	var selectProtocol = document.getElementById("selectProtocol");
 	console.log("pie")
 	selectProtocol.style.display = "none";
 	addProtocolToCal();
+}
+
+function closeModal() {
+	var selectProtocol = document.getElementById("selectProtocol");
+	console.log("WOO")
+	selectProtocol.style.display = "none";
 }
 
 function editPopUp(title) {
@@ -174,6 +182,10 @@ function editPopUp(title) {
 			for (var j = 0; j < 3; j++) { 
 				var div = document.createElement("div");
 	    		var cell = document.createElement("input");
+	    		if (j!=0) {
+	    			cell.pattern = "hrs:mins";
+	    			cell.placeholder = "hrs:mins";
+	    		}
 	    		cell.value = steps[i][j];
 	    		div.appendChild(cell);
 	    		stepsArea.appendChild(div);
@@ -188,6 +200,10 @@ function addStep(elementId) {
 	for (var j = 0; j < 3; j++) { 
 		var div = document.createElement("div");
 		var cell = document.createElement("input");
+		if (j!=0) {
+			cell.pattern = "hrs:mins";
+			cell.placeholder = "hrs:mins";
+		}
 		div.appendChild(cell);
 		stepsArea.appendChild(div);
 	}
