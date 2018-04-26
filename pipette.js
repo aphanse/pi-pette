@@ -33,6 +33,7 @@ Util.events(document, {
 	"DOMContentLoaded": function() {
 		document.getElementById('messageBox').value = DEFAULT_MSG;
 		drawProtocols();
+		drawCalendar();
 	},
 
 	// Keyboard events arrive here
@@ -41,6 +42,12 @@ Util.events(document, {
 
 	// Click events arrive here
 	"click": function(evt) {
+		console.log("all clicks")
+		if (evt.target.localName === "td") {
+			console.log("calendar")
+			selectProtocol();
+			clickedCell = evt.target;
+		}
 	},
 	
 	"mousedown": function(event) {
@@ -98,6 +105,60 @@ function drawProtocols() {
 				"</li>";
 	}
 	document.getElementById("protocol-container").innerHTML = html;
+}
+
+function drawCalendar() {
+	var calendar = document.getElementById("calTable");
+	console.log(calendar)
+	var week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+	var hours = ['12', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];
+	for (var row = 0; row < 25; row += 1) {
+		var tr = document.createElement("tr");
+		for (var col = 0; col < 8; col += 1) {
+			var cell = document.createElement("td");
+			if (row===0 && col > 0) {
+				cell.innerHTML = week[col-1];
+			}
+			if (col === 0 && row > 0) {
+				cell.innerHTML = hours[(row-1)%12];
+			}
+			tr.appendChild(cell);
+		}
+		calendar.appendChild(tr);
+	}
+}
+
+function addProtocolToCal() {
+	console.log(clickedCell)
+	var protocol = document.getElementById("protocolSelectorCal");
+	console.log(protocol.value)
+	var steps = protocols[protocol.value];
+	console.log(steps)
+	var pos = Util.offset(clickedCell);
+	var top = pos.top + 2;
+	for (var i = 0; i < steps.length; i +=1) {
+		var box = document.createElement("div");
+		box.setAttribute("class", "calendar-step")
+		box.style.top = top+"px";
+		box.style.left = pos.left;
+		box.style.height = "50px";
+		box.style.backgroundColor = "var(--sky-blue)";
+		box.innerHTML = protocol.value + ": Step " + (i+1);
+		clickedCell.appendChild(box);
+		top = top + 70;
+	}
+}
+
+function selectProtocol() {
+	var selectProtocol = document.getElementById("selectProtocol");
+	selectProtocol.style.display = "block";
+}
+
+function closeModal() {
+	var selectProtocol = document.getElementById("selectProtocol");
+	console.log("pie")
+	selectProtocol.style.display = "none";
+	addProtocolToCal();
 }
 
 function editPopUp(title) {
