@@ -133,7 +133,13 @@ li {
 .heading-items .sign-in:hover {
 	background-color: var(--medium-blue);
 }
-
+#createAccount{
+	padding: 5px;
+	font-size:15px;
+	color: black;
+	background-color: white;
+	text-decoration: underline;
+}
 .protocol {
 	background-color: white;
 	border: 1px solid var(--dark-blue);
@@ -251,7 +257,19 @@ li {
 #signInModal input{
 	margin: 5px;
 }
+#accountForm{
+	text-align: center;}
 
+#newAccountModal{
+	text-align: center;
+	margin: 5px;
+	position: absolute;
+    float: left;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+}
 #myCalendar {
 	border-width:0
 	width: 800px;
