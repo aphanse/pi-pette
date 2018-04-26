@@ -279,3 +279,7 @@ td {
 	width: 97px;
 	border-radius: 5px;
 }
+
+table {
+	background-color: white;
+}
