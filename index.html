@@ -9,7 +9,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <!-- <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script> -->
 <script type="text/javascript">
-
 </script>	
 <script async defer src="https://apis.google.com/js/api.js"
   onreadystatechange="if (this.readyState === 'complete') this.onload()">
@@ -29,12 +28,10 @@
   Select a Day:
   <input type="date" id = "date" name="usr_day">
 </form>
-
 <form>
   Select a time:
   <input type="time" id = "time" value="13:00" name="usr_time">
 </form>
-
 <select id="select" name="protocol" style="width: 115px;">
 <option value="qPCR" title="qPCR">qPCR</option>
 <option value="cloning" title="clloning">Cloning</option>
@@ -64,7 +61,24 @@
 				</form>
 				<button id="confirm-signin" onClick="showAccount()">Sign In</button><br>
 				<div id="error-msg"></div>
-				<a href="">Create New Account</a>
+				<button id="createAccount" onclick="createAccount()">Create New Account</button>
+			</dialog>
+
+			<!-- Create new account box -->
+			<dialog id = "newAccountModal">
+				<span class="close" onClick=closeModalCreateAccount()>&times;</span><br>
+				<div></div><br>
+				<form id = "accountForm" method = "dialog">
+					<label>New Username: <label><input id="newUsername"></input><br>
+					<div id="error-msg1"></div><br>
+					<label>New Password: <label><input id = "password" type="password"></input><br>
+					<div id="error-msg2"></div><br>
+					<label>Confirm Password: <label><input id="confirmedPass" type="password"></input><br>
+					<div id="error-msg3"></div><br>
+					<label>E-mail: <label><input id = "email" type="email"></input><br>
+					<div id="error-msg4"></div><br>
+				</form>
+					<button id="create-account" onClick="showAccountNew()">Create Account</button>
 			</dialog>
 		</div>
 
@@ -137,8 +151,21 @@
 
 		<!-- Actual Google Calendar !-->
 		<div class="grid calendar">
-			<iframe id = 'myCalendar' src="https://calendar.google.com/calendar/embed?showTitle=0&amp;showCalendars=0&amp;showTz=0&amp;mode=WEEK&amp;height=480&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=nhb3ul253iih305evek6dukth8%40group.calendar.google.com&amp;color=%232F6309&amp;ctz=America%2FNew_York" style="border-width:0" width="800" height="480" frameborder="0" scrolling="no"></iframe>
-
+			<dialog id="selectProtocol">
+				<form id="shareItemDialog" method="dialog">
+						Protocol Select: 
+						<select id="protocolSelectorCal">
+							<option value="qPCR">qPCR</option>
+							<option value="Cloning">Cloning</option>
+							<option value="DNA Sequencing">DNA Sequencing</option>
+							<option value="Gel Electrophoresis">Gel Electrophoresis</option>
+						</select>
+					<button id="add" type="reset" onClick="addModal()">Add</button>		
+					<button id="cancel" type="reset" onClick="closeModal()">Cancel</button>
+				</form>
+			</dialog>
+			<!--<iframe id = 'myCalendar' src="https://calendar.google.com/calendar/embed?showTitle=0&amp;showCalendars=0&amp;showTz=0&amp;mode=WEEK&amp;height=480&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=nhb3ul253iih305evek6dukth8%40group.calendar.google.com&amp;color=%232F6309&amp;ctz=America%2FNew_York" style="border-width:0" width="800" height="480" frameborder="0" scrolling="no"></iframe>-->
+			<table id="calTable"></table>
 		</div>
 
 	</div>

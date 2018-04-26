@@ -3,7 +3,7 @@
 var dom = {};
 
 // Holds steps associated with each protocol
-var protocols = {"qPCR":[["Take cells", 5, 15], ["Freeze cells", 30, 60]],
+var protocols = {"qPCR":[["Take cells", "0:05", "0:15"], ["Freeze cells", "0:30", "1:00"]],
 				 "Cloning":[["Grow cells", 10, 10], ["Add culture to cells", 30, 60], ["Party with cells", 50, 0]],
 				 "DNA Sequencing":[["Step 1", 5, 15]],
 				 "Gel Electrophoresis":[["Step 1", 5, 15]],};
@@ -35,6 +35,7 @@ Util.events(document, {
 	"DOMContentLoaded": function() {
 		document.getElementById('messageBox').value = DEFAULT_MSG;
 		drawProtocols();
+		drawCalendar();
 	},
 
 	// Keyboard events arrive here
@@ -43,6 +44,12 @@ Util.events(document, {
 
 	// Click events arrive here
 	"click": function(evt) {
+		console.log("all clicks")
+		if (evt.target.localName === "td") {
+			console.log("calendar")
+			selectProtocol();
+			clickedCell = evt.target;
+		}
 	},
 	
 	"mousedown": function(event) {
@@ -102,6 +109,68 @@ function drawProtocols() {
 	document.getElementById("protocol-container").innerHTML = html;
 }
 
+function drawCalendar() {
+	var calendar = document.getElementById("calTable");
+	console.log(calendar)
+	var week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+	var hours = ['12', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];
+	for (var row = 0; row < 25; row += 1) {
+		var tr = document.createElement("tr");
+		var ending = row < 13 ? "am" : "pm";
+		for (var col = 0; col < 8; col += 1) {
+			var cell = document.createElement("td");
+			if (row===0 && col > 0) {
+				cell.innerHTML = week[col-1];
+			}
+			if (col === 0 && row > 0) {
+
+				cell.innerHTML = hours[(row-1)%12] + ending;
+			}
+			tr.appendChild(cell);
+		}
+		calendar.appendChild(tr);
+	}
+}
+
+function addProtocolToCal() {
+	console.log(clickedCell)
+	var protocol = document.getElementById("protocolSelectorCal");
+	console.log(protocol.value)
+	var steps = protocols[protocol.value];
+	console.log(steps)
+	var pos = Util.offset(clickedCell);
+	var top = pos.top + 2;
+	for (var i = 0; i < steps.length; i +=1) {
+		var box = document.createElement("div");
+		box.setAttribute("class", "calendar-step")
+		box.style.top = top+"px";
+		box.style.left = pos.left;
+		box.style.height = "50px";
+		box.style.backgroundColor = "var(--sky-blue)";
+		box.innerHTML = protocol.value + ": Step " + (i+1);
+		clickedCell.appendChild(box);
+		top = top + 70;
+	}
+}
+
+function selectProtocol() {
+	var selectProtocol = document.getElementById("selectProtocol");
+	selectProtocol.style.display = "block";
+}
+
+function addModal() {
+	var selectProtocol = document.getElementById("selectProtocol");
+	console.log("pie")
+	selectProtocol.style.display = "none";
+	addProtocolToCal();
+}
+
+function closeModal() {
+	var selectProtocol = document.getElementById("selectProtocol");
+	console.log("WOO")
+	selectProtocol.style.display = "none";
+}
+
 function editPopUp(title) {
 	var modal = document.getElementById('editProtocolModal');
 	var form = document.getElementById("protocolText");
@@ -115,6 +184,10 @@ function editPopUp(title) {
 			for (var j = 0; j < 3; j++) { 
 				var div = document.createElement("div");
 	    		var cell = document.createElement("input");
+	    		if (j!=0) {
+	    			cell.pattern = "hrs:mins";
+	    			cell.placeholder = "hrs:mins";
+	    		}
 	    		cell.value = steps[i][j];
 	    		div.appendChild(cell);
 	    		stepsArea.appendChild(div);
@@ -129,6 +202,10 @@ function addStep(elementId) {
 	for (var j = 0; j < 3; j++) { 
 		var div = document.createElement("div");
 		var cell = document.createElement("input");
+		if (j!=0) {
+			cell.pattern = "hrs:mins";
+			cell.placeholder = "hrs:mins";
+		}
 		div.appendChild(cell);
 		stepsArea.appendChild(div);
 	}
@@ -292,9 +369,47 @@ function signIn() {
 	signIn.showModal();
 }
 
-function showAccount() {
-	var username = document.getElementById("username").value;
-	if (username.length > 0) {
+
+function createAccount(){
+	closeModalSignIn()
+	var createAccount = document.getElementById('newAccountModal');
+	createAccount.showModal();
+}
+
+function showAccountNew() {
+	var username = document.getElementById("newUsername").value;
+	var email = document.getElementById("email").value;
+	var password = document.getElementById("password").value;
+	var confirmedPass = document.getElementById("confirmedPass").value;
+	//&& password.length>0 && email.indexOf('@') > -1 && password==confirmedPass
+	if (username.length > 0 ) {
+		// Currently a canned response
+		var account = document.getElementById("account");
+		account.innerHTML = "Welcome, " + username;
+		closeModalCreateAccount();
+	} if(username.length==0){
+		console.log("username invalid");
+		document.getElementById("error-msg1").innerHTML = "Please enter valid username.";
+		document.getElementById("error-msg1").style.color = "red";
+	} if(password.length==0){
+		console.log("password invalid");
+		document.getElementById("error-msg2").innerHTML = "Please enter valid password.";
+		document.getElementById("error-msg2").style.color = "red";
+	}  if(confirmedPass != password){
+		console.log("password confirmation invalid");
+		document.getElementById("error-msg3").innerHTML = "Confirm Password Does not Match.";
+		document.getElementById("error-msg3").style.color = "red";	
+	} if(email.indexOf('@')==-1){
+		console.log("Email invalid");
+		document.getElementById("error-msg4").innerHTML = "Please enter valid Email Address.";
+		document.getElementById("error-msg4").style.color = "red";		
+	}
+
+}
+
+function showAccount(){
+		var username = document.getElementById("username").value;
+		if (username.length > 0) {
 		// Currently a canned response
 		var account = document.getElementById("account");
 		account.innerHTML = "Welcome, " + username;
@@ -309,4 +424,9 @@ function showAccount() {
 function closeModalSignIn() {
 	var signIn = document.getElementById('signInModal');
 	signIn.close();
+}
+
+function closeModalCreateAccount() {
+	var account = document.getElementById('newAccountModal');
+	account.close();
 }
