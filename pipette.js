@@ -3,7 +3,7 @@
 var dom = {};
 
 // Holds steps associated with each protocol
-var protocols = {"qPCR":[["Take cells", 5, 15], ["Freeze cells", 30, 60]],
+var protocols = {"qPCR":[["Take cells", "0:05", "0:15"], ["Freeze cells", "0:30", "1:00"]],
 				 "Cloning":[["Grow cells", 10, 10], ["Add culture to cells", 30, 60], ["Party with cells", 50, 0]],
 				 "DNA Sequencing":[["Step 1", 5, 15]],
 				 "Gel Electrophoresis":[["Step 1", 5, 15]],};
@@ -113,6 +113,10 @@ function editPopUp(title) {
 			for (var j = 0; j < 3; j++) { 
 				var div = document.createElement("div");
 	    		var cell = document.createElement("input");
+	    		if (j!=0) {
+	    			cell.pattern = "hrs:mins";
+	    			cell.placeholder = "hrs:mins";
+	    		}
 	    		cell.value = steps[i][j];
 	    		div.appendChild(cell);
 	    		stepsArea.appendChild(div);
@@ -127,6 +131,10 @@ function addStep(elementId) {
 	for (var j = 0; j < 3; j++) { 
 		var div = document.createElement("div");
 		var cell = document.createElement("input");
+		if (j!=0) {
+			cell.pattern = "hrs:mins";
+			cell.placeholder = "hrs:mins";
+		}
 		div.appendChild(cell);
 		stepsArea.appendChild(div);
 	}
