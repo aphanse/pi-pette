@@ -11,6 +11,7 @@
 html {
 	display: flex;
 	min-height: 100vh;
+	font-family: var(--font-main);
 }
 
 h1 {
@@ -313,4 +314,5 @@ td {
 
 table {
 	background-color: white;
+	font-family: var(--font-main);
 }
