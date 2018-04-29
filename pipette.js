@@ -121,8 +121,9 @@ Util.events(document, {
 	    		var stepNum = parseInt(protocol.id.substring(protocol.id.length-1));
 	    		while (document.getElementById(protName + "-" + (stepNum+1))) {
 	    			var nextProt = document.getElementById(protName + "-" + (stepNum+1));
+	    			top += 70;
 	    			nextProt.style.left = left + "px";
-	    			nextProt.style.top = top + 70 + "px";
+	    			nextProt.style.top = top + "px";
 	    			stepNum ++;
 	    		}
     		};
