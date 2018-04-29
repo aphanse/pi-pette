@@ -72,6 +72,8 @@ Util.events(document, {
 	    		clickedCell = document.elementFromPoint(x, y);
 	    		document.getElementById("protocolSelectorCal").value = protocol.id;
 	    		addProtocolToCal();
+	    		// reset drop list
+	    		document.getElementById("protocolSelectorCal").value = "qPCR";
     		};
 
 	    	var dragFunc = function(event){
