@@ -234,6 +234,13 @@ li {
 	max-width: 90%;
 }
 
+#addcontact {
+	height: 16pt;
+	width: 120px;
+	font-size: 12pt;
+	padding: 3px;
+}
+
 #stepsEdit {
 	display: grid;
   	grid-template-columns: auto auto auto;
@@ -257,9 +264,14 @@ li {
 #signInModal input{
 	margin: 5px;
 }
-#accountForm{
-	text-align: center;}
+label {
+	text-align: left;
+	display: inline-grid;}
 
+input {
+	border-color: Gray
+	width: 1px;
+}
 #newAccountModal{
 	text-align: center;
 	margin: 5px;

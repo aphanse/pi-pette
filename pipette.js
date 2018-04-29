@@ -7,6 +7,8 @@ var protocols = {"qPCR":[["Take cells", "0:05", "0:15"], ["Freeze cells", "0:30"
 				 "Cloning":[["Grow cells", 10, 10], ["Add culture to cells", 30, 60], ["Party with cells", 50, 0]],
 				 "DNA Sequencing":[["Step 1", 5, 15]],
 				 "Gel Electrophoresis":[["Step 1", 5, 15]],};
+
+var contacts = {"Alice P. Hacker":"alice@mit.edu", "Ben Bitdiddle": "ben.bitdiddle@mit.edu", "Eve L.": "eve@mit.edu"}
 const DEFAULT_MSG = "Here is a protocol I would like to share.";
 
 
@@ -369,6 +371,12 @@ function shareItem() {
 	var cancelButton = Util.one("#cancel");
 	var shareButton = Util.one("#shareItemButton");
 
+	var protocolSelector = Util.one("#protocolSelector");
+	var contactSelector = Util.one("#contactSelector");
+
+	protocolSelector.innerHTML = createShareProtocolDropdown();
+	contactSelector.innerHTML = createShareContactsMenu();
+
 	shareModal.showModal();
 
 	// Form cancel button closes the dialog box
@@ -379,11 +387,44 @@ function shareItem() {
 
 };
 
+function createShareProtocolDropdown() {
+	var str = ""
+	for(i = 0; i < Object.keys(protocols).length; i++) {
+		str += "<option value=\"protocol" + i + "\">" + Object.keys(protocols)[i] + "</option>";
+	}
+	return str
+};
+
+function createShareContactsMenu() {
+	var str = ""
+	for(i = 0; i < Object.keys(contacts).length; i++) {
+		var contact= Object.keys(contacts)[i];
+		str += "<option value=\"contact" + i + "\">" + contacts[contact] + "</option>";
+	}
+	return str
+};
+
+function cancelSharing() {
+	Util.one("#shareItemModal").close();
+	document.getElementById('emailAdd').value = "";
+	document.getElementById('messageBox').value = DEFAULT_MSG;
+};
+
 function sendMessageToContacts() {
 	alert("Message Sent!");
-	document.getElementById('messageBox').value = DEFAULT_MSG;
 	Util.one("#shareItemModal").close();
+	document.getElementById('emailAdd').value = "";
+	document.getElementById('messageBox').value = DEFAULT_MSG;
 };
+
+function addContact(event) {
+	var button = Util.one("#addcontact");
+	var form = document.getElementById('emailAdd').value.toLowerCase();
+	var contactName = "contact_" + Object.keys(contacts).length;
+	contacts[contactName] = form;
+	console.log(contacts)
+	document.getElementById('emailAdd').value = "";
+}
 
 function signIn() {
 	var signIn = document.getElementById('signInModal');
@@ -409,23 +450,25 @@ function showAccountNew() {
 		var account = document.getElementById("account");
 		account.innerHTML = "Welcome, " + username;
 		closeModalCreateAccount();
-	} if(username.length==0){
-		console.log("username invalid");
-		document.getElementById("error-msg1").innerHTML = "Please enter valid username.";
-		document.getElementById("error-msg1").style.color = "red";
-	} if(password.length==0){
-		console.log("password invalid");
-		document.getElementById("error-msg2").innerHTML = "Please enter valid password.";
-		document.getElementById("error-msg2").style.color = "red";
-	}  if(confirmedPass != password){
-		console.log("password confirmation invalid");
-		document.getElementById("error-msg3").innerHTML = "Confirm Password Does not Match.";
-		document.getElementById("error-msg3").style.color = "red";	
-	} if(email.indexOf('@')==-1){
-		console.log("Email invalid");
-		document.getElementById("error-msg4").innerHTML = "Please enter valid Email Address.";
-		document.getElementById("error-msg4").style.color = "red";		
-	}
+	} 
+
+	// if(username.length==0){
+	// 	console.log("username invalid");
+	// 	document.getElementById("error-msg1").innerHTML = "Please enter valid username.";
+	// 	document.getElementById("error-msg1").style.color = "red";
+	// } if(password.length==0){
+	// 	console.log("password invalid");
+	// 	document.getElementById("error-msg2").innerHTML = "Please enter valid password.";
+	// 	document.getElementById("error-msg2").style.color = "red";
+	// }  if(confirmedPass != password){
+	// 	console.log("password confirmation invalid");
+	// 	document.getElementById("error-msg3").innerHTML = "Confirm Password Does not Match.";
+	// 	document.getElementById("error-msg3").style.color = "red";	
+	// } if(email.indexOf('@')==-1){
+	// 	console.log("Email invalid");
+	// 	document.getElementById("error-msg4").innerHTML = "Please enter valid Email Address.";
+	// 	document.getElementById("error-msg4").style.color = "red";		
+	// }
 
 }
 
