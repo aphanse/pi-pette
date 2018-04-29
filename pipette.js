@@ -62,18 +62,19 @@ Util.events(document, {
 
 	    	// Mouse up event listener
 	    	var dropFunc = function(event) {
-	    		document.removeEventListener("mousemove", dragFunc);
-	    		protocol.style.position = "relative";
-	    		protocol.style.left = "";
-	    		protocol.style.top = "";
-	    		protocol.style.zIndex = 1;
-	    		prot = protocol.textContent;
-	    		console.log(document.elementFromPoint(x, y));
-	    		clickedCell = document.elementFromPoint(x, y);
-	    		document.getElementById("protocolSelectorCal").value = protocol.id;
-	    		addProtocolToCal();
-	    		// reset drop list
-	    		document.getElementById("protocolSelectorCal").value = "qPCR";
+	    		if (event.target.className != "edit material-icons") {
+	    			document.removeEventListener("mousemove", dragFunc);
+		    		protocol.style.position = "relative";
+		    		protocol.style.left = "";
+		    		protocol.style.top = "";
+		    		protocol.style.zIndex = 1;
+		    		prot = protocol.textContent;
+		    		clickedCell = document.elementFromPoint(x, y);
+		    		document.getElementById("protocolSelectorCal").value = protocol.id;
+		    		addProtocolToCal();
+		    		// reset drop list
+		    		document.getElementById("protocolSelectorCal").value = "qPCR";
+	    		}	
     		};
 
 	    	var dragFunc = function(event){
