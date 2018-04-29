@@ -52,6 +52,7 @@ Util.events(document, {
 	
 	"mousedown": function(event) {
 
+		// DRAGGING PROTOCOLS FROM LIST
 		if (event.target.className == "protocol") {
 			var protocol = event.target;
 			var offsetX = event.clientX - protocol.offsetLeft;
@@ -92,6 +93,48 @@ Util.events(document, {
 	    	protocol.onmouseup = dropFunc;
 	    	protocol.style.zIndex = 0;
 		}
+
+		// DRAGGING CALENDAR EVENTS
+		else if (event.target.className == "calendar-step") {
+			var protocol = event.target;
+			var offsetX = event.clientX - protocol.offsetLeft;
+		    var offsetY = event.clientY - protocol.offsetTop;
+
+	    	// Mouse up event listener
+	    	var dropFunc = function(event) {
+	    		var pos = Util.offset(clickedCell);
+	    		document.removeEventListener("mousemove", dragFunc);
+	    		//protocol.style.position = "relative";
+	    		var left = parseInt(protocol.style.left);
+	    		var leftError = (left - pos.left - 5) % (100);
+	    		if (leftError < 50) {
+	    			protocol.style.left = (left - leftError - 2) + "px";
+	    		} else {
+	    			protocol.style.left = (left - leftError + 98) + "px";
+	    		}
+	    		//protocol.style.top = "";
+	    		protocol.style.zIndex = 1;
+	    		prot = protocol.textContent;
+    		};
+
+	    	var dragFunc = function(event){
+	    		protocol.style.position = "absolute";
+	    		// Account for offset between mouse and img corner
+	    		protocol.style.left = (event.clientX-offsetX) + "px";
+	    		protocol.style.top = (event.clientY-offsetY) + "px";
+	    		protocol.style.zIndex = 1;
+	    		x = event.clientX
+	    		y = event.clientY
+	    	};
+
+	    	// Actual mousedown event 
+	    	document.addEventListener("mousemove", dragFunc);
+	    	protocol.onmouseup = dropFunc;
+	    	protocol.style.zIndex = 0;
+		}
+
+
+
 	},
 });
 
@@ -117,6 +160,7 @@ function drawCalendar() {
 		var ending = row < 13 ? "am" : "pm";
 		for (var col = 0; col < 8; col += 1) {
 			var cell = document.createElement("td");
+			cell.id = "cal" + row + col;
 			if (row===0 && col > 0) {
 				cell.innerHTML = week[col-1];
 			}
@@ -211,16 +255,31 @@ function addStep(elementId) {
 
 function closeModalEditProtocol() {
 	var modal = document.getElementById('editProtocolModal');
-	modal.style.display = "none";
 	var stepsArea = document.getElementById("stepsEdit");
 	var title = document.getElementById("title").value
 	var protocol = protocols[title] ? protocols[title] : [];
-	getEnteredProtocolData(stepsArea, protocol);
-	if (!protocols[title]) {
-		addProtocolToDisplayList(title);
+	var validInputs = true;
+	var pattern = /^([0-9]*:[0-9][0-9])$/;
+
+	var inputs = document.getElementsByClassName("input");
+	for (var i=0; i<inputs.length; i++) {
+		console.log(inputs[i].pattern);
+		if (inputs[i].pattern == "hrs:min" && !pattern.test(input.value)) {
+			alert();
+		}
 	}
-	protocols[title] = protocol;
-	removeFormFields(stepsArea);
+
+	if (validInputs) {
+		modal.style.display = "none";
+		getEnteredProtocolData(stepsArea, protocol);
+		if (!protocols[title]) {
+			addProtocolToDisplayList(title);
+		}
+		protocols[title] = protocol;
+		removeFormFields(stepsArea);
+	} else {
+		// display error
+	}
 }
 
 function closeModalNewProtocol() {
@@ -294,6 +353,10 @@ function newProtocol() {
 		for (var j = 0; j < 3; j++) { 
 			var div = document.createElement("div");
 			var cell = document.createElement("input");
+			if (j!=0) {
+    			cell.pattern = "hrs:mins";
+    			cell.placeholder = "hrs:mins";
+    		}
 			div.appendChild(cell);
 			stepsArea.appendChild(div);
 		}
