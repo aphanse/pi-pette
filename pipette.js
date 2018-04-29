@@ -110,13 +110,35 @@ Util.events(document, {
 	    		var left = parseInt(protocol.style.left);
 	    		var leftError = (left - pos.left - 5) % (100);
 	    		if (leftError < 50) {
-	    			protocol.style.left = (left - leftError - 2) + "px";
+	    			left = left - leftError - 2;
 	    		} else {
-	    			protocol.style.left = (left - leftError + 98) + "px";
+	    			left = left - leftError + 98;
 	    		}
+	    		var top = parseInt(protocol.style.top);
+	    		var topError = (top - pos.top) % (21);
+	    		if (topError < 10) {
+	    			top = top - topError;
+	    		} else {
+	    			top = top - topError + 21;
+	    		}
+	    		protocol.style.left = left + "px";
+	    		protocol.style.top = top + "px";
+
+	    		var protName = protocol.id.substring(0, protocol.id.length-2);
+	    		console.log(protName);
+	    		var stepNum = parseInt(protocol.id.substring(protocol.id.length-1));
+	    		while (document.getElementById(protName + "-" + (stepNum+1))) {
+	    			var nextProt = document.getElementById(protName + "-" + (stepNum+1));
+	    			nextProt.style.left = left + "px";
+	    			nextProt.style.top = top + 70 + "px";
+	    			//nextProt.top = 
+	    			stepNum ++;
+	    		}
+
+
 	    		//protocol.style.top = "";
-	    		protocol.style.zIndex = 1;
-	    		prot = protocol.textContent;
+	    		//protocol.style.zIndex = 1;
+	    		//prot = protocol.textContent;
     		};
 
 	    	var dragFunc = function(event){
@@ -186,12 +208,13 @@ function addProtocolToCal() {
 	var top = pos.top + 2;
 	for (var i = 0; i < steps.length; i +=1) {
 		var box = document.createElement("div");
-		box.setAttribute("class", "calendar-step")
+		box.setAttribute("class", "calendar-step");
 		box.style.top = top+"px";
 		box.style.left = pos.left;
 		box.style.height = "50px";
 		box.style.backgroundColor = "var(--sky-blue)";
 		box.innerHTML = protocol.value + ": Step " + (i+1);
+		box.id = protocol.value + "-" + (i+1);
 		clickedCell.appendChild(box);
 		top = top + 70;
 	}
