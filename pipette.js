@@ -68,16 +68,10 @@ Util.events(document, {
 	    		protocol.style.top = "";
 	    		protocol.style.zIndex = 1;
 	    		prot = protocol.textContent;
-	    		if (x>510 & y>157 & x<1223 & y<519){
-	    			for (i=0; i<allProtocols.length; i++){
-						if (allProtocols[i][0]==prot){
-							// don't update if clicking edit
-							if (event.path[0].className != "edit material-icons") {
-								document.getElementById('myCalendar').src =allProtocols[i][1]
-							}	
-						}
-					}
-	    		}
+	    		console.log(document.elementFromPoint(x, y));
+	    		clickedCell = document.elementFromPoint(x, y);
+	    		document.getElementById("protocolSelectorCal").value = protocol.id;
+	    		addProtocolToCal();
     		};
 
 	    	var dragFunc = function(event){
@@ -106,7 +100,6 @@ Util.events(document, {
 	    	var dropFunc = function(event) {
 	    		var pos = Util.offset(clickedCell);
 	    		document.removeEventListener("mousemove", dragFunc);
-	    		//protocol.style.position = "relative";
 	    		var left = parseInt(protocol.style.left);
 	    		var leftError = (left - pos.left - 5) % (100);
 	    		if (leftError < 50) {
@@ -125,20 +118,13 @@ Util.events(document, {
 	    		protocol.style.top = top + "px";
 
 	    		var protName = protocol.id.substring(0, protocol.id.length-2);
-	    		console.log(protName);
 	    		var stepNum = parseInt(protocol.id.substring(protocol.id.length-1));
 	    		while (document.getElementById(protName + "-" + (stepNum+1))) {
 	    			var nextProt = document.getElementById(protName + "-" + (stepNum+1));
 	    			nextProt.style.left = left + "px";
 	    			nextProt.style.top = top + 70 + "px";
-	    			//nextProt.top = 
 	    			stepNum ++;
 	    		}
-
-
-	    		//protocol.style.top = "";
-	    		//protocol.style.zIndex = 1;
-	    		//prot = protocol.textContent;
     		};
 
 	    	var dragFunc = function(event){
@@ -166,7 +152,7 @@ function drawProtocols() {
 	var names = Object.keys(protocols);
 	var html = "<ul class=\"protocol-list\">";
 	for (var i = 0; i < names.length; i++) {
-		html += "<li class=\"protocol\">" +
+		html += "<li class=\"protocol\" id=" + names[i] + ">" +
 					names[i] +
 					"<i class=\"edit material-icons\" onClick=editPopUp(\"" + names[i] + "\")>mode_edit</i>" +
 				"</li>";
