@@ -9,7 +9,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <!-- <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script> -->
 <script type="text/javascript">
-
 </script>	
 <script async defer src="https://apis.google.com/js/api.js"
   onreadystatechange="if (this.readyState === 'complete') this.onload()">
@@ -29,12 +28,10 @@
   Select a Day:
   <input type="date" id = "date" name="usr_day">
 </form>
-
 <form>
   Select a time:
   <input type="time" id = "time" value="13:00" name="usr_time">
 </form>
-
 <select id="select" name="protocol" style="width: 115px;">
 <option value="qPCR" title="qPCR">qPCR</option>
 <option value="cloning" title="clloning">Cloning</option>
@@ -101,26 +98,19 @@
 						<div class="shareColumns">
 							Protocol Select: 
 							<select id="protocolSelector">
-								<option value="protocol1">qPCR</option>
-								<option value="protocol2">Cloning</option>
-								<option value="protocol3">DNA Sequencing</option>
-								<option value="protocol4">Gel Electrophoresis</option>
 							</select>
 							<br><br>
 							Contacts:<br>
-							<select id="contactSelector" multiple>
-								<option value="alice">alice@mit.edu</option>
-								<option value="ben">benbitdiddle@mit.edu</option>
-								<option value="bob">bob@mit.edu</option>
-								<option value="eve">eve.inc@mit.edu</option>
-							</select>
+							<select id="contactSelector" multiple></select><br><br>
+							<input id="emailAdd"></input>
+							<button id="addcontact" onclick="addContact()">Add Contact</button>
 						</div>
 						<div class="shareColumns">
 							Message:<br>
 							<textarea id="messageBox" value="Here is a protocol I would like to share."></textarea>
 						</div>
 					</div>
-					<button id="cancel" type="reset">Cancel</button>
+					<button id="cancel" onclick="cancelSharing()">Cancel</button>
 					<button id="shareItemButton" onclick="sendMessageToContacts()">Share</button>
 				</form>
 			</dialog>
@@ -133,8 +123,8 @@
 				</form>
 				<div id="stepsEdit">
 					<div> Steps </div>
-					<div> Time Allotted (min) </div>
-					<div> Wait Time (min) </div>
+					<div> Time Allotted </div>
+					<div> Wait Time </div>
 				</div>
 				<button id="addStepButton" onclick=addStep("stepsEdit")>Add Step</button>
 				<button id="addStepButton" onclick=closeModalEditProtocol()>Done</button>

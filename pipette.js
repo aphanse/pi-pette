@@ -3,10 +3,12 @@
 var dom = {};
 
 // Holds steps associated with each protocol
-var protocols = {"qPCR":[["Take cells", 5, 15], ["Freeze cells", 30, 60]],
+var protocols = {"qPCR":[["Take cells", "0:05", "0:15"], ["Freeze cells", "0:30", "1:00"]],
 				 "Cloning":[["Grow cells", 10, 10], ["Add culture to cells", 30, 60], ["Party with cells", 50, 0]],
 				 "DNA Sequencing":[["Step 1", 5, 15]],
 				 "Gel Electrophoresis":[["Step 1", 5, 15]],};
+
+var contacts = {"Alice P. Hacker":"alice@mit.edu", "Ben Bitdiddle": "ben.bitdiddle@mit.edu", "Eve L.": "eve@mit.edu"}
 const DEFAULT_MSG = "Here is a protocol I would like to share.";
 
 
@@ -52,6 +54,7 @@ Util.events(document, {
 	
 	"mousedown": function(event) {
 
+		// DRAGGING PROTOCOLS FROM LIST
 		if (event.target.className == "protocol") {
 			var protocol = event.target;
 			var offsetX = event.clientX - protocol.offsetLeft;
@@ -59,21 +62,72 @@ Util.events(document, {
 
 	    	// Mouse up event listener
 	    	var dropFunc = function(event) {
-	    		document.removeEventListener("mousemove", dragFunc);
-	    		protocol.style.position = "relative";
-	    		protocol.style.left = "";
-	    		protocol.style.top = "";
+	    		if (event.target.className != "edit material-icons") {
+	    			document.removeEventListener("mousemove", dragFunc);
+		    		protocol.style.position = "relative";
+		    		protocol.style.left = "";
+		    		protocol.style.top = "";
+		    		protocol.style.zIndex = 1;
+		    		prot = protocol.textContent;
+		    		clickedCell = document.elementFromPoint(x, y);
+		    		document.getElementById("protocolSelectorCal").value = protocol.id;
+		    		addProtocolToCal();
+		    		// reset drop list
+		    		document.getElementById("protocolSelectorCal").value = "qPCR";
+	    		}	
+    		};
+
+	    	var dragFunc = function(event){
+	    		protocol.style.position = "absolute";
+	    		// Account for offset between mouse and img corner
+	    		protocol.style.left = (event.clientX-offsetX) + "px";
+	    		protocol.style.top = (event.clientY-offsetY) + "px";
 	    		protocol.style.zIndex = 1;
-	    		prot = protocol.textContent;
-	    		if (x>510 & y>157 & x<1223 & y<519){
-	    			for (i=0; i<allProtocols.length; i++){
-						if (allProtocols[i][0]==prot){
-							// don't update if clicking edit
-							if (event.path[0].className != "edit material-icons") {
-								document.getElementById('myCalendar').src =allProtocols[i][1]
-							}	
-						}
-					}
+	    		x = event.clientX
+	    		y = event.clientY
+	    	};
+
+	    	// Actual mousedown event 
+	    	document.addEventListener("mousemove", dragFunc);
+	    	protocol.onmouseup = dropFunc;
+	    	protocol.style.zIndex = 0;
+		}
+
+		// DRAGGING CALENDAR EVENTS
+		else if (event.target.className == "calendar-step") {
+			var protocol = event.target;
+			var offsetX = event.clientX - protocol.offsetLeft;
+		    var offsetY = event.clientY - protocol.offsetTop;
+
+	    	// Mouse up event listener
+	    	var dropFunc = function(event) {
+	    		var pos = Util.offset(clickedCell);
+	    		document.removeEventListener("mousemove", dragFunc);
+	    		var left = parseInt(protocol.style.left);
+	    		var leftError = (left - pos.left - 5) % (100);
+	    		if (leftError < 50) {
+	    			left = left - leftError - 2;
+	    		} else {
+	    			left = left - leftError + 98;
+	    		}
+	    		var top = parseInt(protocol.style.top);
+	    		var topError = (top - pos.top) % (21);
+	    		if (topError < 10) {
+	    			top = top - topError;
+	    		} else {
+	    			top = top - topError + 21;
+	    		}
+	    		protocol.style.left = left + "px";
+	    		protocol.style.top = top + "px";
+
+	    		var protName = protocol.id.substring(0, protocol.id.length-2);
+	    		var stepNum = parseInt(protocol.id.substring(protocol.id.length-1));
+	    		while (document.getElementById(protName + "-" + (stepNum+1))) {
+	    			var nextProt = document.getElementById(protName + "-" + (stepNum+1));
+	    			top += 70;
+	    			nextProt.style.left = left + "px";
+	    			nextProt.style.top = top + "px";
+	    			stepNum ++;
 	    		}
     		};
 
@@ -92,6 +146,9 @@ Util.events(document, {
 	    	protocol.onmouseup = dropFunc;
 	    	protocol.style.zIndex = 0;
 		}
+
+
+
 	},
 });
 
@@ -99,7 +156,7 @@ function drawProtocols() {
 	var names = Object.keys(protocols);
 	var html = "<ul class=\"protocol-list\">";
 	for (var i = 0; i < names.length; i++) {
-		html += "<li class=\"protocol\">" +
+		html += "<li class=\"protocol\" id=" + names[i] + ">" +
 					names[i] +
 					"<i class=\"edit material-icons\" onClick=editPopUp(\"" + names[i] + "\")>mode_edit</i>" +
 				"</li>";
@@ -117,6 +174,7 @@ function drawCalendar() {
 		var ending = row < 13 ? "am" : "pm";
 		for (var col = 0; col < 8; col += 1) {
 			var cell = document.createElement("td");
+			cell.id = "cal" + row + col;
 			if (row===0 && col > 0) {
 				cell.innerText = week[col-1];
 				cell.style.fontWeight="bold";
@@ -140,7 +198,7 @@ function addProtocolToCal() {
 	var top = pos.top + 2;
 	for (var i = 0; i < steps.length; i +=1) {
 		var box = document.createElement("div");
-		box.setAttribute("class", "calendar-step")
+		box.setAttribute("class", "calendar-step");
 		box.style.top = top+"px";
 		box.style.left = pos.left;
 		box.style.height = "50px";
@@ -148,6 +206,7 @@ function addProtocolToCal() {
 		box.innerText = protocol.value + ": Step " + (i+1);
 		var time = document.createElement("small");
 		time.innerText ="1pm - 2pm";
+		box.id = protocol.value + "-" + (i+1);
 		clickedCell.appendChild(box);
 		box.appendChild(document.createElement("br"));
 		box.appendChild(time);
@@ -186,6 +245,10 @@ function editPopUp(title) {
 			for (var j = 0; j < 3; j++) { 
 				var div = document.createElement("div");
 	    		var cell = document.createElement("input");
+	    		if (j!=0) {
+	    			cell.pattern = "hrs:mins";
+	    			cell.placeholder = "hrs:mins";
+	    		}
 	    		cell.value = steps[i][j];
 	    		div.appendChild(cell);
 	    		stepsArea.appendChild(div);
@@ -200,6 +263,10 @@ function addStep(elementId) {
 	for (var j = 0; j < 3; j++) { 
 		var div = document.createElement("div");
 		var cell = document.createElement("input");
+		if (j!=0) {
+			cell.pattern = "hrs:mins";
+			cell.placeholder = "hrs:mins";
+		}
 		div.appendChild(cell);
 		stepsArea.appendChild(div);
 	}
@@ -207,16 +274,31 @@ function addStep(elementId) {
 
 function closeModalEditProtocol() {
 	var modal = document.getElementById('editProtocolModal');
-	modal.style.display = "none";
 	var stepsArea = document.getElementById("stepsEdit");
 	var title = document.getElementById("title").value
 	var protocol = protocols[title] ? protocols[title] : [];
-	getEnteredProtocolData(stepsArea, protocol);
-	if (!protocols[title]) {
-		addProtocolToDisplayList(title);
+	var validInputs = true;
+	var pattern = /^([0-9]*:[0-9][0-9])$/;
+
+	var inputs = document.getElementsByClassName("input");
+	for (var i=0; i<inputs.length; i++) {
+		console.log(inputs[i].pattern);
+		if (inputs[i].pattern == "hrs:min" && !pattern.test(input.value)) {
+			alert();
+		}
 	}
-	protocols[title] = protocol;
-	removeFormFields(stepsArea);
+
+	if (validInputs) {
+		modal.style.display = "none";
+		getEnteredProtocolData(stepsArea, protocol);
+		if (!protocols[title]) {
+			addProtocolToDisplayList(title);
+		}
+		protocols[title] = protocol;
+		removeFormFields(stepsArea);
+	} else {
+		// display error
+	}
 }
 
 function closeModalNewProtocol() {
@@ -290,6 +372,10 @@ function newProtocol() {
 		for (var j = 0; j < 3; j++) { 
 			var div = document.createElement("div");
 			var cell = document.createElement("input");
+			if (j!=0) {
+    			cell.pattern = "hrs:mins";
+    			cell.placeholder = "hrs:mins";
+    		}
 			div.appendChild(cell);
 			stepsArea.appendChild(div);
 		}
@@ -302,6 +388,12 @@ function shareItem() {
 	var cancelButton = Util.one("#cancel");
 	var shareButton = Util.one("#shareItemButton");
 
+	var protocolSelector = Util.one("#protocolSelector");
+	var contactSelector = Util.one("#contactSelector");
+
+	protocolSelector.innerHTML = createShareProtocolDropdown();
+	contactSelector.innerHTML = createShareContactsMenu();
+
 	shareModal.showModal();
 
 	// Form cancel button closes the dialog box
@@ -312,11 +404,44 @@ function shareItem() {
 
 };
 
+function createShareProtocolDropdown() {
+	var str = ""
+	for(i = 0; i < Object.keys(protocols).length; i++) {
+		str += "<option value=\"protocol" + i + "\">" + Object.keys(protocols)[i] + "</option>";
+	}
+	return str
+};
+
+function createShareContactsMenu() {
+	var str = ""
+	for(i = 0; i < Object.keys(contacts).length; i++) {
+		var contact= Object.keys(contacts)[i];
+		str += "<option value=\"contact" + i + "\">" + contacts[contact] + "</option>";
+	}
+	return str
+};
+
+function cancelSharing() {
+	Util.one("#shareItemModal").close();
+	document.getElementById('emailAdd').value = "";
+	document.getElementById('messageBox').value = DEFAULT_MSG;
+};
+
 function sendMessageToContacts() {
 	alert("Message Sent!");
-	document.getElementById('messageBox').value = DEFAULT_MSG;
 	Util.one("#shareItemModal").close();
+	document.getElementById('emailAdd').value = "";
+	document.getElementById('messageBox').value = DEFAULT_MSG;
 };
+
+function addContact(event) {
+	var button = Util.one("#addcontact");
+	var form = document.getElementById('emailAdd').value.toLowerCase();
+	var contactName = "contact_" + Object.keys(contacts).length;
+	contacts[contactName] = form;
+	console.log(contacts)
+	document.getElementById('emailAdd').value = "";
+}
 
 function signIn() {
 	var signIn = document.getElementById('signInModal');
@@ -342,23 +467,25 @@ function showAccountNew() {
 		var account = document.getElementById("account");
 		account.innerHTML = "Welcome, " + username;
 		closeModalCreateAccount();
-	} if(username.length==0){
-		console.log("username invalid");
-		document.getElementById("error-msg1").innerHTML = "Please enter valid username.";
-		document.getElementById("error-msg1").style.color = "red";
-	} if(password.length==0){
-		console.log("password invalid");
-		document.getElementById("error-msg2").innerHTML = "Please enter valid password.";
-		document.getElementById("error-msg2").style.color = "red";
-	}  if(confirmedPass != password){
-		console.log("password confirmation invalid");
-		document.getElementById("error-msg3").innerHTML = "Confirm Password Does not Match.";
-		document.getElementById("error-msg3").style.color = "red";	
-	} if(email.indexOf('@')==-1){
-		console.log("Email invalid");
-		document.getElementById("error-msg4").innerHTML = "Please enter valid Email Address.";
-		document.getElementById("error-msg4").style.color = "red";		
-	}
+	} 
+
+	// if(username.length==0){
+	// 	console.log("username invalid");
+	// 	document.getElementById("error-msg1").innerHTML = "Please enter valid username.";
+	// 	document.getElementById("error-msg1").style.color = "red";
+	// } if(password.length==0){
+	// 	console.log("password invalid");
+	// 	document.getElementById("error-msg2").innerHTML = "Please enter valid password.";
+	// 	document.getElementById("error-msg2").style.color = "red";
+	// }  if(confirmedPass != password){
+	// 	console.log("password confirmation invalid");
+	// 	document.getElementById("error-msg3").innerHTML = "Confirm Password Does not Match.";
+	// 	document.getElementById("error-msg3").style.color = "red";	
+	// } if(email.indexOf('@')==-1){
+	// 	console.log("Email invalid");
+	// 	document.getElementById("error-msg4").innerHTML = "Please enter valid Email Address.";
+	// 	document.getElementById("error-msg4").style.color = "red";		
+	// }
 
 }
 
