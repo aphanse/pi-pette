@@ -44,9 +44,7 @@ Util.events(document, {
 
 	// Click events arrive here
 	"click": function(evt) {
-		console.log("all clicks")
 		if (evt.target.localName === "td") {
-			console.log("calendar")
 			selectProtocol();
 			clickedCell = evt.target;
 		}
@@ -70,10 +68,7 @@ Util.events(document, {
 		    		protocol.style.zIndex = 1;
 		    		prot = protocol.textContent;
 		    		clickedCell = document.elementFromPoint(x, y);
-		    		document.getElementById("protocolSelectorCal").value = protocol.id;
-		    		addProtocolToCal();
-		    		// reset drop list
-		    		document.getElementById("protocolSelectorCal").value = "qPCR";
+		    		addProtocolToCal(prot.substring(0, prot.length - 9));
 	    		}	
     		};
 
@@ -146,22 +141,26 @@ Util.events(document, {
 	    	protocol.onmouseup = dropFunc;
 	    	protocol.style.zIndex = 0;
 		}
-
-
-
 	},
 });
 
 function drawProtocols() {
 	var names = Object.keys(protocols);
-	var html = "<ul class=\"protocol-list\">";
+	var html = document.createElement("ul");
+	html.setAttribute("class", "protocol-list");
 	for (var i = 0; i < names.length; i++) {
-		html += "<li class=\"protocol\" id=" + names[i] + ">" +
-					names[i] +
-					"<i class=\"edit material-icons\" onClick=editPopUp(\"" + names[i] + "\")>mode_edit</i>" +
-				"</li>";
+		var protocolElem = document.createElement("li");
+		protocolElem.setAttribute("class", "protocol");
+		protocolElem.setAttribute("id", names[i].replace(/ /g, ""));
+		protocolElem.innerText = names[i];
+		var edit = document.createElement("i");
+		edit.setAttribute("class", "edit material-icons")
+		edit.setAttribute("onClick", "editPopUp(\'" + names[i] + "\')");
+		edit.innerText = "mode_edit";
+		protocolElem.appendChild(edit);
+		html.appendChild(protocolElem);
 	}
-	document.getElementById("protocol-container").innerHTML = html;
+	document.getElementById("protocol-container").appendChild(html);
 }
 
 function drawCalendar() {
@@ -188,12 +187,10 @@ function drawCalendar() {
 	}
 }
 
-function addProtocolToCal() {
-	console.log(clickedCell)
+function addProtocolToCal(title) {
 	var protocol = document.getElementById("protocolSelectorCal");
-	console.log(protocol.value)
-	var steps = protocols[protocol.value];
-	console.log(steps)
+	var protocol_name = title ? title : protocol.value;
+	var steps = protocols[protocol_name];
 	var pos = Util.offset(clickedCell);
 	var top = pos.top + 2;
 	for (var i = 0; i < steps.length; i +=1) {
@@ -201,12 +198,12 @@ function addProtocolToCal() {
 		box.setAttribute("class", "calendar-step");
 		box.style.top = top+"px";
 		box.style.left = pos.left;
-		box.style.height = "50px";
+		box.style.height = "20px";
 		box.style.backgroundColor = "var(--sky-blue)";
-		box.innerText = protocol.value + ": Step " + (i+1);
+		box.innerText = protocol_name + ": Step " + (i+1);
 		var time = document.createElement("small");
 		time.innerText ="1pm - 2pm";
-		box.id = protocol.value + "-" + (i+1);
+		box.id = protocol_name + "-" + (i+1);
 		clickedCell.appendChild(box);
 		box.appendChild(document.createElement("br"));
 		box.appendChild(time);
@@ -221,14 +218,12 @@ function selectProtocol() {
 
 function addModal() {
 	var selectProtocol = document.getElementById("selectProtocol");
-	console.log("pie")
 	selectProtocol.style.display = "none";
 	addProtocolToCal();
 }
 
 function closeModal() {
 	var selectProtocol = document.getElementById("selectProtocol");
-	console.log("WOO")
 	selectProtocol.style.display = "none";
 }
 
@@ -282,7 +277,6 @@ function closeModalEditProtocol() {
 
 	var inputs = document.getElementsByClassName("input");
 	for (var i=0; i<inputs.length; i++) {
-		console.log(inputs[i].pattern);
 		if (inputs[i].pattern == "hrs:min" && !pattern.test(input.value)) {
 			alert();
 		}
@@ -439,7 +433,6 @@ function addContact(event) {
 	var form = document.getElementById('emailAdd').value.toLowerCase();
 	var contactName = "contact_" + Object.keys(contacts).length;
 	contacts[contactName] = form;
-	console.log(contacts)
 	document.getElementById('emailAdd').value = "";
 }
 
