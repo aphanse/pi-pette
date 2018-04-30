@@ -6,6 +6,7 @@
 	--light-blue: #7fcdff;
 	--sky-blue: #1da2d8;
 	--pale-blue: #def3f6;
+	--light-gray: hsl(220, 10%, 85%);
 }
 
 html {
@@ -285,7 +286,8 @@ li {
 }
 
 td {
-	border: solid black 1px;
+	border: solid 1px;
+	border-color: var(--light-gray);
 	height: 20px;
 	overflow: visible;
 	width: 100px;

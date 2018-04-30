@@ -118,11 +118,11 @@ function drawCalendar() {
 		for (var col = 0; col < 8; col += 1) {
 			var cell = document.createElement("td");
 			if (row===0 && col > 0) {
-				cell.innerHTML = week[col-1];
+				cell.innerText = week[col-1];
+				cell.style.fontWeight="bold";
 			}
 			if (col === 0 && row > 0) {
-
-				cell.innerHTML = hours[(row-1)%12] + ending;
+				cell.innerText = hours[(row-1)%12] + ending;
 			}
 			tr.appendChild(cell);
 		}
@@ -145,8 +145,12 @@ function addProtocolToCal() {
 		box.style.left = pos.left;
 		box.style.height = "50px";
 		box.style.backgroundColor = "var(--sky-blue)";
-		box.innerHTML = protocol.value + ": Step " + (i+1);
+		box.innerText = protocol.value + ": Step " + (i+1);
+		var time = document.createElement("small");
+		time.innerText ="1pm - 2pm";
 		clickedCell.appendChild(box);
+		box.appendChild(document.createElement("br"));
+		box.appendChild(time);
 		top = top + 70;
 	}
 }
