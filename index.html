@@ -87,12 +87,12 @@
 			<h1>Protocols</h1>
 			<div class="actions-row">
 				<button id="add-protocol" onClick="newProtocol()">Add</button>
-				<button id="delete-protocol">Delete</button>
 				<button id="email" onclick="shareItem()">Email</button>
 			</div>
 
 			<!-- Sharing popup -->
 			<dialog id="shareItemModal">
+				<span class="close" onclick="cancelSharing()"">&times;</span>
 				<form id="shareItemDialog" method="dialog">
 					<div class="sharing-columns">
 						<div class="shareColumns">
@@ -128,6 +128,7 @@
 				</div>
 				<button id="addStepButton" onclick=addStep("stepsEdit")>Add Step</button>
 				<button id="addStepButton" onclick=closeModalEditProtocol()>Done</button>
+
 				<button class = "delete" id="delete-protocol" onclick="deleteProtocol(this)">Delete Protocol</button>
 			</dialog>
 
