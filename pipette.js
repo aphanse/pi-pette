@@ -552,7 +552,7 @@ function closeModalCreateAccount() {
 
 function deleteProtocol(e) {
 	closeModalEditProtocol();
-	var protocolName = e.parentElement.childNodes[3].childNodes[1].value
+	var protocolName = e.parentElement.childNodes[1].value
 	protocolName = protocolName.replace(/\s/g, '');
 	var protocolList = document.getElementsByClassName("protocol-list")[0];
 	var removeID = document.getElementById(protocolName);

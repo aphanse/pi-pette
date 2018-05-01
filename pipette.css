@@ -217,9 +217,27 @@ li {
 	height: 100%;
 }
 
+
+
 /*##########################################################################*/
 /*								  	IDs     						        */
 /*##########################################################################*/
+#margin{
+	font: 5px;
+}
+#delete-protocol{
+	background-color: red;
+	font-size: 12px;
+	padding-top: 5px;
+	padding-bottom: 3px;
+	float: right;
+	float: top;
+	margin-top: 5px;
+}
+#delete-protocol:hover {
+	background-color: DarkRed;
+}
+
 
 #shareItemModal {
 	height: 50vh;

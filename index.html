@@ -119,7 +119,9 @@
 			<dialog id="editProtocolModal">
 				<span class="close" onclick="closeModalEditProtocol()"">&times;</span>
 				<form method="dialog" id="protocolText">
-					<input id="title"></input> </br>
+					<input id="title"></input> 
+					<button class = "delete" id="delete-protocol" onclick="deleteProtocol(this)">Delete Protocol</button></br>
+					<div id="margin"></div></br>
 				</form>
 				<div id="stepsEdit">
 					<div> Steps </div>
@@ -128,8 +130,6 @@
 				</div>
 				<button id="addStepButton" onclick=addStep("stepsEdit")>Add Step</button>
 				
-
-				<button class = "delete" id="delete-protocol" onclick="deleteProtocol(this)">Delete Protocol</button>
 				<button id="addStepButton" onclick=closeModalEditProtocol()>Done</button>
 			</dialog>
 
