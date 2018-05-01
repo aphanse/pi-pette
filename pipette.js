@@ -120,12 +120,29 @@ Util.events(document, {
 
 	    		var protName = protocol.id.substring(0, protocol.id.length-2);
 	    		var stepNum = parseInt(protocol.id.substring(protocol.id.length-1));
+	    		// FOR NEXT STEPS
 	    		while (document.getElementById(protName + "-" + (stepNum+1))) {
 	    			var nextProt = document.getElementById(protName + "-" + (stepNum+1));
-	    			top += 70;
-	    			nextProt.style.left = left + "px";
-	    			nextProt.style.top = top + "px";
+	    			if (nextProt.offsetLeft < left) {
+	    				top += 70;
+		    			nextProt.style.left = left + "px";
+		    			nextProt.style.top = top + "px";
+	    			}
 	    			stepNum ++;
+	    		}
+	    		// FOR PREVIOUS STEPS
+	    		stepNum = parseInt(protocol.id.substring(protocol.id.length-1));
+	    		while (document.getElementById(protName + "-" + (stepNum-1))) {
+	    			var prevProt = document.getElementById(protName + "-" + (stepNum-1));
+	    			console.log(prevProt.offsetLeft);
+	    			console.log(left);
+	    			if (prevProt.offsetLeft > left) {
+	    				console.log("t");
+	    				top -= 70;
+		    			prevProt.style.left = left + "px";
+		    			prevProt.style.top = top + "px";
+	    			}
+	    			stepNum --;
 	    		}
     		};
 
@@ -181,7 +198,8 @@ function drawCalendar() {
 				cell.innerText = week[col-1];
 				cell.style.fontWeight="bold";
 			}
-			if (col === 0 && row > 0) {
+			// Showing every other time slot
+			if (col === 0 && row > 0 && row%2==1) {
 				cell.innerText = hours[(row-1)%12] + ending;
 			}
 			tr.appendChild(cell);
