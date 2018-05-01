@@ -226,7 +226,7 @@ li {
 	font: 5px;
 }
 #delete-protocol{
-	background-color: red;
+	background-color: #ff4d4d;
 	font-size: 12px;
 	padding: 5px;
 	float: right;
