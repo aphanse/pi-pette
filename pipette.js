@@ -4,9 +4,9 @@ var dom = {};
 
 // Holds steps associated with each protocol
 var protocols = {"qPCR":[["Take cells", "0:05", "0:15"], ["Freeze cells", "0:30", "1:00"]],
-				 "Cloning":[["Grow cells", 10, 10], ["Add culture to cells", 30, 60], ["Party with cells", 50, 0]],
-				 "DNA Sequencing":[["Step 1", 5, 15]],
-				 "Gel Electrophoresis":[["Step 1", 5, 15]],};
+				 "Cloning":[["Grow cells", "0:10", "0:10"], ["Add culture to cells", "0:30", "1:00"], ["Party with cells", "0:50", "0:00"]],
+				 "DNA Sequencing":[["Step 1", "0:05", "0:15"]],
+				 "Gel Electrophoresis":[["Step 1", "0:05", "0:15"]],};
 
 var contacts = {"Alice P. Hacker":"alice@mit.edu", "Ben Bitdiddle": "ben.bitdiddle@mit.edu", "Eve L.": "eve@mit.edu"}
 const DEFAULT_MSG = "Here is a protocol I would like to share.";
@@ -284,7 +284,7 @@ function closeModalEditProtocol() {
 	var inputs = document.getElementsByClassName("protocal-input");
 	for (var i=0; i<inputs.length; i++) {
 		console.log(inputs[i].pattern);
-		if (inputs[i].pattern == "hrs:mins" && !pattern.test(inputs[i].value)) {
+		if (inputs[i].pattern == "hrs:mins" && !pattern.test(inputs[i].value) && inputs[i].value!="") {
 			validInputs = false;
 			inputs[i].style.backgroundColor = "lightpink";
 		} else {
@@ -300,25 +300,39 @@ function closeModalEditProtocol() {
 		}
 		protocols[title] = protocol;
 		removeFormFields(stepsArea);
-	} else {
-		// display error
 	}
 }
 
 function closeModalNewProtocol() {
 	var modal = document.getElementById('addProtocolModal');
-	modal.style.display = "none";
 	var stepsArea = document.getElementById("stepsAdd");
 	var title = document.getElementById("titleNew").value;
 	var protocol = [];
-	if (title) {
-		getEnteredProtocolData(stepsArea, protocol);
-		var titleBox = document.getElementById("titleNew");
-		titleBox.value = "";
-		protocols[title] = protocol;
-		addProtocolToDisplayList(title);
+	var validInputs = true;
+	var pattern = /^([0-9]*:[0-9][0-9])$/;
+
+	var inputs = document.getElementsByClassName("protocal-input");
+	for (var i=0; i<inputs.length; i++) {
+		console.log(inputs[i].pattern);
+		if (inputs[i].pattern == "hrs:mins" && !pattern.test(inputs[i].value) && inputs[i].value!="") {
+			validInputs = false;
+			inputs[i].style.backgroundColor = "lightpink";
+		} else {
+			inputs[i].style.backgroundColor = "white";
+		}
 	}
-	removeFormFields(stepsArea);
+
+	if (validInputs) {
+		modal.style.display = "none";
+		if (title) {
+			getEnteredProtocolData(stepsArea, protocol);
+			var titleBox = document.getElementById("titleNew");
+			titleBox.value = "";
+			protocols[title] = protocol;
+			addProtocolToDisplayList(title);
+		}
+		removeFormFields(stepsArea);
+	}
 }
 
 function getEnteredProtocolData(stepsArea, protocol) {
@@ -326,7 +340,7 @@ function getEnteredProtocolData(stepsArea, protocol) {
 	for (var j = 3; j < stepsArea.children.length; j++) {
 		var input = stepsArea.children[j].children[0];
 		// if the step name is empty -> delete entry
-		// if either field after is empty, set to 0
+		// if either field after is empty, set to ""
 		if (j%3 === 0) {
 			if (!input.value) { //steps field is blank
 				j = j + 2; // skip all of the fields in that row
@@ -342,7 +356,7 @@ function getEnteredProtocolData(stepsArea, protocol) {
 			}
 		}
 		else {
-			protocol[stepNumber][j%3] = input.value ? input.value : "0"
+			protocol[stepNumber][j%3] = input.value ? input.value : ""
 		}
 	}
 }
@@ -379,6 +393,7 @@ function newProtocol() {
 			if (j!=0) {
     			cell.pattern = "hrs:mins";
     			cell.placeholder = "hrs:mins";
+    			cell.className = "protocal-input";
     		}
 			div.appendChild(cell);
 			stepsArea.appendChild(div);
