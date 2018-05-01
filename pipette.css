@@ -228,10 +228,9 @@ li {
 #delete-protocol{
 	background-color: red;
 	font-size: 12px;
-	padding-top: 5px;
-	padding-bottom: 3px;
+	padding: 5px;
 	float: right;
-	float: top;
+	width: 22%;
 	margin-top: 5px;
 }
 #delete-protocol:hover {
