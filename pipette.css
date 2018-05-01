@@ -271,9 +271,11 @@ label {
 	display: inline-grid;}
 
 input {
-	border-color: Gray
-	width: 1px;
+	border-color: Gainsboro;
+	border-width: 1px;
 }
+
+
 #newAccountModal{
 	text-align: center;
 	margin: 5px;
