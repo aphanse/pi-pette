@@ -40,6 +40,9 @@ Util.events(document, {
 
 	// Keyboard events arrive here
 	"keydown": function(evt) {
+		if (evt.target.className == "protocal-input") {
+			evt.target.style.backgroundColor = "white";
+		}
 	},
 
 	// Click events arrive here
@@ -235,6 +238,7 @@ function editPopUp(title) {
 	var stepsArea = document.getElementById("stepsEdit");
 	var steps = protocols[title];
 	removeFormFields(stepsArea);
+
 	if (stepsArea.children.length < (steps.length + 1)*3) {
 		for (var i = 0; i < steps.length; i++) {
 			for (var j = 0; j < 3; j++) { 
@@ -243,6 +247,7 @@ function editPopUp(title) {
 	    		if (j!=0) {
 	    			cell.pattern = "hrs:mins";
 	    			cell.placeholder = "hrs:mins";
+	    			cell.className = "protocal-input";
 	    		}
 	    		cell.value = steps[i][j];
 	    		div.appendChild(cell);
@@ -261,6 +266,7 @@ function addStep(elementId) {
 		if (j!=0) {
 			cell.pattern = "hrs:mins";
 			cell.placeholder = "hrs:mins";
+			cell.className = "protocal-input";
 		}
 		div.appendChild(cell);
 		stepsArea.appendChild(div);
@@ -275,10 +281,14 @@ function closeModalEditProtocol() {
 	var validInputs = true;
 	var pattern = /^([0-9]*:[0-9][0-9])$/;
 
-	var inputs = document.getElementsByClassName("input");
+	var inputs = document.getElementsByClassName("protocal-input");
 	for (var i=0; i<inputs.length; i++) {
-		if (inputs[i].pattern == "hrs:min" && !pattern.test(input.value)) {
-			alert();
+		console.log(inputs[i].pattern);
+		if (inputs[i].pattern == "hrs:mins" && !pattern.test(inputs[i].value)) {
+			validInputs = false;
+			inputs[i].style.backgroundColor = "lightpink";
+		} else {
+			inputs[i].style.backgroundColor = "white";
 		}
 	}
 
