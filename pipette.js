@@ -475,8 +475,27 @@ function addContact(event) {
 	var button = Util.one("#addcontact");
 	var form = document.getElementById('emailAdd').value.toLowerCase();
 	var contactName = "contact_" + Object.keys(contacts).length;
-	contacts[contactName] = form;
+
+	if (form.length <= 0) {
+		alert("No email entered.");
+	}
+	else if (Object.values(contacts).indexOf(form) > -1)
+		alert("You cannot add a repeated email.");
+	else if (validEmail(form)) {
+		contacts[contactName] = form;
+		contactSelector.innerHTML = createShareContactsMenu();
+	}
+	else {
+		alert("Invalid email entered.");
+	}
 	document.getElementById('emailAdd').value = "";
+	Util.one("#shareItemModal").close();
+	Util.one("#shareItemModal").showModal();
+}
+
+function validEmail(email) {
+	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	return re.test(email);
 }
 
 function signIn() {
