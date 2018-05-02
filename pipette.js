@@ -4,9 +4,9 @@ var dom = {};
 
 // Holds steps associated with each protocol
 var protocols = {"qPCR":[["Take cells", "0:05", "0:15"], ["Freeze cells", "0:30", "1:00"]],
-				 "Cloning":[["Grow cells", 10, 10], ["Add culture to cells", 30, 60], ["Party with cells", 50, 0]],
-				 "DNA Sequencing":[["Step 1", 5, 15]],
-				 "Gel Electrophoresis":[["Step 1", 5, 15]],};
+				 "Cloning":[["Grow cells", "0:10", "0:10"], ["Add culture to cells", "0:30", "1:00"], ["Party with cells", "0:50", "0:00"]],
+				 "DNA Sequencing":[["Step 1", "0:05", "0:15"]],
+				 "Gel Electrophoresis":[["Step 1", "0:05", "0:15"]],};
 
 var contacts = {"Alice P. Hacker":"alice@mit.edu", "Ben Bitdiddle": "ben.bitdiddle@mit.edu", "Eve L.": "eve@mit.edu"}
 const DEFAULT_MSG = "Here is a protocol I would like to share.";
@@ -40,6 +40,9 @@ Util.events(document, {
 
 	// Keyboard events arrive here
 	"keydown": function(evt) {
+		if (evt.target.className == "protocal-input") {
+			evt.target.style.backgroundColor = "white";
+		}
 	},
 
 	// Click events arrive here
@@ -117,12 +120,29 @@ Util.events(document, {
 
 	    		var protName = protocol.id.substring(0, protocol.id.length-2);
 	    		var stepNum = parseInt(protocol.id.substring(protocol.id.length-1));
+	    		// FOR NEXT STEPS
 	    		while (document.getElementById(protName + "-" + (stepNum+1))) {
 	    			var nextProt = document.getElementById(protName + "-" + (stepNum+1));
-	    			top += 70;
-	    			nextProt.style.left = left + "px";
-	    			nextProt.style.top = top + "px";
+	    			if (nextProt.offsetLeft < left) {
+	    				top += 70;
+		    			nextProt.style.left = left + "px";
+		    			nextProt.style.top = top + "px";
+	    			}
 	    			stepNum ++;
+	    		}
+	    		// FOR PREVIOUS STEPS
+	    		stepNum = parseInt(protocol.id.substring(protocol.id.length-1));
+	    		while (document.getElementById(protName + "-" + (stepNum-1))) {
+	    			var prevProt = document.getElementById(protName + "-" + (stepNum-1));
+	    			console.log(prevProt.offsetLeft);
+	    			console.log(left);
+	    			if (prevProt.offsetLeft > left) {
+	    				console.log("t");
+	    				top -= 70;
+		    			prevProt.style.left = left + "px";
+		    			prevProt.style.top = top + "px";
+	    			}
+	    			stepNum --;
 	    		}
     		};
 
@@ -178,7 +198,8 @@ function drawCalendar() {
 				cell.innerText = week[col-1];
 				cell.style.fontWeight="bold";
 			}
-			if (col === 0 && row > 0) {
+			// Showing every other time slot
+			if (col === 0 && row > 0 && row%2==1) {
 				cell.innerText = hours[(row-1)%12] + ending;
 			}
 			tr.appendChild(cell);
@@ -237,6 +258,7 @@ function editPopUp(title) {
 	var stepsArea = document.getElementById("stepsEdit");
 	var steps = protocols[title];
 	removeFormFields(stepsArea);
+
 	if (stepsArea.children.length < (steps.length + 1)*3) {
 		for (var i = 0; i < steps.length; i++) {
 			for (var j = 0; j < 3; j++) { 
@@ -245,6 +267,7 @@ function editPopUp(title) {
 	    		if (j!=0) {
 	    			cell.pattern = "hrs:mins";
 	    			cell.placeholder = "hrs:mins";
+	    			cell.className = "protocal-input";
 	    		}
 	    		cell.value = steps[i][j];
 	    		div.appendChild(cell);
@@ -263,6 +286,7 @@ function addStep(elementId) {
 		if (j!=0) {
 			cell.pattern = "hrs:mins";
 			cell.placeholder = "hrs:mins";
+			cell.className = "protocal-input";
 		}
 		div.appendChild(cell);
 		stepsArea.appendChild(div);
@@ -277,10 +301,14 @@ function closeModalEditProtocol() {
 	var validInputs = true;
 	var pattern = /^([0-9]*:[0-9][0-9])$/;
 
-	var inputs = document.getElementsByClassName("input");
+	var inputs = document.getElementsByClassName("protocal-input");
 	for (var i=0; i<inputs.length; i++) {
-		if (inputs[i].pattern == "hrs:min" && !pattern.test(input.value)) {
-			alert();
+		console.log(inputs[i].pattern);
+		if (inputs[i].pattern == "hrs:mins" && !pattern.test(inputs[i].value) && inputs[i].value!="") {
+			validInputs = false;
+			inputs[i].style.backgroundColor = "lightpink";
+		} else {
+			inputs[i].style.backgroundColor = "white";
 		}
 	}
 
@@ -292,25 +320,39 @@ function closeModalEditProtocol() {
 		}
 		protocols[title] = protocol;
 		removeFormFields(stepsArea);
-	} else {
-		// display error
 	}
 }
 
 function closeModalNewProtocol() {
 	var modal = document.getElementById('addProtocolModal');
-	modal.style.display = "none";
 	var stepsArea = document.getElementById("stepsAdd");
 	var title = document.getElementById("titleNew").value;
 	var protocol = [];
-	if (title) {
-		getEnteredProtocolData(stepsArea, protocol);
-		var titleBox = document.getElementById("titleNew");
-		titleBox.value = "";
-		protocols[title] = protocol;
-		addProtocolToDisplayList(title);
+	var validInputs = true;
+	var pattern = /^([0-9]*:[0-9][0-9])$/;
+
+	var inputs = document.getElementsByClassName("protocal-input");
+	for (var i=0; i<inputs.length; i++) {
+		console.log(inputs[i].pattern);
+		if (inputs[i].pattern == "hrs:mins" && !pattern.test(inputs[i].value) && inputs[i].value!="") {
+			validInputs = false;
+			inputs[i].style.backgroundColor = "lightpink";
+		} else {
+			inputs[i].style.backgroundColor = "white";
+		}
 	}
-	removeFormFields(stepsArea);
+
+	if (validInputs) {
+		modal.style.display = "none";
+		if (title) {
+			getEnteredProtocolData(stepsArea, protocol);
+			var titleBox = document.getElementById("titleNew");
+			titleBox.value = "";
+			protocols[title] = protocol;
+			addProtocolToDisplayList(title);
+		}
+		removeFormFields(stepsArea);
+	}
 }
 
 function getEnteredProtocolData(stepsArea, protocol) {
@@ -318,7 +360,7 @@ function getEnteredProtocolData(stepsArea, protocol) {
 	for (var j = 3; j < stepsArea.children.length; j++) {
 		var input = stepsArea.children[j].children[0];
 		// if the step name is empty -> delete entry
-		// if either field after is empty, set to 0
+		// if either field after is empty, set to ""
 		if (j%3 === 0) {
 			if (!input.value) { //steps field is blank
 				j = j + 2; // skip all of the fields in that row
@@ -334,7 +376,7 @@ function getEnteredProtocolData(stepsArea, protocol) {
 			}
 		}
 		else {
-			protocol[stepNumber][j%3] = input.value ? input.value : "0"
+			protocol[stepNumber][j%3] = input.value ? input.value : ""
 		}
 	}
 }
@@ -371,6 +413,7 @@ function newProtocol() {
 			if (j!=0) {
     			cell.pattern = "hrs:mins";
     			cell.placeholder = "hrs:mins";
+    			cell.className = "protocal-input";
     		}
 			div.appendChild(cell);
 			stepsArea.appendChild(div);
@@ -506,4 +549,16 @@ function closeModalSignIn() {
 function closeModalCreateAccount() {
 	var account = document.getElementById('newAccountModal');
 	account.close();
+}
+
+
+function deleteProtocol(e) {
+	closeModalEditProtocol();
+	var protocolName = e.parentElement.childNodes[1].value
+	protocolName = protocolName.replace(/\s/g, '');
+	var protocolList = document.getElementsByClassName("protocol-list")[0];
+	var removeID = document.getElementById(protocolName);
+	protocolList.removeChild(removeID);
+
+	
 }
