@@ -91,6 +91,7 @@ li {
 	background-color: var(--pale-blue);
 	grid-area: calendar;
 	padding: 20px;
+	overflow: auto
 }
 
 .grid.heading {
@@ -295,13 +296,14 @@ input {
 	border: solid black 1px;
 	border-collapse: collapse;
 	width: 800px;
-	height: 480px;
+	max-height: 480px;
+	overflow: auto;
 }
 
 td {
 	border: solid 1px;
 	border-color: var(--light-gray);
-	height: 20px;
+	height: 50px;
 	overflow: visible;
 	width: 100px;
 	text-align: center;

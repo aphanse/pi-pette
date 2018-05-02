@@ -173,7 +173,7 @@ function drawCalendar() {
 		var ending = row < 13 ? "am" : "pm";
 		for (var col = 0; col < 8; col += 1) {
 			var cell = document.createElement("td");
-			cell.id = "cal" + row + col;
+			cell.id = "cal" + row + "-" + col;
 			if (row===0 && col > 0) {
 				cell.innerText = week[col-1];
 				cell.style.fontWeight="bold";
@@ -198,7 +198,9 @@ function addProtocolToCal(title) {
 		box.setAttribute("class", "calendar-step");
 		box.style.top = top+"px";
 		box.style.left = pos.left;
-		box.style.height = "20px";
+		var time = steps[i][1]/60;
+		var height = Math.round(time * 50)
+		box.style.height = height + "px";
 		box.style.backgroundColor = "var(--sky-blue)";
 		box.innerText = protocol_name + ": Step " + (i+1);
 		var time = document.createElement("small");
@@ -207,7 +209,7 @@ function addProtocolToCal(title) {
 		clickedCell.appendChild(box);
 		box.appendChild(document.createElement("br"));
 		box.appendChild(time);
-		top = top + 70;
+		top = top + Math.round(steps[i][2]/60 * 50) + height;
 	}
 }
 
