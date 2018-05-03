@@ -213,24 +213,47 @@ function addProtocolToCal(title) {
 	var protocol_name = title ? title : protocol.value;
 	var steps = protocols[protocol_name];
 	var pos = Util.offset(clickedCell);
+	var startTimeHour = parseInt(clickedCell.id.substring(3).split("-")[0]-1);
+	var startTimeMin = "00";
 	var top = pos.top + 2;
 	for (var i = 0; i < steps.length; i +=1) {
 		var box = document.createElement("div");
 		box.setAttribute("class", "calendar-step");
 		box.style.top = top+"px";
 		box.style.left = pos.left;
-		var time = steps[i][1]/60;
-		var height = Math.round(time * 50)
+		var parsedTime = steps[i][1].split(":");
+		var time = parseInt(parsedTime[0]) + parseInt(parsedTime[1])/60;
+		var height = Math.round(time * 30)
+		var hours = parseInt(startTimeHour) + parseInt(parsedTime[0]);
+		var mins = (parseInt(startTimeMin) + parseInt(parsedTime[1])) % 60;
+		mins = mins < 10? "0" + mins : mins
+		hours += Math.floor(parseInt(startTimeMin) + parseInt(parsedTime[1]) / 60)==0 ? 0 : 1;
 		box.style.height = height + "px";
 		box.style.backgroundColor = "var(--sky-blue)";
 		box.innerText = protocol_name + ": Step " + (i+1);
-		var time = document.createElement("small");
-		time.innerText ="1pm - 2pm";
+		var timeText = document.createElement("small");
+		var startTimeEnding = Math.floor(startTimeHour/12)==0 ? "am" : "pm";
+		var endTimeEnding = Math.floor(hours/12)==0 ? "am" : "pm";
+		console.log("time", hours/12==0)
+		//startTimeHour = startTimeHour%12;
+		//startTimeHour = startTimeHour%12==0 ? 12 : startTimeHour;
+		var startTime = startTimeHour%12==0 ? 12 : startTimeHour%12;
+		startTime += ":" + startTimeMin;
+		hours = hours%12;
+		hours = hours==0 ? 12 : hours
+		var endTime = hours + ":" + mins;
+		timeText.innerText = startTime + startTimeEnding + " - " + endTime + endTimeEnding;
 		box.id = protocol_name + "-" + (i+1);
 		clickedCell.appendChild(box);
 		box.appendChild(document.createElement("br"));
-		box.appendChild(time);
-		top = top + Math.round(steps[i][2]/60 * 50) + height;
+		box.appendChild(timeText);
+		parsedTime = steps[i][2].split(":");
+		time = parseInt(parsedTime[0]) + parseInt(parsedTime[1])/60;
+		top = top + Math.round(time * 30) + height;
+		startTimeHour = hours + parseInt(parsedTime[0])
+		startTimeMin = (parseInt(mins) + parseInt(parsedTime[1])) % 60;
+		startTimeMin = startTimeMin < 10 ? "0" + startTimeMin : startTimeMin;
+		startTimeHour += (parseInt(mins) + parseInt(parsedTime[1])) / 60 ? 0 : 1; 
 	}
 }
 
@@ -259,17 +282,23 @@ function editPopUp(title) {
 	var steps = protocols[title];
 	removeFormFields(stepsArea);
 
-	if (stepsArea.children.length < (steps.length + 1)*3) {
-		for (var i = 0; i < steps.length; i++) {
+	if (stepsArea.children.length < Math.max((steps.length + 1)*3,6)) {
+		for (var i = 0; i < Math.max(steps.length,1); i++) {
 			for (var j = 0; j < 3; j++) { 
 				var div = document.createElement("div");
 	    		var cell = document.createElement("input");
 	    		if (j!=0) {
 	    			cell.pattern = "hrs:mins";
 	    			cell.placeholder = "hrs:mins";
-	    			cell.className = "protocal-input";
 	    		}
-	    		cell.value = steps[i][j];
+	    		else {
+	    			cell.pattern = "Instruction";
+	    			cell.placeholder = "Instruction"
+	    		}
+	    		if (steps.length > 0) {
+	    			cell.value = steps[i][j];
+	    		}
+	    		cell.className = "protocal-input";
 	    		div.appendChild(cell);
 	    		stepsArea.appendChild(div);
 	    	}
@@ -286,8 +315,12 @@ function addStep(elementId) {
 		if (j!=0) {
 			cell.pattern = "hrs:mins";
 			cell.placeholder = "hrs:mins";
-			cell.className = "protocal-input";
 		}
+		else {
+			cell.pattern = "Instruction";
+			cell.placeholder = "Instruction"
+		}
+	    cell.className = "protocal-input";
 		div.appendChild(cell);
 		stepsArea.appendChild(div);
 	}
@@ -404,17 +437,21 @@ function newProtocol() {
 	var modal = document.getElementById('addProtocolModal');
 	var form = document.getElementById("protocolText");
 	var titleBox = document.getElementById("titleNew");
-	titleBox.placeholder = "Procedure Name";
+	titleBox.placeholder = "Protocol Name";
 	var stepsArea = document.getElementById("stepsAdd");
 	if (stepsArea.children.length !== 6) {
 		for (var j = 0; j < 3; j++) { 
 			var div = document.createElement("div");
 			var cell = document.createElement("input");
-			if (j!=0) {
-    			cell.pattern = "hrs:mins";
-    			cell.placeholder = "hrs:mins";
-    			cell.className = "protocal-input";
-    		}
+    		if (j!=0) {
+				cell.pattern = "hrs:mins";
+				cell.placeholder = "hrs:mins";
+			}
+			else {
+				cell.pattern = "Instruction";
+				cell.placeholder = "Instruction"
+			}
+			cell.className = "protocal-input";
 			div.appendChild(cell);
 			stepsArea.appendChild(div);
 		}
