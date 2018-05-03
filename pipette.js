@@ -20,6 +20,14 @@ var allProtocols = [['qPCRmode_edit', qPCR], ['Cloningmode_edit', cloning], ['DN
 var prot = null;
 var x = null;
 var y = null;
+
+const CAL_COLORS = [
+	"plum",
+	"mediumseagreen",
+	"orange",
+	"cornflowerblue",
+	"salmon"];
+
 //////////////////////////////////////////////////////////////////////////////////////
 // 			                 														//
 // 			                  		Event Listeners									//
@@ -88,7 +96,7 @@ Util.events(document, {
 	    	// Actual mousedown event 
 	    	document.addEventListener("mousemove", dragFunc);
 	    	protocol.onmouseup = dropFunc;
-	    	protocol.style.zIndex = 0;
+	    	protocol.style.zIndex = 1;
 		}
 
 		// DRAGGING CALENDAR EVENTS
@@ -134,10 +142,7 @@ Util.events(document, {
 	    		stepNum = parseInt(protocol.id.substring(protocol.id.length-1));
 	    		while (document.getElementById(protName + "-" + (stepNum-1))) {
 	    			var prevProt = document.getElementById(protName + "-" + (stepNum-1));
-	    			console.log(prevProt.offsetLeft);
-	    			console.log(left);
 	    			if (prevProt.offsetLeft > left) {
-	    				console.log("t");
 	    				top -= 70;
 		    			prevProt.style.left = left + "px";
 		    			prevProt.style.top = top + "px";
@@ -173,6 +178,7 @@ function drawProtocols() {
 		protocolElem.setAttribute("class", "protocol");
 		protocolElem.setAttribute("id", names[i].replace(/ /g, ""));
 		protocolElem.innerText = names[i];
+		protocolElem.style.borderBottom = "3px solid " + CAL_COLORS[i%CAL_COLORS.length];
 		var edit = document.createElement("i");
 		edit.setAttribute("class", "edit material-icons")
 		edit.setAttribute("onClick", "editPopUp(\'" + names[i] + "\')");
@@ -220,7 +226,7 @@ function addProtocolToCal(title) {
 		box.style.top = top+"px";
 		box.style.left = pos.left;
 		box.style.height = "20px";
-		box.style.backgroundColor = "var(--sky-blue)";
+		box.style.backgroundColor = getCalColor(protocol_name);
 		box.innerText = protocol_name + ": Step " + (i+1);
 		var time = document.createElement("small");
 		time.innerText ="1pm - 2pm";
@@ -301,7 +307,6 @@ function closeModalEditProtocol() {
 
 	var inputs = document.getElementsByClassName("protocal-input");
 	for (var i=0; i<inputs.length; i++) {
-		console.log(inputs[i].pattern);
 		if (inputs[i].pattern == "hrs:mins" && !pattern.test(inputs[i].value) && inputs[i].value!="") {
 			validInputs = false;
 			inputs[i].style.backgroundColor = "lightpink";
@@ -331,7 +336,6 @@ function closeModalNewProtocol() {
 
 	var inputs = document.getElementsByClassName("protocal-input");
 	for (var i=0; i<inputs.length; i++) {
-		console.log(inputs[i].pattern);
 		if (inputs[i].pattern == "hrs:mins" && !pattern.test(inputs[i].value) && inputs[i].value!="") {
 			validInputs = false;
 			inputs[i].style.backgroundColor = "lightpink";
@@ -390,6 +394,7 @@ function addProtocolToDisplayList(title) {
 	listItem.appendChild(editIcon);
 	var protocolList = document.getElementsByClassName("protocol-list")[0];
 	protocolList.appendChild(listItem);
+	listItem.style.borderBottom = "3px solid " + getCalColor(title);
 }
 
 function removeFormFields(parentContainingFields) {
@@ -418,6 +423,7 @@ function newProtocol() {
 		}
 	}
 	modal.style.display = "block";
+	titleBox.focus();
 }
 
 function shareItem() {
@@ -547,4 +553,15 @@ function closeModalSignIn() {
 function closeModalCreateAccount() {
 	var account = document.getElementById('newAccountModal');
 	account.close();
+}
+
+// Helper function for protocol colors because life is difficult
+function getCalColor(name) {
+	var names = Object.keys(protocols);
+	for (var i=0; i<names.length; i++) {
+		if (name == names[i]) {
+			return CAL_COLORS[i%CAL_COLORS.length];
+		}
+	}
+	return "skyblue";
 }
