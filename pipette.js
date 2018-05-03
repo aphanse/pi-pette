@@ -259,18 +259,18 @@ function addProtocolToCal(title) {
 
 function selectProtocol() {
 	var selectProtocol = document.getElementById("selectProtocol");
-	selectProtocol.style.display = "block";
+	selectProtocol.showModal();
 }
 
 function addModal() {
 	var selectProtocol = document.getElementById("selectProtocol");
-	selectProtocol.style.display = "none";
+	selectProtocol.close();
 	addProtocolToCal();
 }
 
 function closeModal() {
 	var selectProtocol = document.getElementById("selectProtocol");
-	selectProtocol.style.display = "none";
+	selectProtocol.close();
 }
 
 function editPopUp(title) {
@@ -304,7 +304,7 @@ function editPopUp(title) {
 	    	}
 	    }
 	}
-	modal.style.display = "block";
+	modal.showModal();
 }
 
 function addStep(elementId) {
@@ -346,7 +346,7 @@ function closeModalEditProtocol() {
 	}
 
 	if (validInputs) {
-		modal.style.display = "none";
+		modal.close();
 		getEnteredProtocolData(stepsArea, protocol);
 		if (!protocols[title]) {
 			addProtocolToDisplayList(title);
@@ -376,7 +376,7 @@ function closeModalNewProtocol() {
 	}
 
 	if (validInputs) {
-		modal.style.display = "none";
+		modal.close();
 		if (title) {
 			getEnteredProtocolData(stepsArea, protocol);
 			var titleBox = document.getElementById("titleNew");
@@ -456,7 +456,7 @@ function newProtocol() {
 			stepsArea.appendChild(div);
 		}
 	}
-	modal.style.display = "block";
+	modal.showModal();
 }
 
 function shareItem() {
@@ -562,25 +562,6 @@ function showAccountNew() {
 		account.innerHTML = "Welcome, " + username;
 		closeModalCreateAccount();
 	} 
-
-	// if(username.length==0){
-	// 	console.log("username invalid");
-	// 	document.getElementById("error-msg1").innerHTML = "Please enter valid username.";
-	// 	document.getElementById("error-msg1").style.color = "red";
-	// } if(password.length==0){
-	// 	console.log("password invalid");
-	// 	document.getElementById("error-msg2").innerHTML = "Please enter valid password.";
-	// 	document.getElementById("error-msg2").style.color = "red";
-	// }  if(confirmedPass != password){
-	// 	console.log("password confirmation invalid");
-	// 	document.getElementById("error-msg3").innerHTML = "Confirm Password Does not Match.";
-	// 	document.getElementById("error-msg3").style.color = "red";	
-	// } if(email.indexOf('@')==-1){
-	// 	console.log("Email invalid");
-	// 	document.getElementById("error-msg4").innerHTML = "Please enter valid Email Address.";
-	// 	document.getElementById("error-msg4").style.color = "red";		
-	// }
-
 }
 
 function showAccount(){
