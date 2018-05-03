@@ -246,13 +246,13 @@ li {
 #messageBox {
 	height: 100%;
 	width: 90%;
-	max-height: 40vh;
+	max-height: 30vh;
 	max-width: 90%;
 	font-family: var(--font-main);
-	
+
 }
 
-#contactSelector {
+#contactSelector, #protocolSelector {
 	height: 100%;
 	width: 90%;
 	max-height: 40vh;
