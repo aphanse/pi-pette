@@ -248,6 +248,8 @@ li {
 	width: 90%;
 	max-height: 40vh;
 	max-width: 90%;
+	font-family: var(--font-main);
+	
 }
 
 #contactSelector {
