@@ -85,6 +85,10 @@ li {
 
 .actions-row {
 	margin-left: 5px;
+	margin-right: 5px;
+	display: flex;
+	justify-content: space-evenly;
+
 }
 
 .grid.calendar {
@@ -213,9 +217,26 @@ li {
 	height: 100%;
 }
 
+
+
 /*##########################################################################*/
 /*								  	IDs     						        */
 /*##########################################################################*/
+#margin{
+	font: 5px;
+}
+#delete-protocol{
+	background-color: #ff4d4d;
+	font-size: 12px;
+	padding: 5px;
+	float: right;
+	width: 22%;
+	margin-top: 5px;
+}
+#delete-protocol:hover {
+	background-color: DarkRed;
+}
+
 
 #shareItemModal {
 	height: 50vh;
@@ -271,9 +292,11 @@ label {
 	display: inline-grid;}
 
 input {
-	border-color: Gray
-	width: 1px;
+	border-color: Gainsboro;
+	border-width: 1px;
 }
+
+
 #newAccountModal{
 	text-align: center;
 	margin: 5px;
