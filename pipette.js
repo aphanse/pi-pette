@@ -209,6 +209,7 @@ function drawCalendar() {
 	}
 }
 
+// this function makes me sad :( but I wrote it :(
 function addProtocolToCal(title) {
 	var protocol = document.getElementById("protocolSelectorCal");
 	var protocol_name = title ? title : protocol.options[protocol.selectedIndex].innerHTML;
@@ -236,8 +237,6 @@ function addProtocolToCal(title) {
 		var startTimeEnding = Math.floor(startTimeHour/12)==0 ? "am" : "pm";
 		var endTimeEnding = Math.floor(hours/12)==0 ? "am" : "pm";
 		console.log("time", hours/12==0)
-		//startTimeHour = startTimeHour%12;
-		//startTimeHour = startTimeHour%12==0 ? 12 : startTimeHour;
 		var startTime = startTimeHour%12==0 ? 12 : startTimeHour%12;
 		startTime += ":" + startTimeMin;
 		hours = hours%12;
@@ -282,6 +281,8 @@ function editPopUp(title) {
 	var stepsArea = document.getElementById("stepsEdit");
 	var steps = protocols[title];
 	removeFormFields(stepsArea);
+	var doneButton = document.getElementById("editProtDone");
+	doneButton.setAttribute("onClick", "closeModalEditProtocol('" + title + "')");
 
 	if (stepsArea.children.length < Math.max((steps.length + 1)*3,6)) {
 		for (var i = 0; i < Math.max(steps.length,1); i++) {
@@ -327,10 +328,10 @@ function addStep(elementId) {
 	}
 }
 
-function closeModalEditProtocol() {
+function closeModalEditProtocol(orignalTitle) {
 	var modal = document.getElementById('editProtocolModal');
 	var stepsArea = document.getElementById("stepsEdit");
-	var title = document.getElementById("title").value
+	var title = document.getElementById("title").value;
 	var protocol = protocols[title] ? protocols[title] : [];
 	var validInputs = true;
 	var pattern = /^([0-9]*:[0-9][0-9])$/;
@@ -350,9 +351,17 @@ function closeModalEditProtocol() {
 		modal.close();
 		getEnteredProtocolData(stepsArea, protocol);
 		if (!protocols[title]) {
-			addProtocolToDisplayList(title);
+			delete protocols[orignalTitle];
+			var protocolBar = document.getElementById(orignalTitle.replace(/ /g, ""));
+			protocolBar.innerText = title;
+			var edit = document.createElement("i");
+			edit.setAttribute("class", "edit material-icons")
+			edit.setAttribute("onClick", "editPopUp(\'" + title + "\')");
+			edit.innerText = "mode_edit";
+			protocolBar.appendChild(edit);
 		}
 		protocols[title] = protocol;
+		console.log(protocols, orignalTitle)
 		removeFormFields(stepsArea);
 	}
 }
@@ -418,13 +427,14 @@ function getEnteredProtocolData(stepsArea, protocol) {
 function addProtocolToDisplayList(title) {
 	var listItem = document.createElement("li");
 	listItem.setAttribute("class", "protocol");
+	listItem.setAttribute("id", title.replace(/ /g, ""));
 	listItem.innerHTML = title;
 	var editIcon = document.createElement("i");
 	editIcon.setAttribute("class", "edit material-icons");
 	editIcon.setAttribute("onClick", "editPopUp('"+ title +"')");
 	editIcon.innerHTML = "mode_edit";
 	listItem.appendChild(editIcon);
-	var protocolList = document.getElementsByClassName("protocol-list")[0];
+	var protocolList = document.getElementById("protocol-container");
 	protocolList.appendChild(listItem);
 }
 
