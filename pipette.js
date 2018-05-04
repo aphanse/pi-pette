@@ -48,6 +48,7 @@ Util.events(document, {
 	// Click events arrive here
 	"click": function(evt) {
 		if (evt.target.localName === "td") {
+			selectItemsforCal()
 			selectProtocol();
 			clickedCell = evt.target;
 		}
@@ -210,7 +211,7 @@ function drawCalendar() {
 
 function addProtocolToCal(title) {
 	var protocol = document.getElementById("protocolSelectorCal");
-	var protocol_name = title ? title : protocol.value;
+	var protocol_name = title ? title : protocol.options[protocol.selectedIndex].innerHTML;
 	var steps = protocols[protocol_name];
 	var pos = Util.offset(clickedCell);
 	var startTimeHour = parseInt(clickedCell.id.substring(3).split("-")[0]-1);
@@ -530,12 +531,12 @@ function addContact(event) {
 	document.getElementById('emailAdd').value = "";
 	Util.one("#shareItemModal").close();
 	Util.one("#shareItemModal").showModal();
-}
+};
 
 function validEmail(email) {
 	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	return re.test(email);
-}
+};
 
 function signIn() {
 	var signIn = document.getElementById('signInModal');
@@ -543,6 +544,10 @@ function signIn() {
 	signIn.showModal();
 }
 
+function selectItemsforCal() {
+	var protocolSelector = Util.one("#protocolSelectorCal");
+	protocolSelector.innerHTML = createShareProtocolDropdown();
+}
 
 function createAccount(){
 	closeModalSignIn()
