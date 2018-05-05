@@ -11,15 +11,8 @@ var protocols = {"qPCR":[["Take cells", "0:05", "0:15"], ["Freeze cells", "0:30"
 var contacts = {"Alice P. Hacker":"alice@mit.edu", "Ben Bitdiddle": "ben.bitdiddle@mit.edu", "Eve L.": "eve@mit.edu"}
 const DEFAULT_MSG = "Here is a protocol I would like to share.";
 
+Protocol_In_Edit=null;
 
-var qPCR = "https://calendar.google.com/calendar/embed?mode=WEEK&amp&src=nhb3ul253iih305evek6dukth8%40group.calendar.google.com&color=%232F6309&src=13rt5s11dte8459l5n7jdp35ck%40group.calendar.google.com&color=%230F4B38&ctz=America%2FNew_York";
-var cloning = "https://calendar.google.com/calendar/embed?mode=WEEK&amp&src=nhb3ul253iih305evek6dukth8%40group.calendar.google.com&color=%232F6309&src=ep5ndnb68jt4vihfdv0p4prk48%40group.calendar.google.com&color=%23182C57&src=13rt5s11dte8459l5n7jdp35ck%40group.calendar.google.com&color=%230F4B38&ctz=America%2FNew_York";
-var DNA_Seq = "https://calendar.google.com/calendar/embed?mode=WEEK&amp&src=nhb3ul253iih305evek6dukth8%40group.calendar.google.com&color=%232F6309&src=ep5ndnb68jt4vihfdv0p4prk48%40group.calendar.google.com&color=%23182C57&src=13rt5s11dte8459l5n7jdp35ck%40group.calendar.google.com&color=%230F4B38&src=n5oddugkag5qp8jdm7vcdtuo28%40group.calendar.google.com&color=%235229A3&ctz=America%2FNew_York";
-var Gel_Electro = "https://calendar.google.com/calendar/embed?mode=WEEK&amp&src=nhb3ul253iih305evek6dukth8%40group.calendar.google.com&color=%232F6309&src=ep5ndnb68jt4vihfdv0p4prk48%40group.calendar.google.com&color=%23182C57&src=13rt5s11dte8459l5n7jdp35ck%40group.calendar.google.com&color=%230F4B38&src=mi0e8rqpipopcqbcfr3bfsv6gc%40group.calendar.google.com&color=%238C500B&src=n5oddugkag5qp8jdm7vcdtuo28%40group.calendar.google.com&color=%235229A3&ctz=America%2FNew_York";
-var allProtocols = [['qPCRmode_edit', qPCR], ['Cloningmode_edit', cloning], ['DNA Sequencingmode_edit', DNA_Seq], ['Gel Electrophoresismode_edit', Gel_Electro]]
-var prot = null;
-var x = null;
-var y = null;
 //////////////////////////////////////////////////////////////////////////////////////
 // 			                 														//
 // 			                  		Event Listeners									//
@@ -249,6 +242,7 @@ function closeModal() {
 }
 
 function editPopUp(title) {
+	Protocol_In_Edit = title;
 	var modal = document.getElementById('editProtocolModal');
 	var form = document.getElementById("protocolText");
 	var titleBox = document.getElementById("title");
@@ -256,9 +250,15 @@ function editPopUp(title) {
 	var stepsArea = document.getElementById("stepsEdit");
 	var steps = protocols[title];
 	removeFormFields(stepsArea);
-
+    var div = document.createElement("div");
+    stepsArea.insertBefore(div, stepsArea.childNodes[0]);
 	if (stepsArea.children.length < (steps.length + 1)*3) {
 		for (var i = 0; i < steps.length; i++) {
+            var del = document.createElement("button")
+            del.innerHTML = "X"
+            del.id = "step-delete"
+            del.setAttribute("onClick", "delStep(event)");
+            stepsArea.appendChild(del);
 			for (var j = 0; j < 3; j++) { 
 				var div = document.createElement("div");
 	    		var cell = document.createElement("input");
@@ -274,6 +274,19 @@ function editPopUp(title) {
 	    }
 	}
 	modal.style.display = "block";
+}
+
+function delStep(e) {
+    console.log(e.target.parentElement);
+    var steps = e.target.nextSibling;
+    console.log(steps.nextSibling)
+    var timeAlloted = steps.nextSibling;
+    var waitTime = timeAlloted.nextSibling;
+    var modal = e.target.parentElement;
+    modal.removeChild(e.target);
+    modal.removeChild(steps);
+    modal.removeChild(timeAlloted);
+    modal.removeChild(waitTime);
 }
 
 function addStep(elementId) {
@@ -356,7 +369,7 @@ function closeModalNewProtocol() {
 function getEnteredProtocolData(stepsArea, protocol) {
 	var stepNumber = -1;
 	for (var j = 3; j < stepsArea.children.length; j++) {
-		var input = stepsArea.children[j].children[0];
+		var input = stepsArea.children[j];
 		// if the step name is empty -> delete entry
 		// if either field after is empty, set to ""
 		if (j%3 === 0) {
@@ -572,7 +585,7 @@ function closeModalCreateAccount() {
 function deleteProtocol(e) {
 	closeModalEditProtocol();
 	var protocolName = e.parentElement.childNodes[1].value
-	protocolName = protocolName.replace(/\s/g, '');
+	protocolName = Protocol_In_Edit.replace(/\s/g, '');
 	var protocolList = document.getElementsByClassName("protocol-list")[0];
 	var removeID = document.getElementById(protocolName);
 	protocolList.removeChild(removeID);

@@ -79,6 +79,7 @@ li {
     text-decoration: none;
 }
 
+
 /*##########################################################################*/
 /*								  Classes     						        */
 /*##########################################################################*/
@@ -222,19 +223,42 @@ li {
 /*##########################################################################*/
 /*								  	IDs     						        */
 /*##########################################################################*/
-#margin{
-	font: 5px;
+#step-delete{
+	background-color: white;
+	color: lightgray;
 }
+
+#step-delete:hover {
+	color: gray;
+
+}
+#close{
+	display:flex;
+	float:center;
+	background-color: red;
+}
+#title{
+	float: center
+}
+#add-protocol{
+
+	width: 50%;
+	text-align: center;
+}
+#email{
+	width: 45%;
+}
+
 #delete-protocol{
-	background-color: #ff4d4d;
-	font-size: 12px;
+	padding:0px;
+	display:flex;
+	float:center;
 	padding: 5px;
-	float: right;
-	width: 22%;
-	margin-top: 5px;
+	margin: 10px;
 }
 #delete-protocol:hover {
-	background-color: DarkRed;
+	background-color: #e01818;
+
 }
 
 
@@ -265,8 +289,8 @@ li {
 }
 
 #stepsEdit {
-	display: grid;
-  	grid-template-columns: auto auto auto;
+	display: grid;;
+  	grid-template-columns: 10% 30% 30% 30%;
   	align-items: center;
   	grid-row-gap: 10px;
   	grid-column-gap: 5px;
