@@ -223,6 +223,7 @@ li {
 /*##########################################################################*/
 /*								  	IDs     						        */
 /*##########################################################################*/
+
 #step-delete{
 	background-color: white;
 	color: lightgray;
@@ -332,7 +333,10 @@ input {
     top: 50%;
     transform: translate(-50%, -50%);
 }
+#emailFill{
+	width: 100%;
 }
+
 #myCalendar {
 	border-width:0
 	width: 800px;

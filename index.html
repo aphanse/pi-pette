@@ -51,6 +51,9 @@
 			<ul class="heading-items">
 			  	<li class="title">&pi;-pette</li>
 			  	<li class="sign-in" id="account" onclick="signIn()">Sign In</li>
+				<div id="Logout">
+					<li class="sign-in" id="account" onclick="abc()">Log Out</li>
+				</div>
 			</ul>
 			<!-- Sign in box -->
 			<dialog id="signInModal">
@@ -72,7 +75,7 @@
 					<label>New Username: <label><input id="newUsername"></input><br>
 					<label>New Password: <label><input id = "password" type="password"></input><br>
 					<label>Confirm Password: <label><input id="confirmedPass" type="password"></input><br>
-					<label>E-mail: <label><input id = "email" type="email"></input><br>
+					<label>E-mail: <label><input id = "emailFill" type="email"></input><br>
 				</form>
 					<button id="create-account" onClick="showAccountNew()">Create Account</button>
 			</dialog>

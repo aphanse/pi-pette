@@ -12,6 +12,9 @@ var contacts = {"Alice P. Hacker":"alice@mit.edu", "Ben Bitdiddle": "ben.bitdidd
 const DEFAULT_MSG = "Here is a protocol I would like to share.";
 
 Protocol_In_Edit=null;
+var signedIn = false;
+var logOut = document.getElementById("Logout");
+logOut.style.display = "none"
 
 //////////////////////////////////////////////////////////////////////////////////////
 // 			                 														//
@@ -565,10 +568,24 @@ function validEmail(email) {
 };
 
 function signIn() {
-	var signIn = document.getElementById('signInModal');
-	document.getElementById("error-msg").innerHTML = "&nbsp;";
-	signIn.showModal();
+	if (signedIn == false){
+		var signIn = document.getElementById('signInModal');
+		document.getElementById("error-msg").innerHTML = "&nbsp;";
+		signIn.showModal();
+	}
+
 }
+function abc(){
+	var account = document.getElementById("account");
+	var username = document.getElementById("username");
+	var newusername = document.getElementById("newUsername");
+	username.value = ""
+	newusername.value = ""
+	account.innerHTML = "Sign In";
+	logOut.style.display = "none"
+	signedIn = false;
+}
+
 
 function selectItemsforCal() {
 	var protocolSelector = Util.one("#protocolSelectorCal");
@@ -591,6 +608,7 @@ function showAccountNew() {
 		// Currently a canned response
 		var account = document.getElementById("account");
 		account.innerHTML = "Welcome, " + username;
+		logOut.style.display = "block"
 		closeModalCreateAccount();
 	} 
 }
@@ -601,6 +619,8 @@ function showAccount(){
 		// Currently a canned response
 		var account = document.getElementById("account");
 		account.innerHTML = "Welcome, " + username;
+		logOut.style.display = "block"
+		signedIn = true; 
 		closeModalSignIn();
 	} else {
 		console.log("username invalid");
