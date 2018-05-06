@@ -11,7 +11,7 @@ var protocols = {"qPCR":[["Take cells", "0:05", "0:15"], ["Freeze cells", "0:30"
 var contacts = {"Alice P. Hacker":"alice@mit.edu", "Ben Bitdiddle": "ben.bitdiddle@mit.edu", "Eve L.": "eve@mit.edu"}
 const DEFAULT_MSG = "Here is a protocol I would like to share.";
 
-
+var eventCount = 0;
 var qPCR = "https://calendar.google.com/calendar/embed?mode=WEEK&amp&src=nhb3ul253iih305evek6dukth8%40group.calendar.google.com&color=%232F6309&src=13rt5s11dte8459l5n7jdp35ck%40group.calendar.google.com&color=%230F4B38&ctz=America%2FNew_York";
 var cloning = "https://calendar.google.com/calendar/embed?mode=WEEK&amp&src=nhb3ul253iih305evek6dukth8%40group.calendar.google.com&color=%232F6309&src=ep5ndnb68jt4vihfdv0p4prk48%40group.calendar.google.com&color=%23182C57&src=13rt5s11dte8459l5n7jdp35ck%40group.calendar.google.com&color=%230F4B38&ctz=America%2FNew_York";
 var DNA_Seq = "https://calendar.google.com/calendar/embed?mode=WEEK&amp&src=nhb3ul253iih305evek6dukth8%40group.calendar.google.com&color=%232F6309&src=ep5ndnb68jt4vihfdv0p4prk48%40group.calendar.google.com&color=%23182C57&src=13rt5s11dte8459l5n7jdp35ck%40group.calendar.google.com&color=%230F4B38&src=n5oddugkag5qp8jdm7vcdtuo28%40group.calendar.google.com&color=%235229A3&ctz=America%2FNew_York";
@@ -230,9 +230,11 @@ function addProtocolToCal(title) {
 		var mins = (parseInt(startTimeMin) + parseInt(parsedTime[1])) % 60;
 		mins = mins < 10? "0" + mins : mins
 		hours += Math.floor(parseInt(startTimeMin) + parseInt(parsedTime[1]) / 60)==0 ? 0 : 1;
-		box.style.height = height + "px";
+		box.style.height = Math.max(height, 15) + "px";
 		box.style.backgroundColor = "var(--sky-blue)";
 		box.innerText = protocol_name + ": Step " + (i+1);
+		box.setAttribute("id", protocol_name.replace(/ /g, "")+"-"+(i+1)+"-"+eventCount);
+		eventCount += 1;
 		var timeText = document.createElement("small");
 		var startTimeEnding = Math.floor(startTimeHour/12)==0 ? "am" : "pm";
 		var endTimeEnding = Math.floor(hours/12)==0 ? "am" : "pm";
