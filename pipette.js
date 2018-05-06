@@ -20,6 +20,11 @@ var allProtocols = [['qPCRmode_edit', qPCR], ['Cloningmode_edit', cloning], ['DN
 var prot = null;
 var x = null;
 var y = null;
+Protocol_In_Edit=null;
+var signedIn = false;
+var logOut = document.getElementById("Logout");
+logOut.style.display = "none"
+
 //////////////////////////////////////////////////////////////////////////////////////
 // 			                 														//
 // 			                  		Event Listeners									//
@@ -276,6 +281,7 @@ function closeModal() {
 }
 
 function editPopUp(title) {
+	Protocol_In_Edit = title;
 	var modal = document.getElementById('editProtocolModal');
 	var form = document.getElementById("protocolText");
 	var titleBox = document.getElementById("title");
@@ -283,11 +289,20 @@ function editPopUp(title) {
 	var stepsArea = document.getElementById("stepsEdit");
 	var steps = protocols[title];
 	removeFormFields(stepsArea);
+
+	var div = document.createElement("div");
+	stepsArea.insertBefore(div, stepsArea.childNodes[0]);
 	var doneButton = document.getElementById("editProtDone");
 	doneButton.setAttribute("onClick", "closeModalEditProtocol('" + title + "')");
 
 	if (stepsArea.children.length < Math.max((steps.length + 1)*3,6)) {
 		for (var i = 0; i < Math.max(steps.length,1); i++) {
+            var del = document.createElement("button")
+            del.innerHTML = "X"
+            del.id = "step-delete"
+            del.setAttribute("onClick", "delStep(event)");
+            stepsArea.appendChild(del);			
+
 			for (var j = 0; j < 3; j++) { 
 				var div = document.createElement("div");
 	    		var cell = document.createElement("input");
@@ -309,6 +324,19 @@ function editPopUp(title) {
 	    }
 	}
 	modal.showModal();
+}
+
+function delStep(e) {
+    console.log(e.target.parentElement);
+    var steps = e.target.nextSibling;
+    console.log(steps.nextSibling)
+    var timeAlloted = steps.nextSibling;
+    var waitTime = timeAlloted.nextSibling;
+    var modal = e.target.parentElement;
+    modal.removeChild(e.target);
+    modal.removeChild(steps);
+    modal.removeChild(timeAlloted);
+    modal.removeChild(waitTime);
 }
 
 function addStep(elementId) {
@@ -403,7 +431,7 @@ function closeModalNewProtocol() {
 function getEnteredProtocolData(stepsArea, protocol) {
 	var stepNumber = -1;
 	for (var j = 3; j < stepsArea.children.length; j++) {
-		var input = stepsArea.children[j].children[0];
+		var input = stepsArea.children[j];
 		// if the step name is empty -> delete entry
 		// if either field after is empty, set to ""
 		if (j%3 === 0) {
@@ -551,10 +579,24 @@ function validEmail(email) {
 };
 
 function signIn() {
-	var signIn = document.getElementById('signInModal');
-	document.getElementById("error-msg").innerHTML = "&nbsp;";
-	signIn.showModal();
+	if (signedIn == false){
+		var signIn = document.getElementById('signInModal');
+		document.getElementById("error-msg").innerHTML = "&nbsp;";
+		signIn.showModal();
+	}
+
 }
+function abc(){
+	var account = document.getElementById("account");
+	var username = document.getElementById("username");
+	var newusername = document.getElementById("newUsername");
+	username.value = ""
+	newusername.value = ""
+	account.innerHTML = "Sign In";
+	logOut.style.display = "none"
+	signedIn = false;
+}
+
 
 function selectItemsforCal() {
 	var protocolSelector = Util.one("#protocolSelectorCal");
@@ -577,6 +619,7 @@ function showAccountNew() {
 		// Currently a canned response
 		var account = document.getElementById("account");
 		account.innerHTML = "Welcome, " + username;
+		logOut.style.display = "block"
 		closeModalCreateAccount();
 	} 
 }
@@ -587,6 +630,8 @@ function showAccount(){
 		// Currently a canned response
 		var account = document.getElementById("account");
 		account.innerHTML = "Welcome, " + username;
+		logOut.style.display = "block"
+		signedIn = true; 
 		closeModalSignIn();
 	} else {
 		console.log("username invalid");
@@ -609,7 +654,7 @@ function closeModalCreateAccount() {
 function deleteProtocol(e) {
 	closeModalEditProtocol();
 	var protocolName = e.parentElement.childNodes[1].value
-	protocolName = protocolName.replace(/\s/g, '');
+	protocolName = Protocol_In_Edit.replace(/\s/g, '');
 	var protocolList = document.getElementsByClassName("protocol-list")[0];
 	var removeID = document.getElementById(protocolName);
 	protocolList.removeChild(removeID);

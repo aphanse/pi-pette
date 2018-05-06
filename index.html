@@ -51,6 +51,9 @@
 			<ul class="heading-items">
 			  	<li class="title">&pi;-pette</li>
 			  	<li class="sign-in" id="account" onclick="signIn()">Sign In</li>
+				<div id="Logout">
+					<li class="sign-in" id="account" onclick="abc()">Log Out</li>
+				</div>
 			</ul>
 			<!-- Sign in box -->
 			<dialog id="signInModal">
@@ -70,13 +73,9 @@
 				<div></div><br>
 				<form id = "accountForm" method = "dialog">
 					<label>New Username: <label><input id="newUsername"></input><br>
-					<div id="error-msg1"></div><br>
 					<label>New Password: <label><input id = "password" type="password"></input><br>
-					<div id="error-msg2"></div><br>
 					<label>Confirm Password: <label><input id="confirmedPass" type="password"></input><br>
-					<div id="error-msg3"></div><br>
-					<label>E-mail: <label><input id = "email" type="email"></input><br>
-					<div id="error-msg4"></div><br>
+					<label>E-mail: <label><input id = "emailFill" type="email"></input><br>
 				</form>
 					<button id="create-account" onClick="showAccountNew()">Create Account</button>
 			</dialog>
@@ -108,6 +107,7 @@
 							<textarea id="messageBox" value="Here is a protocol I would like to share."></textarea>
 						</div>
 					</div>
+
 					<br><br>
 					<div class="actions-row">
 						<button id="cancel" onclick="cancelSharing()">Cancel</button>
@@ -121,16 +121,20 @@
 				<span class="close" onclick="closeModalEditProtocol()">&times;</span>
 				<form method="dialog" id="protocolText">
 					<input id="title"></input> 
-					<button class = "delete" id="delete-protocol" onclick="deleteProtocol(this)">Delete Protocol</button></br>
-					<div id="margin"></div></br>
 				</form>
+
 				<div id="stepsEdit">
 					<div> Steps </div>
 					<div> Time Allotted </div>
 					<div> Wait Time </div>
 				</div>
+
 				<button id="addStepButton" onclick=addStep("stepsEdit")>Add Step</button>
+
+				
 				<button id="editProtDone" onclick=closeModalEditProtocol("protName")>Done</button>
+				<i class="material-icons" id="delete-protocol" onclick="deleteProtocol(this)">delete</i>
+
 			</dialog>
 
 			<!-- Add protocol popup -->
@@ -143,6 +147,7 @@
 					<div> Instructions </div>
 					<div> Time Allotted (min) </div>
 					<div> Wait Time (min) </div>
+
 				</div>
 				<button id="addStepButton" onclick=addStep("stepsAdd")>Add Step</button>
 				<button id="newProtDone" onclick=closeModalNewProtocol()>Done</button>
@@ -163,7 +168,7 @@
 					<button id="cancel" type="reset" onClick="closeModal()">Cancel</button>
 				</form>
 			</dialog>
-			<!--<iframe id = 'myCalendar' src="https://calendar.google.com/calendar/embed?showTitle=0&amp;showCalendars=0&amp;showTz=0&amp;mode=WEEK&amp;height=480&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=nhb3ul253iih305evek6dukth8%40group.calendar.google.com&amp;color=%232F6309&amp;ctz=America%2FNew_York" style="border-width:0" width="800" height="480" frameborder="0" scrolling="no"></iframe>-->
+
 			<table id="calTable"></table>
 		</div>
 
