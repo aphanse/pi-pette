@@ -3,10 +3,10 @@
 var dom = {};
 
 // Holds steps associated with each protocol
-var protocols = {"qPCR":[["Take cells", "0:05", "0:15"], ["Freeze cells", "0:30", "1:00"]],
-				 "Cloning":[["Grow cells", "0:10", "0:10"], ["Add culture to cells", "0:30", "1:00"], ["Party with cells", "0:50", "0:00"]],
-				 "DNA Sequencing":[["Step 1", "0:05", "0:15"]],
-				 "Gel Electrophoresis":[["Step 1", "0:05", "0:15"]],};
+var protocols = {"qPCR":[["Take cells", "0:45", "0:30"], ["Freeze cells", "0:30", "0:00"]],
+				 "Cloning":[["Grow cells", "1:30", "0:35"], ["Add culture to cells", "0:45", "1:00"], ["Party with cells", "0:50", "0:00"]],
+				 "DNA Sequencing":[["Step 1", "0:45", "0:15"]],
+				 "Gel Electrophoresis":[["Step 1", "0:25", "0:15"]],};
 
 var contacts = {"Alice P. Hacker":"alice@mit.edu", "Ben Bitdiddle": "ben.bitdiddle@mit.edu", "Eve L.": "eve@mit.edu"}
 const DEFAULT_MSG = "Here is a protocol I would like to share.";
@@ -24,6 +24,22 @@ Protocol_In_Edit=null;
 var signedIn = false;
 var logOut = document.getElementById("Logout");
 logOut.style.display = "none"
+
+var qPCR = "https://calendar.google.com/calendar/embed?mode=WEEK&amp&src=nhb3ul253iih305evek6dukth8%40group.calendar.google.com&color=%232F6309&src=13rt5s11dte8459l5n7jdp35ck%40group.calendar.google.com&color=%230F4B38&ctz=America%2FNew_York";
+var cloning = "https://calendar.google.com/calendar/embed?mode=WEEK&amp&src=nhb3ul253iih305evek6dukth8%40group.calendar.google.com&color=%232F6309&src=ep5ndnb68jt4vihfdv0p4prk48%40group.calendar.google.com&color=%23182C57&src=13rt5s11dte8459l5n7jdp35ck%40group.calendar.google.com&color=%230F4B38&ctz=America%2FNew_York";
+var DNA_Seq = "https://calendar.google.com/calendar/embed?mode=WEEK&amp&src=nhb3ul253iih305evek6dukth8%40group.calendar.google.com&color=%232F6309&src=ep5ndnb68jt4vihfdv0p4prk48%40group.calendar.google.com&color=%23182C57&src=13rt5s11dte8459l5n7jdp35ck%40group.calendar.google.com&color=%230F4B38&src=n5oddugkag5qp8jdm7vcdtuo28%40group.calendar.google.com&color=%235229A3&ctz=America%2FNew_York";
+var Gel_Electro = "https://calendar.google.com/calendar/embed?mode=WEEK&amp&src=nhb3ul253iih305evek6dukth8%40group.calendar.google.com&color=%232F6309&src=ep5ndnb68jt4vihfdv0p4prk48%40group.calendar.google.com&color=%23182C57&src=13rt5s11dte8459l5n7jdp35ck%40group.calendar.google.com&color=%230F4B38&src=mi0e8rqpipopcqbcfr3bfsv6gc%40group.calendar.google.com&color=%238C500B&src=n5oddugkag5qp8jdm7vcdtuo28%40group.calendar.google.com&color=%235229A3&ctz=America%2FNew_York";
+var allProtocols = [['qPCRmode_edit', qPCR], ['Cloningmode_edit', cloning], ['DNA Sequencingmode_edit', DNA_Seq], ['Gel Electrophoresismode_edit', Gel_Electro]]
+var prot = null;
+var x = null;
+var y = null;
+
+const CAL_COLORS = [
+	"plum",
+	"mediumseagreen",
+	"orange",
+	"cornflowerblue",
+	"salmon"];
 
 //////////////////////////////////////////////////////////////////////////////////////
 // 			                 														//
@@ -94,7 +110,7 @@ Util.events(document, {
 	    	// Actual mousedown event 
 	    	document.addEventListener("mousemove", dragFunc);
 	    	protocol.onmouseup = dropFunc;
-	    	protocol.style.zIndex = 0;
+	    	protocol.style.zIndex = 1;
 		}
 
 		// DRAGGING CALENDAR EVENTS
@@ -140,10 +156,7 @@ Util.events(document, {
 	    		stepNum = parseInt(protocol.id.substring(protocol.id.length-1));
 	    		while (document.getElementById(protName + "-" + (stepNum-1))) {
 	    			var prevProt = document.getElementById(protName + "-" + (stepNum-1));
-	    			console.log(prevProt.offsetLeft);
-	    			console.log(left);
 	    			if (prevProt.offsetLeft > left) {
-	    				console.log("t");
 	    				top -= 70;
 		    			prevProt.style.left = left + "px";
 		    			prevProt.style.top = top + "px";
@@ -179,6 +192,7 @@ function drawProtocols() {
 		protocolElem.setAttribute("class", "protocol");
 		protocolElem.setAttribute("id", names[i].replace(/ /g, ""));
 		protocolElem.innerText = names[i];
+		protocolElem.style.borderBottom = "3px solid " + CAL_COLORS[i%CAL_COLORS.length];
 		var edit = document.createElement("i");
 		edit.setAttribute("class", "edit material-icons")
 		edit.setAttribute("onClick", "editPopUp(\'" + names[i] + "\')");
@@ -210,6 +224,9 @@ function drawCalendar() {
 			}
 			tr.appendChild(cell);
 		}
+		if (row%2==0) {
+			tr.style.backgroundColor = "lavender";
+		}
 		calendar.appendChild(tr);
 	}
 }
@@ -235,7 +252,7 @@ function addProtocolToCal(title) {
 		endTimeMin = endTimeMin < 10? "0" + endTimeMin : endTimeMin;
 		endTimeHour += Math.floor((parseInt(startTimeMin) + parseInt(parsedTime[1]))/ 60)==0 ? 0 : 1;
 		box.style.height = Math.max(height, 15) + "px";
-		box.style.backgroundColor = "var(--sky-blue)";
+		box.style.backgroundColor = getCalColor(protocol_name);
 		box.innerText = protocol_name + ": Step " + (i+1);
 		box.setAttribute("id", protocol_name.replace(/ /g, "")+"-"+(i+1)+"-"+eventCount);
 		eventCount += 1;
@@ -365,7 +382,6 @@ function closeModalEditProtocol(orignalTitle) {
 
 	var inputs = document.getElementsByClassName("protocal-input");
 	for (var i=0; i<inputs.length; i++) {
-		console.log(inputs[i].pattern);
 		if (inputs[i].pattern == "hrs:mins" && !pattern.test(inputs[i].value) && inputs[i].value!="") {
 			validInputs = false;
 			inputs[i].style.backgroundColor = "lightpink";
@@ -403,7 +419,6 @@ function closeModalNewProtocol() {
 
 	var inputs = document.getElementsByClassName("protocal-input");
 	for (var i=0; i<inputs.length; i++) {
-		console.log(inputs[i].pattern);
 		if (inputs[i].pattern == "hrs:mins" && !pattern.test(inputs[i].value) && inputs[i].value!="") {
 			validInputs = false;
 			inputs[i].style.backgroundColor = "lightpink";
@@ -413,7 +428,6 @@ function closeModalNewProtocol() {
 	}
 
 	if (validInputs) {
-		modal.close();
 		if (title) {
 			getEnteredProtocolData(stepsArea, protocol);
 			var titleBox = document.getElementById("titleNew");
@@ -422,6 +436,7 @@ function closeModalNewProtocol() {
 			addProtocolToDisplayList(title);
 		}
 		removeFormFields(stepsArea);
+		modal.close();
 	}
 }
 
@@ -463,6 +478,7 @@ function addProtocolToDisplayList(title) {
 	listItem.appendChild(editIcon);
 	var protocolList = document.getElementById("protocol-container");
 	protocolList.appendChild(listItem);
+	listItem.style.borderBottom = "3px solid " + getCalColor(title);
 }
 
 function removeFormFields(parentContainingFields) {
@@ -494,7 +510,9 @@ function newProtocol() {
 			stepsArea.appendChild(div);
 		}
 	}
+	titleBox.focus();
 	modal.showModal();
+
 }
 
 function shareItem() {
@@ -647,6 +665,16 @@ function closeModalCreateAccount() {
 	account.close();
 }
 
+// Helper function for protocol colors because life is difficult
+function getCalColor(name) {
+	var names = Object.keys(protocols);
+	for (var i=0; i<names.length; i++) {
+		if (name == names[i]) {
+			return CAL_COLORS[i%CAL_COLORS.length];
+		}
+	}
+	return "skyblue";
+}
 
 function deleteProtocol(e) {
 	closeModalEditProtocol();

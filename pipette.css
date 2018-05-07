@@ -79,6 +79,30 @@ li {
     text-decoration: none;
 }
 
+label {
+	text-align: left;
+	display: inline-grid;}
+
+input {
+	border-color: Gainsboro;
+	border-width: 1px;
+}
+
+td {
+	border: solid 1px;
+	border-color: var(--light-gray);
+	height: 30px;
+	overflow: visible;
+	width: 100px;
+	text-align: center;
+	padding: 0px;
+}
+
+table {
+	background-color: white;
+	font-family: var(--font-main);
+}
+
 
 /*##########################################################################*/
 /*								  Classes     						        */
@@ -90,6 +114,12 @@ li {
 	display: flex;
 	justify-content: space-evenly;
 
+}
+
+.calendar-step {
+	position: absolute;
+	width: 97px;
+	border-radius: 5px;
 }
 
 .grid.calendar {
@@ -314,15 +344,11 @@ li {
 #signInModal input{
 	margin: 5px;
 }
-label {
-	text-align: left;
-	display: inline-grid;}
 
-input {
-	border-color: Gainsboro;
-	border-width: 1px;
+#protocol-container {
+	overflow-y: scroll;
+	margin-top: 10px;
 }
-
 
 #newAccountModal{
 	text-align: center;
@@ -345,30 +371,10 @@ input {
 }
 
 #calTable {
-	border: solid black 1px;
+	border: solid var(--dark-blue) 2px;
 	border-collapse: collapse;
 	width: 800px;
 	max-height: 480px;
 	overflow: auto;
 }
 
-td {
-	border: solid 1px;
-	border-color: var(--light-gray);
-	height: 30px;
-	overflow: visible;
-	width: 100px;
-	text-align: center;
-	padding: 0px;
-}
-
-.calendar-step {
-	position: absolute;
-	width: 97px;
-	border-radius: 5px;
-}
-
-table {
-	background-color: white;
-	font-family: var(--font-main);
-}
