@@ -214,7 +214,6 @@ function drawCalendar() {
 	}
 }
 
-// this function makes me sad :( but I wrote it :(
 function addProtocolToCal(title) {
 	var protocol = document.getElementById("protocolSelectorCal");
 	var protocol_name = title ? title : protocol.options[protocol.selectedIndex].innerHTML;
@@ -231,10 +230,10 @@ function addProtocolToCal(title) {
 		var parsedTime = steps[i][1].split(":");
 		var time = parseInt(parsedTime[0]) + parseInt(parsedTime[1])/60;
 		var height = Math.round(time * 30)
-		var hours = parseInt(startTimeHour) + parseInt(parsedTime[0]);
-		var mins = (parseInt(startTimeMin) + parseInt(parsedTime[1])) % 60;
-		mins = mins < 10? "0" + mins : mins
-		hours += Math.floor(parseInt(startTimeMin) + parseInt(parsedTime[1]) / 60)==0 ? 0 : 1;
+		var endTimeHour = parseInt(startTimeHour) + parseInt(parsedTime[0]);
+		var endTimeMin = (parseInt(startTimeMin) + parseInt(parsedTime[1])) % 60;
+		endTimeMin = endTimeMin < 10? "0" + endTimeMin : endTimeMin;
+		endTimeHour += Math.floor((parseInt(startTimeMin) + parseInt(parsedTime[1]))/ 60)==0 ? 0 : 1;
 		box.style.height = Math.max(height, 15) + "px";
 		box.style.backgroundColor = "var(--sky-blue)";
 		box.innerText = protocol_name + ": Step " + (i+1);
@@ -242,13 +241,11 @@ function addProtocolToCal(title) {
 		eventCount += 1;
 		var timeText = document.createElement("small");
 		var startTimeEnding = Math.floor(startTimeHour/12)==0 ? "am" : "pm";
-		var endTimeEnding = Math.floor(hours/12)==0 ? "am" : "pm";
-		console.log("time", hours/12==0)
+		var endTimeEnding = Math.floor(endTimeHour/12)==0 ? "am" : "pm";
 		var startTime = startTimeHour%12==0 ? 12 : startTimeHour%12;
 		startTime += ":" + startTimeMin;
-		hours = hours%12;
-		hours = hours==0 ? 12 : hours
-		var endTime = hours + ":" + mins;
+		var hours = endTimeHour%12==0? 12 : endTimeHour%12;
+		var endTime = hours + ":" + endTimeMin;
 		timeText.innerText = startTime + startTimeEnding + " - " + endTime + endTimeEnding;
 		box.id = protocol_name + "-" + (i+1);
 		clickedCell.appendChild(box);
@@ -257,10 +254,10 @@ function addProtocolToCal(title) {
 		parsedTime = steps[i][2].split(":");
 		time = parseInt(parsedTime[0]) + parseInt(parsedTime[1])/60;
 		top = top + Math.round(time * 30) + height;
-		startTimeHour = hours + parseInt(parsedTime[0])
-		startTimeMin = (parseInt(mins) + parseInt(parsedTime[1])) % 60;
+		startTimeHour = endTimeHour + parseInt(parsedTime[0])
+		startTimeMin = (parseInt(endTimeMin) + parseInt(parsedTime[1])) % 60;
 		startTimeMin = startTimeMin < 10 ? "0" + startTimeMin : startTimeMin;
-		startTimeHour += (parseInt(mins) + parseInt(parsedTime[1])) / 60 ? 0 : 1; 
+		startTimeHour += Math.floor((parseInt(endTimeMin) + parseInt(parsedTime[1])) / 60) == 0 ? 0 : 1;
 	}
 }
 
