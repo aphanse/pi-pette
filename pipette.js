@@ -93,7 +93,9 @@ Util.events(document, {
 		    		protocol.style.zIndex = 1;
 		    		prot = protocol.textContent;
 		    		clickedCell = document.elementFromPoint(x, y);
-		    		addProtocolToCal(prot.substring(0, prot.length - 9));
+		    		if (clickedCell.nodeName === "TD" && !clickedCell.id.substring(3).split("-").includes("0")) {
+		    			addProtocolToCal(prot.substring(0, prot.length - 9));
+		    		}
 	    		}	
     		};
 
