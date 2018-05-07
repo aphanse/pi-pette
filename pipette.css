@@ -79,6 +79,31 @@ li {
     text-decoration: none;
 }
 
+label {
+	text-align: left;
+	display: inline-grid;}
+
+input {
+	border-color: Gainsboro;
+	border-width: 1px;
+}
+
+td {
+	border: solid 1px;
+	border-color: var(--light-gray);
+	height: 30px;
+	overflow: visible;
+	width: 100px;
+	text-align: center;
+	padding: 0px;
+}
+
+table {
+	background-color: white;
+	font-family: var(--font-main);
+}
+
+
 /*##########################################################################*/
 /*								  Classes     						        */
 /*##########################################################################*/
@@ -89,6 +114,12 @@ li {
 	display: flex;
 	justify-content: space-evenly;
 
+}
+
+.calendar-step {
+	position: absolute;
+	width: 97px;
+	border-radius: 5px;
 }
 
 .grid.calendar {
@@ -222,19 +253,43 @@ li {
 /*##########################################################################*/
 /*								  	IDs     						        */
 /*##########################################################################*/
-#margin{
-	font: 5px;
+
+#step-delete{
+	background-color: white;
+	color: lightgray;
 }
+
+#step-delete:hover {
+	color: gray;
+
+}
+#close{
+	display:flex;
+	float:center;
+	background-color: red;
+}
+#title{
+	float: center
+}
+#add-protocol{
+
+	width: 50%;
+	text-align: center;
+}
+#email{
+	width: 45%;
+}
+
 #delete-protocol{
-	background-color: #ff4d4d;
-	font-size: 12px;
+	padding:0px;
+	display:flex;
+	float:center;
 	padding: 5px;
-	float: right;
-	width: 22%;
-	margin-top: 5px;
+	margin: 10px;
 }
 #delete-protocol:hover {
-	background-color: DarkRed;
+	background-color: #e01818;
+
 }
 
 
@@ -246,11 +301,13 @@ li {
 #messageBox {
 	height: 100%;
 	width: 90%;
-	max-height: 40vh;
+	max-height: 30vh;
 	max-width: 90%;
+	font-family: var(--font-main);
+
 }
 
-#contactSelector {
+#contactSelector, #protocolSelector {
 	height: 100%;
 	width: 90%;
 	max-height: 40vh;
@@ -265,8 +322,8 @@ li {
 }
 
 #stepsEdit {
-	display: grid;
-  	grid-template-columns: auto auto auto;
+	display: grid;;
+  	grid-template-columns: 10% 30% 30% 30%;
   	align-items: center;
   	grid-row-gap: 10px;
   	grid-column-gap: 5px;
@@ -287,15 +344,10 @@ li {
 #signInModal input{
 	margin: 5px;
 }
-label {
-	text-align: left;
-	display: inline-grid;}
 
-input {
-	border-color: Gainsboro;
-	border-width: 1px;
+#protocol-container {
+	overflow-y: scroll;
 }
-
 
 #newAccountModal{
 	text-align: center;
@@ -306,7 +358,10 @@ input {
     top: 50%;
     transform: translate(-50%, -50%);
 }
+#emailFill{
+	width: 100%;
 }
+
 #myCalendar {
 	border-width:0
 	width: 800px;
@@ -318,26 +373,7 @@ input {
 	border: solid black 1px;
 	border-collapse: collapse;
 	width: 800px;
-	height: 480px;
+	max-height: 480px;
+	overflow: auto;
 }
 
-td {
-	border: solid 1px;
-	border-color: var(--light-gray);
-	height: 20px;
-	overflow: visible;
-	width: 100px;
-	text-align: center;
-	padding: 0px;
-}
-
-.calendar-step {
-	position: absolute;
-	width: 97px;
-	border-radius: 5px;
-}
-
-table {
-	background-color: white;
-	font-family: var(--font-main);
-}
