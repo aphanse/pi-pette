@@ -347,6 +347,7 @@ table {
 
 #protocol-container {
 	overflow-y: scroll;
+	margin-top: 10px;
 }
 
 #newAccountModal{
@@ -370,7 +371,7 @@ table {
 }
 
 #calTable {
-	border: solid black 1px;
+	border: solid var(--dark-blue) 2px;
 	border-collapse: collapse;
 	width: 800px;
 	max-height: 480px;

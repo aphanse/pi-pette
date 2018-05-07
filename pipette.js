@@ -3,8 +3,8 @@
 var dom = {};
 
 // Holds steps associated with each protocol
-var protocols = {"qPCR":[["Take cells", "0:45", "0:15"], ["Freeze cells", "0:30", "1:00"]],
-				 "Cloning":[["Grow cells", "1:30", "0:10"], ["Add culture to cells", "0:45", "1:00"], ["Party with cells", "0:50", "0:00"]],
+var protocols = {"qPCR":[["Take cells", "0:45", "0:30"], ["Freeze cells", "0:30", "0:00"]],
+				 "Cloning":[["Grow cells", "1:30", "0:35"], ["Add culture to cells", "0:45", "1:00"], ["Party with cells", "0:50", "0:00"]],
 				 "DNA Sequencing":[["Step 1", "0:45", "0:15"]],
 				 "Gel Electrophoresis":[["Step 1", "0:25", "0:15"]],};
 
@@ -215,6 +215,9 @@ function drawCalendar() {
 			}
 			tr.appendChild(cell);
 		}
+		if (row%2==0) {
+			tr.style.backgroundColor = "lavender";
+		}
 		calendar.appendChild(tr);
 	}
 }
@@ -416,9 +419,7 @@ function closeModalNewProtocol() {
 		}
 	}
 
-	console.log("qq");
 	if (validInputs) {
-		modal.close();
 		if (title) {
 			getEnteredProtocolData(stepsArea, protocol);
 			var titleBox = document.getElementById("titleNew");
@@ -427,6 +428,7 @@ function closeModalNewProtocol() {
 			addProtocolToDisplayList(title);
 		}
 		removeFormFields(stepsArea);
+		modal.close();
 	}
 }
 
@@ -500,7 +502,6 @@ function newProtocol() {
 			stepsArea.appendChild(div);
 		}
 	}
-	modal.style.display = "block";
 	titleBox.focus();
 	modal.showModal();
 
