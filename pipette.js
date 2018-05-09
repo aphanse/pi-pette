@@ -70,9 +70,9 @@ Util.events(document, {
 	"click": function(evt) {
 		console.log(evt.target.id)
 		if (evt.target.localName === "td" && !evt.target.id.substring(3).split("-").includes("0")) {
-			selectItemsforCal()
-			selectProtocol();
+			selectItemsforCal();
 			clickedCell = evt.target;
+			selectProtocol(clickedCell);
 		}
 	},
 	
@@ -121,50 +121,68 @@ Util.events(document, {
 			var protocol = event.target;
 			var offsetX = event.clientX - protocol.offsetLeft;
 		    var offsetY = event.clientY - protocol.offsetTop;
+		    var startLeft = parseInt(protocol.style.left);
+		    var startTop = parseInt(protocol.style.top);
+		    console.log(protocol, protocol.style.left, protocol.style.top)
 
 	    	// Mouse up event listener
 	    	var dropFunc = function(event) {
 	    		var pos = Util.offset(clickedCell);
 	    		document.removeEventListener("mousemove", dragFunc);
 	    		var left = parseInt(protocol.style.left);
-	    		var leftError = (left - pos.left - 5) % (100);
-	    		if (leftError < 50) {
-	    			left = left - leftError - 2;
-	    		} else {
-	    			left = left - leftError + 98;
-	    		}
 	    		var top = parseInt(protocol.style.top);
-	    		var topError = (top - pos.top) % (21);
-	    		if (topError < 10) {
-	    			top = top - topError;
-	    		} else {
-	    			top = top - topError + 21;
+	    		if (Math.abs(top-startTop) < 4 && ((startLeft && Math.abs(top-startLeft) < 4) || !startLeft)) {
+	    			moreDetailsCal(protocol.id)
 	    		}
-	    		protocol.style.left = left + "px";
-	    		protocol.style.top = top + "px";
+	    		else {
+		    		var leftError = (left - pos.left - 5) % (100);
+		    		if (leftError < 50) {
+		    			left = left - leftError - 2;
+		    		} else {
+		    			left = left - leftError + 98;
+		    		}
+		    		var topError = (top - pos.top) % (21);
+		    		if (topError < 10) {
+		    			top = top - topError;
+		    		} else {
+		    			top = top - topError + 21;
+		    		}
+		    		protocol.style.left = left + "px";
+		    		protocol.style.top = top + "px";
+		    		updateTime(protocol, left, top);
 
-	    		var protName = protocol.id.substring(0, protocol.id.length-2);
-	    		var stepNum = parseInt(protocol.id.substring(protocol.id.length-1));
-	    		// FOR NEXT STEPS
-	    		while (document.getElementById(protName + "-" + (stepNum+1))) {
-	    			var nextProt = document.getElementById(protName + "-" + (stepNum+1));
-	    			if (nextProt.offsetLeft < left) {
-	    				top += 70;
-		    			nextProt.style.left = left + "px";
-		    			nextProt.style.top = top + "px";
-	    			}
-	    			stepNum ++;
-	    		}
-	    		// FOR PREVIOUS STEPS
-	    		stepNum = parseInt(protocol.id.substring(protocol.id.length-1));
-	    		while (document.getElementById(protName + "-" + (stepNum-1))) {
-	    			var prevProt = document.getElementById(protName + "-" + (stepNum-1));
-	    			if (prevProt.offsetLeft > left) {
-	    				top -= 70;
-		    			prevProt.style.left = left + "px";
-		    			prevProt.style.top = top + "px";
-	    			}
-	    			stepNum --;
+		    		var protName = protocol.id.split("-")[0];
+		    		var stepNum = parseInt(protocol.id.split("-")[1]);
+		    		var evtNum = parseInt(protocol.id.split("-")[2]);
+		    		console.log(protName, stepNum, protocol.id)
+		    		// FOR NEXT STEPS
+		    		while (document.getElementById(protName + "-" + (stepNum+1) + "-" + (evtNum+1))) {
+		    			var nextProt = document.getElementById(protName + "-" + (stepNum+1) + "-" + (evtNum+1));
+		    			if (nextProt.offsetLeft < left) {
+		    				console.log("something")
+		    				top += 70;
+			    			nextProt.style.left = left + "px";
+			    			nextProt.style.top = top + "px";
+			    			updateTime(nextProt, left, top)
+		    			}
+		    			stepNum ++;
+		    			evtNum ++;
+		    		}
+		    		// FOR PREVIOUS STEPS
+		    		stepNum = parseInt(protocol.id.split("-")[1]);
+		    		evtNum = parseInt(protocol.id.split("-")[2]);
+		    		while (document.getElementById(protName + "-" + (stepNum-1) + "-" + (evtNum-1))) {
+		    			var prevProt = document.getElementById(protName + "-" + (stepNum-1) + "-" + (evtNum-1));
+		    			if (prevProt.offsetLeft > left) {
+		    				console.log("the other thing")
+		    				top -= 70;
+			    			prevProt.style.left = left + "px";
+			    			prevProt.style.top = top + "px";
+			    			updateTime(prevProt, left, top)
+		    			}
+		    			stepNum --;
+		    			evtNum --;
+		    		}
 	    		}
     		};
 
@@ -237,17 +255,40 @@ function addProtocolToCal(title) {
 	var protocol = document.getElementById("protocolSelectorCal");
 	var protocol_name = title ? title : protocol.options[protocol.selectedIndex].innerHTML;
 	var steps = protocols[protocol_name];
+	console.log("STEPS", steps)
 	var pos = Util.offset(clickedCell);
-	var startTimeHour = parseInt(clickedCell.id.substring(3).split("-")[0]-1);
-	var startTimeMin = "00";
+	var startTimeHour = parseInt(document.getElementById("selectTime").value.split(":")[0]);
+	startTimeHour += document.getElementById("amOrPm").value == "am" ? 0 : 12;
+	var startTimeMin = parseInt(document.getElementById("selectTime").value.split(":")[1]);
 	var top = pos.top + 2;
+	console.log("start", startTimeMin)
+	if (startTimeMin >= 15 && startTimeMin < 30) {
+		console.log("15-30")
+		top += Math.floor(30/4)
+	}
+	else if (startTimeMin >= 30 && startTimeMin < 45) {
+		console.log("30-45")
+		top += Math.floor(30/2)
+	}
+	else if (startTimeMin >= 45) {
+		console.log("45-59")
+		top += Math.floor(3*30/4)
+	}
+	console.log(clickedCell.id)
+	if (title) {
+		startTimeHour = parseInt(clickedCell.id.substring(3).split("-")[0]-1);
+		startTimeMin = 0;
+	}
+	startTimeMin = startTimeMin < 10 ? "0" + startTimeMin : startTimeMin;
 	for (var i = 0; i < steps.length; i +=1) {
         var del = document.createElement("button")
-        del.innerHTML = "X"
-        del.id = "calendar-delete"
+        del.innerHTML = "Delete Step"
+        del.setAttribute("class", "delStep");
+        del.id = "calendar-delete"+"-"+(i+1)+"-"+eventCount; 
         del.setAttribute("onClick", "delCal(event)");
         
 		var box = document.createElement("div");
+		var moreDetails = document.createElement("div");
 		box.setAttribute("class", "calendar-step");
 		box.style.top = top+"px";
 		box.style.left = pos.left;
@@ -260,10 +301,12 @@ function addProtocolToCal(title) {
 		endTimeHour += Math.floor((parseInt(startTimeMin) + parseInt(parsedTime[1]))/ 60)==0 ? 0 : 1;
 		box.style.height = Math.max(height, 15) + "px";
 		box.style.backgroundColor = getCalColor(protocol_name);
-		box.innerText = protocol_name + ": Step " + (i+1);
-		box.setAttribute("id", protocol_name.replace(/ /g, "")+"-"+(i+1)+"-"+eventCount);
-		eventCount += 1;
+		box.innerText = protocol_name.substring(0,4).trim() + ": Step " + (i+1);
+		console.log(eventCount, protocol_name.replace(/ /g, "")+"-"+(i+1)+"-"+eventCount)
+		box.setAttribute("id", protocol_name.replace(/ /g, "") + "-" + (i+1) + "-" + eventCount);
+		
 		var timeText = document.createElement("small");
+		timeText.id = "time-" + protocol_name.replace(/ /g, "") + "-" + (i+1) + "-" + eventCount
 		var startTimeEnding = Math.floor(startTimeHour/12)==0 ? "am" : "pm";
 		var endTimeEnding = Math.floor(endTimeHour/12)==0 ? "am" : "pm";
 		var startTime = startTimeHour%12==0 ? 12 : startTimeHour%12;
@@ -271,12 +314,24 @@ function addProtocolToCal(title) {
 		var hours = endTimeHour%12==0? 12 : endTimeHour%12;
 		var endTime = hours + ":" + endTimeMin;
 		timeText.innerText = startTime + startTimeEnding + " - " + endTime + endTimeEnding;
-		box.id = protocol_name + "-" + (i+1);
+		var span = document.createElement("span");
+		span.setAttribute("class", "close");
+		span.setAttribute("onClick","closeAddInfo('"+del.id+"')");
+		span.innerHTML="&times;"
+		moreDetails.appendChild(document.createElement("br"));
+		moreDetails.innerText += protocol_name + ": Step " + (i+1);
+		moreDetails.appendChild(document.createElement("br"));
+		moreDetails.innerText += protocols[protocol_name][i][0];
+		moreDetails.appendChild(span)
 		clickedCell.appendChild(box);
-		box.appendChild(del);
-		box.appendChild(document.createElement("br"));
-		box.appendChild(timeText);
-
+		moreDetails.appendChild(document.createElement("br"));
+		moreDetails.appendChild(timeText);
+		moreDetails.appendChild(document.createElement("br"));
+		moreDetails.appendChild(del);
+		moreDetails.style.backgroundColor = getCalColor(protocol_name);
+		moreDetails.style.visibility = "hidden";
+		moreDetails.setAttribute("class", "moreDetails");
+		box.appendChild(moreDetails)
 
 		parsedTime = steps[i][2].split(":");
 		time = parseInt(parsedTime[0]) + parseInt(parsedTime[1])/60;
@@ -285,11 +340,39 @@ function addProtocolToCal(title) {
 		startTimeMin = (parseInt(endTimeMin) + parseInt(parsedTime[1])) % 60;
 		startTimeMin = startTimeMin < 10 ? "0" + startTimeMin : startTimeMin;
 		startTimeHour += Math.floor((parseInt(endTimeMin) + parseInt(parsedTime[1])) / 60) == 0 ? 0 : 1;
+		eventCount += 1;
 	}
 }
 
-function selectProtocol() {
+function moreDetailsCal(id){
+	var box = document.getElementById(id);
+	var div = box.children[0]
+	//document.getElementById("calendar-delete").disable = false;
+	div.style.visibility = "visible"
+	div.style.position = "absolute";
+	var val = 105;//box.getBoundingClientRect().right + 2;
+	console.log(box.getBoundingClientRect().right+2)
+	div.style.left = val+ "px";
+	div.style.top = 0 + "px";
+	div.style.width = "200px";
+	div.style.height = "100px";
+}
+
+function closeAddInfo(id){
+	var button = document.getElementById(id);
+	button.style.disable = true;
+	button.parentElement.style.visibility = "hidden"
+}
+
+function selectProtocol(clickedCell) {
 	var selectProtocol = document.getElementById("selectProtocol");
+	var timeDefault = document.getElementById("selectTime");
+	console.log(timeDefault)
+	var hour = (clickedCell.id.substring(3).split("-")[0]-1)%12 
+	hour = hour == 0 ? 12 : hour;
+	timeDefault.value = hour+":00";
+	console.log(Math.floor((clickedCell.id.substring(3).split("-")[0]-1)/12))
+	document.getElementById("amOrPm").value = Math.floor((clickedCell.id.substring(3).split("-")[0]-1)/12) == 0 ? "am" : "pm"
 	selectProtocol.showModal();
 }
 
@@ -351,9 +434,8 @@ function editPopUp(title) {
 }
 
 function delStep(e) {
-    
     var steps = e.target.nextSibling;
-    console.log(steps.nextSibling)
+    console.log("here", steps.nextSibling)
     var timeAlloted = steps.nextSibling;
     var waitTime = timeAlloted.nextSibling;
     var modal = e.target.parentElement;
@@ -361,17 +443,22 @@ function delStep(e) {
     modal.removeChild(steps);
     modal.removeChild(timeAlloted);
     modal.removeChild(waitTime);
+    console.log(document.getElementById("stepsEdit"))
 }
 
 function delCal(e){
-	var step = e.target.parentElement
-	step.parentElement.removeChild(step)
-
-	
+	var step = e.target.parentElement.parentElement
+	step.parentElement.removeChild(step)	
 }
 
-function addStep(elementId) {
-	var stepsArea = document.getElementById(elementId);
+function addEditStep() {
+	var stepsArea = document.getElementById("stepsEdit");
+	var del = document.createElement("button")
+    del.innerHTML = "X"
+    del.id = "step-delete"
+    del.setAttribute("onClick", "delStep(event)");
+    stepsArea.appendChild(del);			
+
 	for (var j = 0; j < 3; j++) { 
 		var div = document.createElement("div");
 		var cell = document.createElement("input");
@@ -383,7 +470,27 @@ function addStep(elementId) {
 			cell.pattern = "Instruction";
 			cell.placeholder = "Instruction"
 		}
-	    cell.className = "protocal-input";
+		cell.className = "protocal-input";
+		div.appendChild(cell);
+		stepsArea.appendChild(div);
+	}
+}
+
+function addNewStep() {
+	var stepsArea = document.getElementById("stepsAdd");
+	for (var j = 0; j < 3; j++) { 
+		var div = document.createElement("div");
+		var cell = document.createElement("input");
+		if (j!=0) {
+			cell.pattern = "hrs:mins";
+			cell.placeholder = "hrs:mins";
+		}
+		else {
+			cell.pattern = "Instruction";
+			cell.placeholder = "Instruction"
+		}
+
+		cell.className = "protocal-input";
 		div.appendChild(cell);
 		stepsArea.appendChild(div);
 	}
@@ -392,6 +499,7 @@ function addStep(elementId) {
 function closeModalEditProtocol(orignalTitle) {
 	var modal = document.getElementById('editProtocolModal');
 	var stepsArea = document.getElementById("stepsEdit");
+	console.log(stepsArea)
 	var title = document.getElementById("title").value;
 	var protocol = protocols[title] ? protocols[title] : [];
 	var validInputs = true;
@@ -402,14 +510,18 @@ function closeModalEditProtocol(orignalTitle) {
 		if (inputs[i].pattern == "hrs:mins" && !pattern.test(inputs[i].value) && inputs[i].value!="") {
 			validInputs = false;
 			inputs[i].style.backgroundColor = "lightpink";
-		} else {
+		}
+		else if (inputs[i].value=="") {
+			validInputs = false;
+			inputs[i].style.backgroundColor = "lightpink";
+		} 
+		else {
 			inputs[i].style.backgroundColor = "white";
 		}
 	}
 
 	if (validInputs) {
-		modal.close();
-		getEnteredProtocolData(stepsArea, protocol);
+		getEnteredEditProtocolData(stepsArea, protocol);
 		if (!protocols[title]) {
 			delete protocols[orignalTitle];
 			var protocolBar = document.getElementById(orignalTitle.replace(/ /g, ""));
@@ -421,8 +533,8 @@ function closeModalEditProtocol(orignalTitle) {
 			protocolBar.appendChild(edit);
 		}
 		protocols[title] = protocol;
-		console.log(protocols, orignalTitle)
 		removeFormFields(stepsArea);
+		modal.close();
 	}
 }
 
@@ -439,14 +551,19 @@ function closeModalNewProtocol() {
 		if (inputs[i].pattern == "hrs:mins" && !pattern.test(inputs[i].value) && inputs[i].value!="") {
 			validInputs = false;
 			inputs[i].style.backgroundColor = "lightpink";
-		} else {
+		}
+		else if (inputs[i].value=="") {
+			validInputs = false;
+			inputs[i].style.backgroundColor = "lightpink";
+		} 
+		else {
 			inputs[i].style.backgroundColor = "white";
 		}
 	}
 
 	if (validInputs) {
 		if (title) {
-			getEnteredProtocolData(stepsArea, protocol);
+			getEnteredNewProtocolData(stepsArea, protocol);
 			var titleBox = document.getElementById("titleNew");
 			titleBox.value = "";
 			protocols[title] = protocol;
@@ -457,10 +574,11 @@ function closeModalNewProtocol() {
 	}
 }
 
-function getEnteredProtocolData(stepsArea, protocol) {
+function getEnteredNewProtocolData(stepsArea, protocol) {
 	var stepNumber = -1;
 	for (var j = 3; j < stepsArea.children.length; j++) {
 		var input = stepsArea.children[j];
+		input = input.children[0];
 		// if the step name is empty -> delete entry
 		// if either field after is empty, set to ""
 		if (j%3 === 0) {
@@ -480,6 +598,27 @@ function getEnteredProtocolData(stepsArea, protocol) {
 		else {
 			protocol[stepNumber][j%3] = input.value ? input.value : ""
 		}
+	}
+}
+
+function getEnteredEditProtocolData(stepsArea, protocol) {
+	var stepNumber = -1
+	for (var j = 4; j < stepsArea.children.length; j++) {
+	 	var input = stepsArea.children[j];
+	 	input = input.children[0];
+	 	if (j%4 > 0) {
+			protocol[stepNumber][(j%4)-1] = input.value ? input.value : ""
+	 	}
+	 	else {
+	 		if (Math.floor(j/4) > protocol.length) {
+	 			protocol.push(["step", "00:00", "00:00"])
+	 			console.log(protocol)
+	 		}
+	 		stepNumber += 1
+	 	}
+	}
+	while (Math.floor(j/4)-1 < protocol.length) {
+		protocol.pop()
 	}
 }
 
@@ -529,7 +668,6 @@ function newProtocol() {
 	}
 	titleBox.focus();
 	modal.showModal();
-
 }
 
 function shareItem() {
@@ -700,6 +838,53 @@ function deleteProtocol(e) {
 	var protocolList = document.getElementsByClassName("protocol-list")[0];
 	var removeID = document.getElementById(protocolName);
 	protocolList.removeChild(removeID);
+}
 
-	
+function updateTime(prot, left, top) {
+	var tableCells = document.getElementById("calTable");
+	for (var row = 1; row < tableCells.children.length; row += 1){
+		for (var col = 1; col < tableCells.children[row].children.length; col += 1) {
+			var cell = tableCells.children[row].children[col]
+			var cellBox = cell.getBoundingClientRect();
+			var protBox = prot.getBoundingClientRect();
+			protBox.top += 2;
+			if (cellBox.left <= protBox.left && protBox.left < cellBox.right) {
+				if (cellBox.top <= protBox.top && protBox.top < cellBox.bottom) {
+					console.log(cell.id)
+					var quarterCell = Math.floor(30/4);
+					var startTimeHour = parseInt(cell.id.substring(3).split("-")[0]) - 1;
+					var startTimeMin = "00"
+					if (cellBox.top + quarterCell <=protBox.top && protBox.top < cellBox.top + quarterCell*2) {
+						startTimeMin = "15";
+					}
+					if (cellBox.top + 2* quarterCell <=protBox.top && protBox.top < cellBox.top + quarterCell*3) {
+						startTimeMin = "30";
+					}
+					if (cellBox.top +  3 * quarterCell <=protBox.top) {
+						startTimeMin = "45";
+					}
+					var hour = startTimeHour%12 == 0? 12 : startTimeHour%12;
+					var startTimeEnding = Math.floor(startTimeHour/12) == 0 ? "am" : "pm";
+					var startTime = hour + ":" + startTimeMin + startTimeEnding;
+					var protocolTitle = ""
+					for (var i = 0; i < Object.keys(protocols).length; i +=1) {
+						if (Object.keys(protocols)[i].replace(/\s/g, '') === prot.id.split("-")[0]) {
+							protocolTitle = Object.keys(protocols)[i]
+						}
+					}
+					var stepNumber = prot.id.split("-")[1] - 1
+					var stepTime = protocols[protocolTitle][stepNumber][1].split(":");
+					var endTimeHour = parseInt(startTimeHour) + parseInt(stepTime[0]);
+					var endTimeMin = (parseInt(startTimeMin) + parseInt(stepTime[1])) % 60;
+					endTimeMin = endTimeMin < 10? "0" + endTimeMin : endTimeMin;
+					endTimeHour += Math.floor((parseInt(startTimeMin) + parseInt(stepTime[1]))/ 60)==0 ? 0 : 1;
+					var endTimeEnding = Math.floor(endTimeHour/12)==0 ? "am" : "pm";
+					var endHours = endTimeHour%12==0? 12 : endTimeHour%12;
+					var endTime = endHours + ":" + endTimeMin+endTimeEnding;
+					console.log("time-"+prot.id)
+					document.getElementById("time-"+prot.id).innerText = startTime+" - "+endTime;
+				}
+			}
+		}
+	}
 }
