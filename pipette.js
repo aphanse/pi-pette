@@ -372,6 +372,11 @@ function delCal(e){
 
 function addStep(elementId) {
 	var stepsArea = document.getElementById(elementId);
+	var del = document.createElement("button")
+    del.innerHTML = "X"
+    del.id = "step-delete"
+    del.setAttribute("onClick", "delStep(event)");
+    stepsArea.appendChild(del);	
 	for (var j = 0; j < 3; j++) { 
 		var div = document.createElement("div");
 		var cell = document.createElement("input");
