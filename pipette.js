@@ -242,6 +242,11 @@ function addProtocolToCal(title) {
 	var startTimeMin = "00";
 	var top = pos.top + 2;
 	for (var i = 0; i < steps.length; i +=1) {
+        var del = document.createElement("button")
+        del.innerHTML = "X"
+        del.id = "calendar-delete"
+        del.setAttribute("onClick", "delCal(event)");
+        
 		var box = document.createElement("div");
 		box.setAttribute("class", "calendar-step");
 		box.style.top = top+"px";
@@ -268,8 +273,11 @@ function addProtocolToCal(title) {
 		timeText.innerText = startTime + startTimeEnding + " - " + endTime + endTimeEnding;
 		box.id = protocol_name + "-" + (i+1);
 		clickedCell.appendChild(box);
+		box.appendChild(del);
 		box.appendChild(document.createElement("br"));
 		box.appendChild(timeText);
+
+
 		parsedTime = steps[i][2].split(":");
 		time = parseInt(parsedTime[0]) + parseInt(parsedTime[1])/60;
 		top = top + Math.round(time * 30) + height;
@@ -343,7 +351,7 @@ function editPopUp(title) {
 }
 
 function delStep(e) {
-    console.log(e.target.parentElement);
+    
     var steps = e.target.nextSibling;
     console.log(steps.nextSibling)
     var timeAlloted = steps.nextSibling;
@@ -353,6 +361,13 @@ function delStep(e) {
     modal.removeChild(steps);
     modal.removeChild(timeAlloted);
     modal.removeChild(waitTime);
+}
+
+function delCal(e){
+	var step = e.target.parentElement
+	step.parentElement.removeChild(step)
+
+	
 }
 
 function addStep(elementId) {
