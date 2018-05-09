@@ -254,6 +254,21 @@ table {
 /*								  	IDs     						        */
 /*##########################################################################*/
 
+#calendar-delete{
+	background-color: #e01818;
+	color: white;
+	font-size: 10px;
+	padding: 2px;
+	margin: 4px;
+	border-radius: 2px;
+}
+
+#calendar-delete:hover {
+	color: gray;
+	background-color: darkred;
+
+}
+
 #step-delete{
 	background-color: white;
 	color: lightgray;
