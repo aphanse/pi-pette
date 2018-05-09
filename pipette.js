@@ -68,7 +68,8 @@ Util.events(document, {
 
 	// Click events arrive here
 	"click": function(evt) {
-		if (evt.target.localName === "td") {
+		console.log(evt.target.id)
+		if (evt.target.localName === "td" && !evt.target.id.substring(3).split("-").includes("0")) {
 			selectItemsforCal()
 			selectProtocol();
 			clickedCell = evt.target;
@@ -207,7 +208,6 @@ function drawProtocols() {
 
 function drawCalendar() {
 	var calendar = document.getElementById("calTable");
-	console.log(calendar)
 	var week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 	var hours = ['12', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];
 	for (var row = 0; row < 25; row += 1) {

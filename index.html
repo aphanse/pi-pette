@@ -157,18 +157,23 @@
 			<div id="protocol-container"></div>
 		</div>
 
-		<!-- Actual Google Calendar !-->
+		<!-- Actual Calendar !-->
 		<div class="grid calendar">
 			<dialog id="selectProtocol">
 				<form id="shareItemDialog" method="dialog">
 						Protocol Select: 
 						<select id="protocolSelectorCal">
 						</select>
+					Start Time:
+					<input id="selectTime" placeholder="hh:ss"/>
+					<select id="amOrPm">
+						<option value = "am">am</option>
+						<option value = "pm">pm</option>
+					</select>
 					<button id="add" type="reset" onClick="addModal()">Add</button>		
 					<button id="cancel" type="reset" onClick="closeModal()">Cancel</button>
 				</form>
 			</dialog>
-
 			<table id="calTable"></table>
 		</div>
 
