@@ -120,6 +120,7 @@ table {
 	position: absolute;
 	width: 97px;
 	border-radius: 5px;
+	font-size: 12px;
 }
 
 .grid.calendar {
@@ -393,3 +394,24 @@ table {
 	overflow: auto;
 }
 
+.delStep {
+	background-color: red;
+	border: none;
+	border-radius: 5px;
+	color: white;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 10pt;
+	font-weight: bold;
+	margin: 5px;
+	padding: 5px 5px;
+	text-align: center;
+	text-decoration: none;	
+}
+
+.moreDetails {
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 12px;
+	text-align: center;
+}

@@ -129,9 +129,7 @@
 					<div> Wait Time </div>
 				</div>
 
-				<button id="addStepButton" onclick=addStep("stepsEdit")>Add Step</button>
-
-				
+				<button id="addStepButton" onclick=addEditStep()>Add Step</button>
 				<button id="editProtDone" onclick=closeModalEditProtocol("protName")>Done</button>
 				<i class="material-icons" id="delete-protocol" onclick="deleteProtocol(this)">delete</i>
 
@@ -147,9 +145,8 @@
 					<div> Instructions </div>
 					<div> Time Allotted (min) </div>
 					<div> Wait Time (min) </div>
-
 				</div>
-				<button id="addStepButton" onclick=addStep("stepsAdd")>Add Step</button>
+				<button id="addStepButton" onclick=addNewStep()>Add Step</button>
 				<button id="newProtDone" onclick=closeModalNewProtocol()>Done</button>
 			</dialog>
 
@@ -157,18 +154,23 @@
 			<div id="protocol-container"></div>
 		</div>
 
-		<!-- Actual Google Calendar !-->
+		<!-- Actual Calendar !-->
 		<div class="grid calendar">
 			<dialog id="selectProtocol">
 				<form id="shareItemDialog" method="dialog">
 						Protocol Select: 
 						<select id="protocolSelectorCal">
 						</select>
+					Start Time:
+					<input id="selectTime" placeholder="hh:ss"/>
+					<select id="amOrPm">
+						<option value = "am">am</option>
+						<option value = "pm">pm</option>
+					</select>
 					<button id="add" type="reset" onClick="addModal()">Add</button>		
 					<button id="cancel" type="reset" onClick="closeModal()">Cancel</button>
 				</form>
 			</dialog>
-
 			<table id="calTable"></table>
 		</div>
 
