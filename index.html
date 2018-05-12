@@ -118,7 +118,7 @@
 
 			<!-- Edit popup -->
 			<dialog id="editProtocolModal">
-				<span class="close" onclick="closeModalEditProtocol()">&times;</span>
+				<span class="close" onclick=noSaveCloseModal("stepsEdit")>&times;</span>
 				<form method="dialog" id="protocolText">
 					<input id="title"></input> 
 				</form>
@@ -132,12 +132,11 @@
 				<button id="addStepButton" onclick=addEditStep()>Add Step</button>
 				<button id="editProtDone" onclick=closeModalEditProtocol("protName")>Done</button>
 				<i class="material-icons" id="delete-protocol" onclick="deleteProtocol(this)">delete</i>
-
 			</dialog>
 
 			<!-- Add protocol popup -->
 			<dialog id="addProtocolModal">
-				<span class="close" onClick=closeModalNewProtocol()>&times;</span>
+				<span class="close" onClick=noSaveCloseModal("stepsAdd")>&times;</span>
 				<form method="dialog" id="protocolText">
 					<input id="titleNew"></input> </br>
 				</form>

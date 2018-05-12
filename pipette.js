@@ -68,7 +68,6 @@ Util.events(document, {
 
 	// Click events arrive here
 	"click": function(evt) {
-		console.log(evt.target.id)
 		if (evt.target.localName === "td" && !evt.target.id.substring(3).split("-").includes("0")) {
 			selectItemsforCal();
 			clickedCell = evt.target;
@@ -121,17 +120,15 @@ Util.events(document, {
 			var protocol = event.target;
 			var offsetX = event.clientX - protocol.offsetLeft;
 		    var offsetY = event.clientY - protocol.offsetTop;
-		    var startLeft = parseInt(protocol.style.left);
-		    var startTop = parseInt(protocol.style.top);
-		    console.log(protocol, protocol.style.left, protocol.style.top)
 
 	    	// Mouse up event listener
 	    	var dropFunc = function(event) {
 	    		var pos = Util.offset(clickedCell);
 	    		document.removeEventListener("mousemove", dragFunc);
+
 	    		var left = parseInt(protocol.style.left);
 	    		var top = parseInt(protocol.style.top);
-	    		if (Math.abs(top-startTop) < 4 && ((startLeft && Math.abs(top-startLeft) < 4) || !startLeft)) {
+	    		if (Math.abs(Util.offset(protocol).top-startPos.top) < 4 && ((startPos.left && Math.abs(Util.offset(protocol).left-startPos.left) < 4) || !startPos.left)) {
 	    			moreDetailsCal(protocol.id)
 	    		}
 	    		else {
@@ -154,12 +151,10 @@ Util.events(document, {
 		    		var protName = protocol.id.split("-")[0];
 		    		var stepNum = parseInt(protocol.id.split("-")[1]);
 		    		var evtNum = parseInt(protocol.id.split("-")[2]);
-		    		console.log(protName, stepNum, protocol.id)
 		    		// FOR NEXT STEPS
 		    		while (document.getElementById(protName + "-" + (stepNum+1) + "-" + (evtNum+1))) {
 		    			var nextProt = document.getElementById(protName + "-" + (stepNum+1) + "-" + (evtNum+1));
 		    			if (nextProt.offsetLeft < left) {
-		    				console.log("something")
 		    				top += 70;
 			    			nextProt.style.left = left + "px";
 			    			nextProt.style.top = top + "px";
@@ -174,7 +169,6 @@ Util.events(document, {
 		    		while (document.getElementById(protName + "-" + (stepNum-1) + "-" + (evtNum-1))) {
 		    			var prevProt = document.getElementById(protName + "-" + (stepNum-1) + "-" + (evtNum-1));
 		    			if (prevProt.offsetLeft > left) {
-		    				console.log("the other thing")
 		    				top -= 70;
 			    			prevProt.style.left = left + "px";
 			    			prevProt.style.top = top + "px";
@@ -197,6 +191,7 @@ Util.events(document, {
 	    	};
 
 	    	// Actual mousedown event 
+		    var startPos = Util.offset(event.target);
 	    	document.addEventListener("mousemove", dragFunc);
 	    	protocol.onmouseup = dropFunc;
 	    	protocol.style.zIndex = 0;
@@ -208,6 +203,7 @@ function drawProtocols() {
 	var names = Object.keys(protocols);
 	var html = document.createElement("ul");
 	html.setAttribute("class", "protocol-list");
+	html.setAttribute("id", "protocol-list");
 	for (var i = 0; i < names.length; i++) {
 		var protocolElem = document.createElement("li");
 		protocolElem.setAttribute("class", "protocol");
@@ -255,26 +251,20 @@ function addProtocolToCal(title) {
 	var protocol = document.getElementById("protocolSelectorCal");
 	var protocol_name = title ? title : protocol.options[protocol.selectedIndex].innerHTML;
 	var steps = protocols[protocol_name];
-	console.log("STEPS", steps)
 	var pos = Util.offset(clickedCell);
 	var startTimeHour = parseInt(document.getElementById("selectTime").value.split(":")[0]);
 	startTimeHour += document.getElementById("amOrPm").value == "am" ? 0 : 12;
 	var startTimeMin = parseInt(document.getElementById("selectTime").value.split(":")[1]);
 	var top = pos.top + 2;
-	console.log("start", startTimeMin)
 	if (startTimeMin >= 15 && startTimeMin < 30) {
-		console.log("15-30")
 		top += Math.floor(30/4)
 	}
 	else if (startTimeMin >= 30 && startTimeMin < 45) {
-		console.log("30-45")
 		top += Math.floor(30/2)
 	}
 	else if (startTimeMin >= 45) {
-		console.log("45-59")
 		top += Math.floor(3*30/4)
 	}
-	console.log(clickedCell.id)
 	if (title) {
 		startTimeHour = parseInt(clickedCell.id.substring(3).split("-")[0]-1);
 		startTimeMin = 0;
@@ -302,7 +292,6 @@ function addProtocolToCal(title) {
 		box.style.height = Math.max(height, 15) + "px";
 		box.style.backgroundColor = getCalColor(protocol_name);
 		box.innerText = protocol_name.substring(0,4).trim() + ": Step " + (i+1);
-		console.log(eventCount, protocol_name.replace(/ /g, "")+"-"+(i+1)+"-"+eventCount)
 		box.setAttribute("id", protocol_name.replace(/ /g, "") + "-" + (i+1) + "-" + eventCount);
 		
 		var timeText = document.createElement("small");
@@ -347,12 +336,9 @@ function addProtocolToCal(title) {
 function moreDetailsCal(id){
 	var box = document.getElementById(id);
 	var div = box.children[0]
-	console.log("here again")
-	//document.getElementById("calendar-delete").disable = false;
 	div.style.visibility = "visible"
 	div.style.position = "absolute";
 	var val = 105;//box.getBoundingClientRect().right + 2;
-	console.log(box.getBoundingClientRect().right+2)
 	div.style.left = val+ "px";
 	div.style.top = 0 + "px";
 	div.style.width = "200px";
@@ -368,11 +354,9 @@ function closeAddInfo(id){
 function selectProtocol(clickedCell) {
 	var selectProtocol = document.getElementById("selectProtocol");
 	var timeDefault = document.getElementById("selectTime");
-	console.log(timeDefault)
 	var hour = (clickedCell.id.substring(3).split("-")[0]-1)%12 
 	hour = hour == 0 ? 12 : hour;
 	timeDefault.value = hour+":00";
-	console.log(Math.floor((clickedCell.id.substring(3).split("-")[0]-1)/12))
 	document.getElementById("amOrPm").value = Math.floor((clickedCell.id.substring(3).split("-")[0]-1)/12) == 0 ? "am" : "pm"
 	selectProtocol.showModal();
 }
@@ -436,7 +420,6 @@ function editPopUp(title) {
 
 function delStep(e) {
     var steps = e.target.nextSibling;
-    console.log("here", steps.nextSibling)
     var timeAlloted = steps.nextSibling;
     var waitTime = timeAlloted.nextSibling;
     var modal = e.target.parentElement;
@@ -444,7 +427,6 @@ function delStep(e) {
     modal.removeChild(steps);
     modal.removeChild(timeAlloted);
     modal.removeChild(waitTime);
-    console.log(document.getElementById("stepsEdit"))
 }
 
 function delCal(e){
@@ -479,7 +461,11 @@ function addEditStep() {
 
 function addNewStep() {
 	var stepsArea = document.getElementById("stepsAdd");
-	var stepsArea = document.getElementById(elementId);
+	var del = document.createElement("button")
+    del.innerHTML = "X"
+    del.id = "step-delete"
+    del.setAttribute("onClick", "delStep(event)");
+    stepsArea.appendChild(del);	
 	for (var j = 0; j < 3; j++) { 
 		var div = document.createElement("div");
 		var cell = document.createElement("input");
@@ -501,7 +487,6 @@ function addNewStep() {
 function closeModalEditProtocol(orignalTitle) {
 	var modal = document.getElementById('editProtocolModal');
 	var stepsArea = document.getElementById("stepsEdit");
-	console.log(stepsArea)
 	var title = document.getElementById("title").value;
 	var protocol = protocols[title] ? protocols[title] : [];
 	var validInputs = true;
@@ -576,30 +561,33 @@ function closeModalNewProtocol() {
 	}
 }
 
+function noSaveCloseModal(stepsAreaId) {
+	console.log(stepsAreaId)
+	var stepsArea = document.getElementById(stepsAreaId);
+	console.log(stepsArea)
+	removeFormFields(stepsArea);
+	console.log(stepsArea.parentElement)
+	var modal = stepsArea.parentElement;
+	modal.close();
+}
+
 function getEnteredNewProtocolData(stepsArea, protocol) {
-	var stepNumber = -1;
-	for (var j = 3; j < stepsArea.children.length; j++) {
-		var input = stepsArea.children[j];
-		input = input.children[0];
-		// if the step name is empty -> delete entry
-		// if either field after is empty, set to ""
-		if (j%3 === 0) {
-			if (!input.value) { //steps field is blank
-				j = j + 2; // skip all of the fields in that row
-				if (Math.floor(j/3)-1 < protocol.length)  {
-					protocol.pop(Math.floor(j/3)-1)
-				}
-			}
-			else {
-				if (Math.floor(j/3)-1 >= protocol.length) {
-					protocol.push([input.value,0,0])
-				}
-				stepNumber += 1;
-			}
-		}
-		else {
-			protocol[stepNumber][j%3] = input.value ? input.value : ""
-		}
+	var stepNumber = -1
+	for (var j = 4; j < stepsArea.children.length; j++) {
+	 	var input = stepsArea.children[j];
+	 	input = input.children[0];
+	 	if (j%4 > 0) {
+			protocol[stepNumber][(j%4)-1] = input.value ? input.value : ""
+	 	}
+	 	else {
+	 		if (Math.floor(j/4) > protocol.length) {
+	 			protocol.push(["step", "00:00", "00:00"])
+	 		}
+	 		stepNumber += 1
+	 	}
+	}
+	while (Math.floor(j/4)-1 < protocol.length) {
+		protocol.pop()
 	}
 }
 
@@ -614,7 +602,6 @@ function getEnteredEditProtocolData(stepsArea, protocol) {
 	 	else {
 	 		if (Math.floor(j/4) > protocol.length) {
 	 			protocol.push(["step", "00:00", "00:00"])
-	 			console.log(protocol)
 	 		}
 	 		stepNumber += 1
 	 	}
@@ -634,7 +621,7 @@ function addProtocolToDisplayList(title) {
 	editIcon.setAttribute("onClick", "editPopUp('"+ title +"')");
 	editIcon.innerHTML = "mode_edit";
 	listItem.appendChild(editIcon);
-	var protocolList = document.getElementById("protocol-container");
+	var protocolList = document.getElementById("protocol-list");
 	protocolList.appendChild(listItem);
 	listItem.style.borderBottom = "3px solid " + getCalColor(title);
 }
@@ -651,7 +638,14 @@ function newProtocol() {
 	var titleBox = document.getElementById("titleNew");
 	titleBox.placeholder = "Protocol Name";
 	var stepsArea = document.getElementById("stepsAdd");
+	var div = document.createElement("div");
+	stepsArea.insertBefore(div, stepsArea.childNodes[0]);
 	if (stepsArea.children.length !== 6) {
+		var del = document.createElement("button")
+        del.innerHTML = "X"
+        del.id = "step-delete"
+        del.setAttribute("onClick", "delStep(event)");
+            stepsArea.appendChild(del);	
 		for (var j = 0; j < 3; j++) { 
 			var div = document.createElement("div");
 			var cell = document.createElement("input");
@@ -806,7 +800,6 @@ function showAccount(){
 		signedIn = true; 
 		closeModalSignIn();
 	} else {
-		console.log("username invalid");
 		document.getElementById("error-msg").innerHTML = "Please enter valid username.";
 		document.getElementById("error-msg").style.color = "red";
 	}
@@ -852,7 +845,6 @@ function updateTime(prot, left, top) {
 			protBox.top += 2;
 			if (cellBox.left <= protBox.left && protBox.left < cellBox.right) {
 				if (cellBox.top <= protBox.top && protBox.top < cellBox.bottom) {
-					console.log(cell.id)
 					var quarterCell = Math.floor(30/4);
 					var startTimeHour = parseInt(cell.id.substring(3).split("-")[0]) - 1;
 					var startTimeMin = "00"
@@ -883,7 +875,6 @@ function updateTime(prot, left, top) {
 					var endTimeEnding = Math.floor(endTimeHour/12)==0 ? "am" : "pm";
 					var endHours = endTimeHour%12==0? 12 : endTimeHour%12;
 					var endTime = endHours + ":" + endTimeMin+endTimeEnding;
-					console.log("time-"+prot.id)
 					document.getElementById("time-"+prot.id).innerText = startTime+" - "+endTime;
 				}
 			}
