@@ -347,6 +347,7 @@ function addProtocolToCal(title) {
 function moreDetailsCal(id){
 	var box = document.getElementById(id);
 	var div = box.children[0]
+	console.log("here again")
 	//document.getElementById("calendar-delete").disable = false;
 	div.style.visibility = "visible"
 	div.style.position = "absolute";
@@ -479,11 +480,6 @@ function addEditStep() {
 function addNewStep() {
 	var stepsArea = document.getElementById("stepsAdd");
 	var stepsArea = document.getElementById(elementId);
-	var del = document.createElement("button")
-    del.innerHTML = "X"
-    del.id = "step-delete"
-    del.setAttribute("onClick", "delStep(event)");
-    stepsArea.appendChild(del);	
 	for (var j = 0; j < 3; j++) { 
 		var div = document.createElement("div");
 		var cell = document.createElement("input");
