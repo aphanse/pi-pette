@@ -208,6 +208,7 @@ function drawProtocols() {
 	var names = Object.keys(protocols);
 	var html = document.createElement("ul");
 	html.setAttribute("class", "protocol-list");
+	html.setAttribute("id", "protocol-list");
 	for (var i = 0; i < names.length; i++) {
 		var protocolElem = document.createElement("li");
 		protocolElem.setAttribute("class", "protocol");
@@ -637,7 +638,7 @@ function addProtocolToDisplayList(title) {
 	editIcon.setAttribute("onClick", "editPopUp('"+ title +"')");
 	editIcon.innerHTML = "mode_edit";
 	listItem.appendChild(editIcon);
-	var protocolList = document.getElementById("protocol-container");
+	var protocolList = document.getElementById("protocol-list");
 	protocolList.appendChild(listItem);
 	listItem.style.borderBottom = "3px solid " + getCalColor(title);
 }
