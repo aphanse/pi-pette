@@ -478,7 +478,6 @@ function addEditStep() {
 
 function addNewStep() {
 	var stepsArea = document.getElementById("stepsAdd");
-	var stepsArea = document.getElementById(elementId);
 	var del = document.createElement("button")
     del.innerHTML = "X"
     del.id = "step-delete"
@@ -584,7 +583,7 @@ function getEnteredNewProtocolData(stepsArea, protocol) {
 	var stepNumber = -1;
 	for (var j = 3; j < stepsArea.children.length; j++) {
 		var input = stepsArea.children[j];
-		input = input.children[0];
+		console.log(input)
 		// if the step name is empty -> delete entry
 		// if either field after is empty, set to ""
 		if (j%3 === 0) {
@@ -655,7 +654,14 @@ function newProtocol() {
 	var titleBox = document.getElementById("titleNew");
 	titleBox.placeholder = "Protocol Name";
 	var stepsArea = document.getElementById("stepsAdd");
+	var div = document.createElement("div");
+	stepsArea.insertBefore(div, stepsArea.childNodes[0]);
 	if (stepsArea.children.length !== 6) {
+		var del = document.createElement("button")
+        del.innerHTML = "X"
+        del.id = "step-delete"
+        del.setAttribute("onClick", "delStep(event)");
+            stepsArea.appendChild(del);	
 		for (var j = 0; j < 3; j++) { 
 			var div = document.createElement("div");
 			var cell = document.createElement("input");
